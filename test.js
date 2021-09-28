@@ -1,4 +1,3 @@
-const { off } = require('process');
 const readline = require('readline');
 
 const rl = readline.createInterface({
@@ -6,49 +5,33 @@ const rl = readline.createInterface({
   output: process.stdout,
 });
 
-
-let original,num,one,result=0;
+let data=[];
 let count=0;
+let num1,num2,result;
 
 rl.on('line', (input) => {
-
-  original=input;
-    
- });
-rl.on('close',()=>{
-  if(original<10){
-    original*=10;
-  }
-  if(original==0){
-    console.log(1);
-
-  process.exit();
-  }
-
-   while(original!=result){
-
-     if(count==0){
-    result=original; 
-    //처음 시작할 때 연산을 수행할 값을 가져야 하니까 시작할때만 
-    //result에다 넘겨준다
-     }
-
-  one=((result%10)+(parseInt(result/10)))%10
-  //새로운 수를 만들때 사용되는 두번째 자리수
-  //68일 경우 6+8은 14이므로 4만 가져와야 하므로 마지막에 %10 사용
-
-  result=parseInt((result%10)+''+(one))
-  //새로운 수 생성. 첫번째 자리수는 바로 계산해서 작성
-  
-  
-
+  data.push(input);
   count++;
-  
-  }
-  
-console.log(count);
-
-  process.exit();
-})
 
 
+     if(count==2){  //2개를 다 받고 시작
+
+      num1=parseInt(data[0]);
+      num2=parseInt(data[1]);
+      result=parseInt(num1*num2);
+		//맨 마지막 결과값을 가져오기 위해 미리 계산 후, 받아둠
+
+      while(num2>0){
+      console.log(num1*(num2%10))  //첫번째 값과 두번째 값의 
+													//마지막 자리수를 곱한다
+
+      num2=parseInt(num2/10); // num2 맨 마지막 자리수를 제거한다.
+	
+													//10으로 나눈 다음 Math클래스의 메소드를 사용해
+                          //소수점을 없앨 수도 있지만 그냥 Int로 형변환해서
+                          //없앴다
+     }
+     console.log(result);
+       rl.close();
+     }  
+ });
