@@ -16,9 +16,12 @@ rl.on('line', (input) => {
   let check=['c=','c-','dz=','d-','lj','nj','s=','z=']
   
 
+  for(let i=0; i<check.length; i++){
+    word=word.split(check[i]).join('X')    
+  }
 
   
-  console.log(word.split(check[7]))
+  console.log(word.length)
 
   process.exit();
 })
