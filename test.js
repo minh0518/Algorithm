@@ -11,14 +11,21 @@ const data=[]
 rl.on('line', (input) => {
     data.push(input)
  }).on('close',()=>{ 
-
-  let word=data[0]
-  let check=['c=','c-','dz=','d-','lj','nj','s=','z=']
   
-
-
+  let A=+(data[0].split(' '))[0]
+  let B=+(data[0].split(' '))[1]
+  let C=+(data[0].split(' '))[2]
   
-  console.log(word.split(check[7]))
+  let point=0
+
+  point=Math.floor((A/(C-B)))+1
+
+  B>=C ? (point=-1):point
+ 
+  console.log(point)
+  
+  
+  
 
   process.exit();
 })
