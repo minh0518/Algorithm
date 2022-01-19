@@ -33,10 +33,9 @@ rl.on('line', (input) => {
     }
     
     console.log(result.join(''))
-    //joinЛ°╪К║° К╟╟Л≈╢Л²└ М∙≤К┌≤Л²≤ Й╟▓Л°╪К║° М∙╘Л╧╗
+    //joinю╦╥н ╧Х©╜ю╩ гоЁ╙юг ╟╙ю╦╥н гуд╖
     
 
 
     process.exit();
 })
-
