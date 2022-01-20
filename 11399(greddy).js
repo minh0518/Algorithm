@@ -18,13 +18,13 @@ rl.on('line', (input) => {
 
     P.sort(function(a, b)  {
       return a - b;
-    }); 
+    }); //오름차순 정렬
 
     for(let i=0; i<N; i++){
       for(let j=0; j<=i; j++){
         total+=P[j]
       }
-    }
+    } //시간 덧셈
 
     console.log(total)
 
