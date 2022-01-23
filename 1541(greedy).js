@@ -26,6 +26,6 @@ rl.on('line', (input) => {
 
  
   console.log(sol(data.shift()))
-//rmsid
+
   process.exit();
 })
