@@ -3,28 +3,21 @@ const readline = require('readline');
 const { callbackify } = require('util');
 
 
-
-
-
-
 const rl = readline.createInterface({
   input: process.stdin,
   output: process.stdout,
 });
 
-
-
 const data=[]
 
-
 function sol(input) {
-  const numbers = input.split("-").map((str) => // -를 기준으로 분리해서 분리한 문자열을 모두 탐색
+  const numbers = input.split("-").map((str) => 
     str.split("+")
        .map(Number)
-       .reduce((s, v) => s + v, 0) // +를 기준으로 나눠서 모두 더해준다.
-  ); // -를 기준으로 분리된 문자열의 갯수만큼 numbers 배열의 원소 개수가 된다.
-  let answer = numbers[0] * 2 - numbers.reduce((s, v) => s + v, 0); // 첫번째 원소에서 나머지 모든 원소를 빼준다.
-  return numbers;
+       .reduce((s, v) => s + v, 0) 
+  );
+  let answer = numbers[0] * 2 - numbers.reduce((s, v) => s + v, 0); 
+  return answer;
 }
 
 rl.on('line', (input) => {
@@ -33,7 +26,6 @@ rl.on('line', (input) => {
 
  
   console.log(sol(data.shift()))
-  
+//rmsid
   process.exit();
 })
-
