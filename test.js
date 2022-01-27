@@ -3,36 +3,33 @@ const readline = require('readline');
 const { callbackify } = require('util');
 
 const rl = readline.createInterface({
-    input: process.stdin,
-    output: process.stdout,
+  input: process.stdin,
+  output: process.stdout,
 });
 
 const data = [];
 
 rl.on('line', (input) => {
-    data.push(input);
+  data.push(input);
 }).on('close', () => {
-    let N = Number(data.shift());
-    let stack = [];
-    let order = data;
+  data.shift()
+
+  let info=data.map((item)=>(item.split(' ')).map(Number))
+  let result=[]
+  for(let i=0; i<info.length; i++){
+    let count=1
+    for(let j=0; j<info.length; j++){
+      if(((info[i])[0]<(info[j])[0])&&((info[i])[1]<(info[j])[1])){
+        count++
+      }
+    }
+    result.push(count)
+    
+  }
   
+  console.log(result.join(' '))
 
-    const calc = {
-        pop: () => stack.pop() || -1,
-        size: () => stack.length,
-        empty: () => (stack[0] ? 0 : 1),
-        top: () => stack[stack.length - 1] || -1,
-        push: (item) => {
-            stack.push(item.split(' ')[1]);
-            return '';
-        },
-    };
 
-    const result = order.reduce(
-        (acc, v) => acc + (calc[v] ? `${calc[v]()}\n` : calc.push(v)),
-        ''
-    );
-    console.log(result); 
-
-    process.exit();
+  process.exit();
 });
+
