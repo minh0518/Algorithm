@@ -13,26 +13,24 @@ rl.on('line', (input) => {
   data.push(input);
 }).on('close', () => {
   let N = Number(data.shift());
-  let answer = [];
-
-  for (let i = 1; i <= N; i++) {
-    let tmp = i;
-    let sum = i;
-
-    while (tmp > 0) {
-      sum += tmp % 10;
-      tmp = parseInt(tmp / 10);
-    }
-
-    if (sum == N) {
-      answer.push(i);
-    }
-  }
-  if (answer.length) {
-    console.log(Math.min(...answer));
-  } else {
-    console.log(0);
+  let answer = 0;
+  let start = N - (N + '').length * 9;
+  if (start < 0) {
+    start = 0;
   }
 
+  
+  for (let i = start; i < N; i++) {
+    let tmp = i.toString().split('');
+
+    let sum = i + tmp.reduce((acc, num) => acc + Number(num), 0);
+
+    if (sum === N) {
+      answer=i
+      break
+    }
+  }
+
+  console.log(answer);
   process.exit();
 });
