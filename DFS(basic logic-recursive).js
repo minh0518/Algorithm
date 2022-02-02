@@ -15,8 +15,8 @@ rl.on('line', (input) => {
   const dfs = (graph, v, visited) => {
     visited[v] = true
     console.log(v)
-    for (let i of graph[v]) { //v가 1이라면 2,3,8이 나옴 [2,3,8]아님
-      if (!visited[i]) { //visited[i] 값이 false면 실행
+    for (let i of graph[v]) { 
+      if (!visited[i]) { 
         dfs(graph, i, visited)
       }
     }

@@ -12,14 +12,24 @@ const data = []
 rl.on('line', (input) => {
   data.push(input)
 }).on('close', () => {
-  const dfs = (graph, v, visited) => {
-    visited[v] = true
-    console.log(v)
-    for (let i of graph[v]) { //v가 1이라면 2,3,8이 나옴 [2,3,8]아님
-      if (!visited[i]) { //visited[i] 값이 false면 실행
-        dfs(graph, i, visited)
+  const bfs = (graph, start, visited) => {
+    let queue = []
+    queue.push(start)
+
+    visited[start] = true
+
+    while (queue.length !== 0) {
+      let v = queue.shift()
+      console.log(v)
+
+      for (let i of graph[v]) {
+        if (!visited[i]) {
+          queue.push(i)
+          visited[i] = true
+        }
       }
     }
+    
   }
 
   const graph = [
@@ -39,7 +49,7 @@ rl.on('line', (input) => {
     visited.push(false)
   }
 
- console.log(dfs(graph, 1, visited)) 
+  bfs(graph, 1, visited)
 
   process.exit()
 })
