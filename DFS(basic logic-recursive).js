@@ -34,10 +34,8 @@ rl.on('line', (input) => {
     [1, 7],
   ]
 
-  let visited = []
-  for (let i = 0; i < 9; i++) {
-    visited.push(false)
-  }
+  let visited = new Array(9).fill(false)
+  
 
  console.log(dfs(graph, 1, visited)) 
 
