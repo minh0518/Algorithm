@@ -12,15 +12,6 @@ const data = []
 rl.on('line', (input) => {
   data.push(input)
 }).on('close', () => {
-  const dfs = (graph, v, visited) => {
-    visited[v] = true
-    console.log(v)
-    for (let i of graph[v]) { //v가 1이라면 2,3,8이 나옴 [2,3,8]아님
-      if (!visited[i]) { //visited[i] 값이 false면 실행
-        dfs(graph, i, visited)
-      }
-    }
-  }
 
   const graph = [
     [],
@@ -34,12 +25,25 @@ rl.on('line', (input) => {
     [1, 7],
   ]
 
-  let visited = []
-  for (let i = 0; i < 9; i++) {
-    visited.push(false)
-  }
+  let visited = new Array(9).fill(false)
 
- console.log(dfs(graph, 1, visited)) 
+  const dfs=(graph,startNode)=>{
+
+    let stack=[]
+
+    stack.push(startNode)
+
+    while(stack.length){
+        let node=stack.shift()
+        if(!visited[node]){ //visited배열 값 확인
+            console.log(node)//바로 정답 출력
+            visited[node]=true
+            stack=[...graph[node],...stack]
+        }
+    }
+  }
+  dfs(graph,1)
+  
 
   process.exit()
 })
