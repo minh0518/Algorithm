@@ -12,7 +12,7 @@ const data = []
 rl.on('line', (input) => {
    data.push(input)
 }).on('close', () => {
-  
+    
    const dfs = (a, b) => {
       if (a <= -1 || a >= N || b <= -1 || b >= M) {
          return false
@@ -20,10 +20,10 @@ rl.on('line', (input) => {
 
       if (graph[a][b] == 0) {
          graph[a][b] = 1
-         dfs(a - 1, b) //Л┐│
-         dfs(a + 1, b) //М∙≤
-         dfs(a, b - 1) //Л╒▄
-         dfs(a, b + 1) //Л ╟
+         dfs(a - 1, b) //╩С
+         dfs(a + 1, b) //го
+         dfs(a, b - 1) //аб
+         dfs(a, b + 1) //©Л
          return true
       } else {
          return false
@@ -31,7 +31,7 @@ rl.on('line', (input) => {
    }
 
    let [N, M] = data.shift().split(' ').map(Number)
-   //NЛ²╢ rols , MЛ²╢ cols
+   //Nюл rols , Mюл cols
    let graph = []
 
    graph = data.map((item) => {
@@ -39,8 +39,8 @@ rl.on('line', (input) => {
    })
 
    result = 0
-   //3x3Л²╢К╘╢ N,MК▐└ 3Л²╢ К⌠╓Л√╢Й╟░.
-   //Л▀╓Л═° К╟╟Л≈╢Л²╦К█╠Л┼╓К┼■ 3Й╟° Л²╢К╞─К║° [0]~[2]
+   //3x3юл╦И N,M╣╣ 3юл ╣И╬Н╟╗.
+   //╫га╕ ╧Х©╜юн╣╕╫╨╢б 3╟Ё юл╧г╥н [0]~[2]
    for (let i = 0; i < N; i++) {
       for (let j = 0; j < M; j++) {
          if (dfs(i, j)) {
