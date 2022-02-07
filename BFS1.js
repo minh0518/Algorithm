@@ -32,7 +32,7 @@ rl.on('line', (input) => {
                continue
             }
             if (graph[nx][ny] === 1) {
-               console.log(`현재 방문한 곳은 ${nx},${ny}입니다`)
+              // console.log(`현재 방문한 곳은 ${nx},${ny}입니다`)
                graph[nx][ny] = graph[x][y] + 1
                queue.push([nx, ny])
             }
