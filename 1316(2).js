@@ -18,14 +18,15 @@ rl.on('line', (input) => {
 
    for (let word of data) {
       let letter = []
-      let status = true   
+      let status = true
       letter = []
       for (let i = 0; i < word.length; i++) {
          if (!letter.includes(word[i])) {
+            //indexOf대신 includes사용
             letter.push(word[i])
-         }
-         else {
-            if (letter[letter.length - 1] !== word[i] ) {
+         } else {
+            if (letter[letter.length - 1] !== word[i]) {
+                //인덱스 비교 대신 문자데이터 비교
                status = false
             }
          }
