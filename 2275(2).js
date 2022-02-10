@@ -21,10 +21,10 @@ rl.on('line', (input) => {
       let num = []
       let tmp = 0
       for (let i = 0; i <= k; i++) {
-         //ì¸µ
+         //Ãş
          num.push([1])
          for (let j = 1; j < n; j++) {
-            //í˜¸ (1í˜¸ëŠ” ì œì™¸)
+            //È£ (1È£´Â Á¦¿Ü)
             if (i == 0) {
                num[0].push(j + 1)
             } 
@@ -41,7 +41,7 @@ rl.on('line', (input) => {
    process.exit()
 })
 
-//kì¸µì— ní˜¸
+//kÃş¿¡ nÈ£
 
 //  1   4   10  20  35    //2
 //  1   3   6   10   15  //1
