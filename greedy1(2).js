@@ -12,18 +12,24 @@ const data = []
 rl.on('line', (input) => {
    data.push(input)
 }).on('close', () => {
-   let [N, K] = data.shift().split(' ').map(Number)
+   let price = data.shift()
+
+   let coin = [500, 100, 50, 10]
+
    let count = 0
-   while (N !== 1) {
-      count++
-      if (N % K !== 0) {
-         N--
-      } else {
-         N /= K
+
+   let i = 0
+   while (price) {
+
+      if (price >= coin[i]) {
+         count+=parseInt(price / coin[i])
+         price %= coin[i]
       }
+      i++
    }
 
    console.log(count)
 
    process.exit()
 })
+//500 100 50 10
