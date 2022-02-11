@@ -24,10 +24,10 @@ rl.on('line', (input) => {
       for(let j=0; j<=i; j++){
          result+=time[j]
       }
+      console.log(result)
    }
-   console.log(result)
 
-
+//   console.log(result)
 
    process.exit()
 })

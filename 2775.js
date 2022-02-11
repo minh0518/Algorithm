@@ -1,46 +1,41 @@
-const { off } = require('process')
-const readline = require('readline')
-const { fileURLToPath } = require('url')
+const { off } = require('process');
+const readline = require('readline');
+const { fileURLToPath } = require('url');
 
 const rl = readline.createInterface({
-   input: process.stdin,
-   output: process.stdout,
-})
+  input: process.stdin,
+  output: process.stdout,
+});
 
-const data = []
+const data=[]
 
 rl.on('line', (input) => {
-   data.push(input)
-}).on('close', () => {
-   data.shift()
+    data.push(input)
+ }).on('close',()=>{ 
 
-   let k = Number(data.shift())
-   let n = Number(data.shift())
+  let T= +data.shift()
 
-   let num = []
-    let tmp=0
-   for (let i = 0; i <= k; i++) {
-      num.push([1])
-      for (let j = 2; j <= n; j++) {
-         if (i == 0) {
-            num.push(j)
-         } 
-         else {
-            for (let k = 1; k <=n; k++) {
-               tmp+=num[i - 1][k]
-            }
-            num.push(tmp)
-         }
-      }
-   }
+  
 
-   console.log(num)
-
-   process.exit()
+  for (let i = 0; i <T; i++) {
+    const floor = +data.shift()
+    const num = +data.shift()
+    const apartment = [];
+ 
+  for (let i = 0; i <= floor; i++) {
+    apartment.push([1]);
+  for (let j = 1; j < num; j++) {
+    if (i === 0) {
+    apartment[i].push(j + 1);
+    } 
+    else {
+    apartment[i].push(apartment[i][j - 1] + apartment[i - 1][j]);
+    }
+  }
+}
+ 
+console.log(apartment[floor][num-1]);
+//floor는 0층부터여서 배열 인덱스와 동일하지만 num은 1호부터 시작이므로 배열 인덱스에 맞춰서 -1
+}
+  process.exit();
 })
-
-//k층에 n호
-
-//  1   4   10  20  35    //2
-//  1   3   6   10   15  //1
-//  1  2   3   4   5    //0
