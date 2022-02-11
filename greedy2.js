@@ -1,42 +1,42 @@
-const { off } = require('process');
-const readline = require('readline');
-const { fileURLToPath } = require('url');
+const { off } = require('process')
+const readline = require('readline')
+const { fileURLToPath } = require('url')
 
 const rl = readline.createInterface({
-  input: process.stdin,
-  output: process.stdout,
-});
-const data=[]
+   input: process.stdin,
+   output: process.stdout,
+})
+const data = []
 
 rl.on('line', (input) => {
-    data.push(input)  // 26 7  입력
- }).on('close',()=>{
-  
-  let count=0
-  let target
-  let n = +data[0].split(' ')[0];
-  let k = +data[0].split(' ')[1];
-   
-  while(1){
-     target=(parseInt(n/k))*k
-     count+=(n-target)
+   data.push(input) // 26 7  입력
+}).on('close', () => {
+   let count = 0
+   let target
+   let [n, k] = data.shift().split(' ').map(Number)
 
-     n=target
+   while (1) {
+      if (n < k) { //더이상 나눌 필요 없이 빼기만 하면 
+									//되는 상황이므로 break
+         break
+      }
 
-     if(n<k){
-       break
-     }
+      target = parseInt(n / k) * k
 
-     
-     n=parseInt(n/k)
-     count++
-  }
-  
-  count += (n-1)
+      count += n - target
 
-  console.log(count)
+      n = target
 
-    process.exit();
+      n = parseInt(n / k)
+
+      count++
+   }
+
+   count += n - 1
+
+   console.log(count)
+
+   process.exit()
 })
 
 
