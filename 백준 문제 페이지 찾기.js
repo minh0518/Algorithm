@@ -1,3 +1,8 @@
+//ë°±ì¤€ì—ì„œ í•´ë‹¹ ë²ˆí˜¸ë¡œ ë¬¸ì œë¥¼ ê²€ìƒ‰í•˜ê³ ì í•  ë•Œ ëª‡ í˜ì´ì§€ì— ìˆëŠ”ì§€
+//í™•ì¸í•˜ëŠ” ê°„ë‹¨í•œ ì½”ë“œì…ë‹ˆë‹¤
+
+
+
 const { off } = require('process')
 const readline = require('readline')
 const { fileURLToPath } = require('url')
@@ -13,7 +18,7 @@ rl.on('line', (input) => {
    data.push(input)
 }).on('close', () => {
     
-   // // ºÎ·çÆ® Æ÷½º·Î ¸ğµç Ã£À» ¶§±îÁö °ÍÀ» µ¹¾Æ°¡¸ç Å½»ö
+   // // ë¶€ë£¨íŠ¸ í¬ìŠ¤ë¡œ ëª¨ë“  ì°¾ì„ ë•Œê¹Œì§€ ê²ƒì„ ëŒì•„ê°€ë©° íƒìƒ‰
 
    //    let num=data.shift()
    //    let page=1
@@ -26,14 +31,14 @@ rl.on('line', (input) => {
    //       page++
    //    }
 
-   //    console.log(`${num}¹ø ¹®Á¦´Â ${page}ÆäÀÌÁö¿¡ ÀÖ½À´Ï´Ù`)
+   //    console.log(`${num}ë²ˆ ë¬¸ì œëŠ” ${page}í˜ì´ì§€ì— ìˆìŠµë‹ˆë‹¤`)
 
-   // Å½»öº¸´Ù º¸´Ù °£ÆíÇÑ °ø½ÄÀ» ÅëÇØ °Ë»ö
+   // íƒìƒ‰ë³´ë‹¤ ë³´ë‹¤ ê°„í¸í•œ ê³µì‹ì„ í†µí•´ ê²€ìƒ‰
    let num = data.shift()
 
    let page = parseInt(num / 100) - 9
 
-   console.log(`${num}¹ø ¹®Á¦´Â ${page}ÆäÀÌÁö¿¡ ÀÖ½À´Ï´Ù`)
+   console.log(`${num}ë²ˆ ë¬¸ì œëŠ” ${page}í˜ì´ì§€ì— ìˆìŠµë‹ˆë‹¤`)
 
    process.exit()
 })
