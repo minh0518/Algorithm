@@ -31,14 +31,14 @@ rl.on('line', (input) => {
    //       page++
    //    }
 
-   //    console.log(`${num}번 문제는 ${page}페이지에 있습니다`)
+   //    console.log(`question number ${num} is located on p.${page}`)
 
    // 탐색보다 보다 간편한 공식을 통해 검색
    let num = data.shift()
 
    let page = parseInt(num / 100) - 9
 
-   console.log(`${num}번 문제는 ${page}페이지에 있습니다`)
+   console.log(`question number ${num} is located on p.${page}`)
 
    process.exit()
 })
