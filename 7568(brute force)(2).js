@@ -1,4 +1,3 @@
-const { info } = require('console')
 const { off } = require('process')
 const readline = require('readline')
 const { fileURLToPath } = require('url')
