@@ -1,47 +1,38 @@
-const { info } = require('console')
-const { off } = require('process')
-const readline = require('readline')
-const { fileURLToPath } = require('url')
+const { off } = require('process');
+const readline = require('readline');
+const { callbackify } = require('util');
 
 const rl = readline.createInterface({
   input: process.stdin,
   output: process.stdout,
-})
-const data = []
+});
+
+const data = [];
 
 rl.on('line', (input) => {
-  data.push(input)
+  data.push(input);
 }).on('close', () => {
-  let [a, ...b] = data
-  let [N, M] = a.split(' ')
+  let N = Number(data.shift());
+  let answer = [];
 
-  let board = b.map((item) => item.split(''))
+  for (let i = 1; i <= N; i++) {
+    let tmp = i;
+    let sum = i;
 
-  let answer = ['WBWBWBWB', 'BWBWBWBW']
-  let count = 0
-  let result = []
-  for (let i = 0; i <= N - 8; i++) {
-    for (let j = 0; j <= M - 8; j++) {
+    while (tmp > 0) {
+      sum += tmp % 10;
+      tmp = parseInt(tmp / 10);
+    }
 
-      for (let k = 0; k < 2; k++) {
-        count = 0
-
-        for (let x = 0; x < 8; x++) {
-          for (let y = 0; y < 8; y++) {
-            if (answer[(x + k) % 2][y] !== board[x + i][y + j]) {
-              count++
-            }
-          }
-        }
-        result.push(count)
-      }
+    if (sum == N) {
+      answer.push(i);
     }
   }
+  if (answer.length) {
+    console.log(Math.min(...answer));
+  } else {
+    console.log(0);
+  }
 
-
-  console.log(result.reduce((x, y) => {
-    return x < y ? x : y
-  }))
-
-  process.exit()
-})
+  process.exit();
+});
