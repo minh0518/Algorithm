@@ -1,4 +1,3 @@
-const { maxHeaderSize } = require('http')
 const { off, mainModule } = require('process')
 const readline = require('readline')
 const { fileURLToPath } = require('url')
@@ -13,12 +12,13 @@ const data = []
 rl.on('line', (input) => {
   data.push(input)
 }).on('close', () => {
+    //°³¹ÌÀü»ç
 
   let N=data.shift()
   let K=data.shift().split(' ').map(Number)
 
-  let D=new Array(100).fill(0) //DëŠ” í•´ë‹¹ ì¸ë±ìŠ¤ê¹Œì§€ í„¸ì—ˆì„ ë•Œ
-                          //ê°€ì¥ ìµœì ì˜ ê°’(=ì •ë‹µ)ë“¤ì„ ë‹´ê³  ìˆìŒ
+  let D=new Array(100).fill(0) //D´Â ÇØ´ç ÀÎµ¦½º±îÁö ÅĞ¾úÀ» ¶§
+                          //°¡Àå ÃÖÀûÀÇ °ª(=Á¤´ä)µéÀ» ´ã°í ÀÖÀ½
 
   D[0]=K[0]
   D[1]=Math.max(K[0],K[1])
