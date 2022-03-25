@@ -1,3 +1,4 @@
+const { resolve } = require('path')
 const { off, mainModule } = require('process')
 const readline = require('readline')
 const { fileURLToPath } = require('url')
@@ -15,7 +16,7 @@ rl.on('line', (input) => {
 
   let word=data.shift()
 
-  let reverseWord=[]
+  let reversedWord=[]
 
   let dividedWord=[]
   
@@ -33,12 +34,12 @@ rl.on('line', (input) => {
     for(let k=0; k<3; k++){
     tmp+=dividedWord[i][k].split('').reverse().join('')
     }
-    reverseWord.push(tmp)
+    reversedWord.push(tmp)
   }
 
- // console.log(reverseWord)
+ // console.log(reversedWord)
 
-  let result=reverseWord.sort((a,b)=>{
+  let result=reversedWord.sort((a,b)=>{
     return a.localeCompare(b)
   })
 
@@ -47,5 +48,5 @@ rl.on('line', (input) => {
 
 })
 
-//문자열 정렬은 아스키코드 기준
+
 
