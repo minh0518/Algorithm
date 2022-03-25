@@ -1,4 +1,3 @@
-const { resolve } = require('path')
 const { off, mainModule } = require('process')
 const readline = require('readline')
 const { fileURLToPath } = require('url')
@@ -48,5 +47,5 @@ rl.on('line', (input) => {
 
 })
 
-//ë¬¸ìžì—´ ì •ë ¬ì€ ì•„ìŠ¤í‚¤ì½”ë“œ ê¸°ì¤€
+//¹®ÀÚ¿­ Á¤·ÄÀº ¾Æ½ºÅ°ÄÚµå ±âÁØ
 
