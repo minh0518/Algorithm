@@ -9,13 +9,14 @@ const rl = readline.createInterface({
 
 const data = []
 
+
 rl.on('line', (input) => {
   data.push(input)
 }).on('close', () => {
 
+  let arr = new Array(10).fill(true).fill(false, 0, 2)
 
-  //Logics
-
-
+  console.log(arr)
+  
   process.exit()
 })
