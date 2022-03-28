@@ -17,23 +17,23 @@ rl.on('line', (input) => {
   let graph = []
 
 
-  //ìƒí•˜ì¢Œìš° ëŒë©´ì„œ 1ì´ë©´ íì— pushë§Œ í•˜ê³  ë°©ë¬¸ì²˜ë¦¬ë¡œ 0ìœ¼ë¡œ í•´ì£¼ëŠ” ê²ƒ
+  //»óÇÏÁÂ¿ì µ¹¸é¼­ 1ÀÌ¸é Å¥¿¡ push¸¸ ÇÏ°í ¹æ¹®Ã³¸®·Î 0À¸·Î ÇØÁÖ´Â °Í
   const BFS = (x, y) => {
     let queue=[]
     let dx,dy
-    let direction=[[-1, 0], [1, 0], [0, -1], [0, 1]] //ìƒí•˜ì¢Œìš°
+    let direction=[[-1, 0], [1, 0], [0, -1], [0, 1]] //»óÇÏÁÂ¿ì
 
 
     queue.push([x,y])
 
-    while(queue.length){ //ì¸ì ‘í•œ ê³³ì„ ëŒë©´ì„œ 0ìœ¼ë¡œ ë§Œë“¤ì–´ ì¤˜ì•¼ í•¨
+    while(queue.length){ //ÀÎÁ¢ÇÑ °÷À» µ¹¸é¼­ 0À¸·Î ¸¸µé¾î Áà¾ß ÇÔ
       let [getX,getY]=queue.shift() 
       
       if(graph[getX][getY]===0){
         continue;
       }
 
-      graph[getX][getY]=0 //ì´ê²Œ ì ¤ ì¤‘ìš”. ë°©ë¬¸ì²˜ë¦¬ í•´ì¤Œ
+      graph[getX][getY]=0 //ÀÌ°Ô Á© Áß¿ä. ¹æ¹®Ã³¸® ÇØÁÜ
       
       for(let i=0; i<direction.length; i++){
         dx=getX+direction[i][0]
