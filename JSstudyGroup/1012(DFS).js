@@ -43,10 +43,12 @@ rl.on('line', (input) => {
       location.push(data.shift().split(' ').map(Number))
     }
 
-    graph = new Array(M)
+    graph = new Array(M) 
     for (let i = 0; i < M; i++) {
       graph[i] = new Array(N).fill(0)
-    }
+    }//이렇게 하면 세로(=행)의 길이는 M이고 가로의 길이(=열)는 N이 됨
+    //N개의 길이를 가진 배열들이 M개가 되는 것
+    //이건 확실하게 문제에서 말한 가로가 M이고 세로가 N이라는 것과 틀리다
 
     for (let i = 0; i < K; i++) {
       graph[location[i][0]][location[i][1]] = 1
