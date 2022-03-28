@@ -9,11 +9,16 @@ const rl = readline.createInterface({
 
 const data = []
 
+
+//답을 구하는 함수
 const check = (lines) => {
   for (let i = 0; i < lines.length - 2; i++) {
     if (lines[i]<lines[i + 1]+lines[i + 2]) {
       return(lines[i]+lines[i + 1]+lines[i + 2])
     }
+//여기다가 else해서 -1하면 안됨
+//맨 처음 3개의 수만 보고 안되면 바로 -1리턴하니까.
+//마지막케이스 보면 20 말고 다음 것들에서 출력하는 것을 볼 수 있다
   }
 }
 
@@ -23,20 +28,15 @@ rl.on('line', (input) => {
   data.shift()
   let lines =data.map((item) => Number(item))
 
-  lines.sort((a, b) => {
+  lines.sort((a, b) => { //내림차순 정렬
     return b - a
   })
   
   let tmp = check(lines)
-  if(tmp){
-    console.log(tmp)
-  }
-  else{
-    console.log(-1)
-  }
+
+  console.log(tmp!==undefined ? tmp : -1)
+  //선언만하고 값이 넘어오지 않았다면 undefined
   
 
   process.exit()
 })
-//삼각형이 만들어질 조건은
-//삼각형에서 가장 긴 변의 길이는 나머지 두 변의 길이의 합보다 작다

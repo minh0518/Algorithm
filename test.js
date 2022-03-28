@@ -9,6 +9,7 @@ const rl = readline.createInterface({
 
 const data = []
 
+
 const check = (lines) => {
   for (let i = 0; i < lines.length - 2; i++) {
     if (lines[i]<lines[i + 1]+lines[i + 2]) {
@@ -28,15 +29,10 @@ rl.on('line', (input) => {
   })
   
   let tmp = check(lines)
-  if(tmp){
-    console.log(tmp)
-  }
-  else{
-    console.log(-1)
-  }
+  console.log(tmp!==undefined ? tmp : -1)
   
 
   process.exit()
 })
 //삼각형이 만들어질 조건은
-//삼각형에서 가장 긴 변의 길이는 나머지 두 변의 길이의 합보다 작다
+//삼각형에서 가장 긴 변의 길이는 나머지 두 변의 길이의 합보다 작아야 한다
