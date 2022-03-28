@@ -22,7 +22,8 @@ rl.on('line', (input) => {
 
   const DFS = (x, y) => {
     if (x >= 0 && x < M && y >= 0 && y < N) {
-      if (graph[x][y] === 1) {
+      if (graph[x][y] === 1) { //(재귀로 호출된 즉, 이동한 곳에 대해)
+                              //방문 여부 확인
         graph[x][y] = 0
         DFS(x + 1, y) //아래
         DFS(x, y + 1) //오른쪽
@@ -50,14 +51,14 @@ rl.on('line', (input) => {
     //N개의 길이를 가진 배열들이 M개가 되는 것
     //이건 확실하게 문제에서 말한 가로가 M이고 세로가 N이라는 것과 틀리다
 
-    for (let i = 0; i < K; i++) {
+    for (let i = 0; i < K; i++) { //K대신 location.length도 가능
       graph[location[i][0]][location[i][1]] = 1
     }
 
     let count = 0
-    for (let i = 0; i < M; i++) {
+    for (let i = 0; i < M; i++) { //이번에도 역시 행 하나 고정하고 각 열의 값들을 돈다
       for (let j = 0; j < N; j++) {
-        if (graph[i][j] === 1) {
+        if (graph[i][j] === 1) { //방문 여부 확인
           DFS(i, j)
 
           count++
