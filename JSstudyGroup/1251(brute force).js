@@ -21,7 +21,7 @@ rl.on('line', (input) => {
   let dividedWord=[]
   
   
-  for(let i=1; i<word.length; i++){
+  for(let i=1; i<word.length; i++){ // word.length -1 
     for(let j=i+1; j<word.length; j++){
       dividedWord.push([word.slice(0,i),word.slice(i,j),word.slice(j)])
     }
