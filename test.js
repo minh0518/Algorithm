@@ -12,18 +12,12 @@ const data = []
 rl.on('line', (input) => {
   data.push(input)
 }).on('close', () => {
+let arr=new Array(4).fill(0)
 
-  let word=data.shift()
-  
-  let target=['c=','c-','dz=','d-','lj','nj','s=','z=']
-  
-  
-  for(let i of target){
-    word=word.split(i).join('A')
-  }
+arr[2]=3
 
-  console.log(word.length)
-  
+console.log(arr)
 
   process.exit()
 })
+
