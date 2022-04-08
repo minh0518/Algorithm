@@ -20,7 +20,7 @@ rl.on('line', (input) => {
   //   price[i]=data.shift().split(' ').map(Number)
   // }
   let price=data.map(item=>item.split(' ').map(Number))
-  //priceì˜ ì²«ë²ˆì§¸ ì¸ë±ìŠ¤ëŠ” ì¸µ, ë‘ë²ˆì§¸ ì¸ë±ìŠ¤ëŠ” ê° ì¸µì— ëŒ€í•œ ìƒ‰ê¹”ë“¤
+  //priceÀÇ Ã¹¹øÂ° ÀÎµ¦½º´Â Ãþ, µÎ¹øÂ° ÀÎµ¦½º´Â °¢ Ãþ¿¡ ´ëÇÑ »ö±òµé
 
   let DP=new Array(N)
   for(let i=0; i<N; i++){
@@ -46,4 +46,4 @@ rl.on('line', (input) => {
   process.exit()
 })
 
-//ë¶™ì–´ìžˆëŠ” ê²ƒë“¤ë¼ë¦¬ë§Œ ìƒ‰ì´ ë‹¤ë¥´ë©´ ë¨
+//ºÙ¾îÀÖ´Â °Íµé³¢¸®¸¸ »öÀÌ ´Ù¸£¸é µÊ
