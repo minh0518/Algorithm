@@ -9,7 +9,7 @@ const rl = readline.createInterface({
 
 const data = []
 
-const check=(target)=>{ //ì†Œì¸ìˆ˜ë¶„í•´ë¥¼ êµ¬í•˜ê³  ê·¸ ê°¯ìˆ˜ë¥¼ ë¦¬í„´
+const check=(target)=>{ //¼ÒÀÎ¼öºĞÇØ¸¦ ±¸ÇÏ°í ±× °¹¼ö¸¦ ¸®ÅÏ
   let result = []
   let i = 2
 
@@ -30,7 +30,7 @@ const check=(target)=>{ //ì†Œì¸ìˆ˜ë¶„í•´ë¥¼ êµ¬í•˜ê³  ê·¸ ê°¯ìˆ˜ë¥¼ ë¦¬í„´
   return result.length
 }
 
-const isPrime = (num) => { //ì—ë¼ìŠ¤í† í…Œë„¤ìŠ¤ì˜ ì²´ë¥¼ ì´ìš©í•œ ì†Œìˆ˜íŒë³„
+const isPrime = (num) => { //¿¡¶ó½ºÅäÅ×³×½ºÀÇ Ã¼¸¦ ÀÌ¿ëÇÑ ¼Ò¼öÆÇº°
   let arr = new Array(num + 1).fill(true).fill(false, 0, 2)
 
   for (let i = 2; i * i <= num; i++) {  
