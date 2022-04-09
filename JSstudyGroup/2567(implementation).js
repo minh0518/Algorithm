@@ -23,7 +23,7 @@ rl.on('line', (input) => {
   let paper = new Array(height)
   for (let i = 0; i < height; i++) {
     paper[i] = new Array(width).fill(0)
-  } //paper ëŠ” ê°€ë¡œ 15+11 ì„¸ë¡œ 14+11ì˜ 2ì°¨ì› ë°°ì—´
+  } //paper ´Â °¡·Î 15+11 ¼¼·Î 14+11ÀÇ 2Â÷¿ø ¹è¿­
 
   let check = [
     [-1, 1, 0, 0],
@@ -31,10 +31,10 @@ rl.on('line', (input) => {
   ]
 
 
-  //ê° ì‚¬ê°í˜•ë“¤ ì¢Œí‘œ 1ë¡œ í‘œì‹œ
+  //°¢ »ç°¢Çüµé ÁÂÇ¥ 1·Î Ç¥½Ã
   for (let k = 0; k < rect.length; k++) { 
     for (let i = rect[k][1]; i < rect[k][1]+10; i++) {
-											//í–‰ë ¬ ê°œë…ì´ë¯€ë¡œ ì„¸ë¡œì¢Œí‘œ ë¨¼ì € ë„£ì–´ì¤˜ì•¼ í•¨
+											//Çà·Ä °³³äÀÌ¹Ç·Î ¼¼·ÎÁÂÇ¥ ¸ÕÀú ³Ö¾îÁà¾ß ÇÔ
       for (let j = rect[k][0]; j < rect[k][0]+10; j++) {
         paper[i][j]=1
       }
@@ -42,12 +42,12 @@ rl.on('line', (input) => {
   }
 
 
-  //ì´ê²Œ ë‘˜ë ˆ ì¸ì§€ í™•ì¸
+  //ÀÌ°Ô µÑ·¹ ÀÎÁö È®ÀÎ
   let count=0
-  for(let i=1; i<height; i++){//ì—¬ê¸°ë„ ë§ˆì°¬ê°€ì§€ë¡œ í–‰ì„ ê¸°ì¤€ìœ¼ë¡œ 
-    for(let j=1; j<width; j++){ //ê° ì—´ë“¤ì„ í™•ì¸
+  for(let i=1; i<height; i++){//¿©±âµµ ¸¶Âù°¡Áö·Î ÇàÀ» ±âÁØÀ¸·Î 
+    for(let j=1; j<width; j++){ //°¢ ¿­µéÀ» È®ÀÎ
       if(paper[i][j]===1){
-        for(let k=0; k<4; k++){  //ìƒí•˜ì¢Œìš° ë°°ì—´ ì‚¬ìš©í•˜ê¸° ìœ„í•´
+        for(let k=0; k<4; k++){  //»óÇÏÁÂ¿ì ¹è¿­ »ç¿ëÇÏ±â À§ÇØ
           let dx=i+check[0][k]
           let dy=j+check[1][k]
           if(paper[dx][dy]===0){
