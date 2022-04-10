@@ -1,3 +1,10 @@
+
+
+//이 문제는 현재 백준에서 메모리 초과를 발생 시킵니다.
+//그러므로 다른 로직이 필요하지만 우선 정답자체는 제대로 출력이 되기에
+//배열 좌표 학습용으로 우선 기록해 두었습니다
+
+
 const { off, mainModule } = require('process')
 const readline = require('readline')
 const { fileURLToPath } = require('url')
@@ -51,7 +58,7 @@ rl.on('line', (input) => {
     //console.log(`dx : ${dx}, dy : ${dy}`)
 
     //이게 문젠데 지금
-    if (dx < 0 || dy < 0 || dx > N || dy > N) { 
+    if (dx < 0 || dy < 0 || dx > M || dy > N) { 
 								//반드시 0보다 커야 하는 것도 고려해야 한다
     //  console.log('범위 초과')
       i++

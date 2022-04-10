@@ -58,7 +58,7 @@ rl.on('line', (input) => {
     //console.log(`dx : ${dx}, dy : ${dy}`)
 
     //이게 문젠데 지금
-    if (dx < 0 || dy < 0 || dx > N || dy > N) { 
+    if (dx < 0 || dy < 0 || dx > M || dy > N) { 
 								//반드시 0보다 커야 하는 것도 고려해야 한다
     //  console.log('범위 초과')
       i++
