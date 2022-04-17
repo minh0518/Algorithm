@@ -24,7 +24,7 @@ rl.on('line', (input) => {
       DP[i]+=cost
       console.log(`i : DP[${i}]=${DP[i]}`)
       for(let j=i+period; j<N; j++){
-        DP[j]=Math.max(DP[j],DP[i]) //í˜„ìž¬ ê¸ˆì•¡, periodì¼ ë’¤ì— ë°›ê²Œ ë  ê¸ˆì•¡ ë¹„êµ
+        DP[j]=Math.max(DP[j],DP[i]) //ÇöÀç ±Ý¾×, periodÀÏ µÚ¿¡ ¹Þ°Ô µÉ ±Ý¾× ºñ±³
         console.log(`j : DP[${j}]=${DP[j]}`)
       }
       console.log(`================`)
