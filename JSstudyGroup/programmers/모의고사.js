@@ -1,18 +1,4 @@
-const { off, mainModule } = require('process')
-const readline = require('readline')
-const { fileURLToPath } = require('url')
-
-const rl = readline.createInterface({
-  input: process.stdin,
-  output: process.stdout,
-})
-
-const data = []
-
-rl.on('line', (input) => {
-  data.push(input)
-}).on('close', () => {
-  function solution(answers) {
+function solution(answers) {
 
     let answer = []
 
@@ -41,8 +27,3 @@ rl.on('line', (input) => {
     
     return answer
   }
-
-  console.log(solution([1,3,2,4,2]))
-
-  process.exit()
-})
