@@ -62,7 +62,7 @@ function solution(id_list, report, k) {
           if (info[j][1] === status[i][0]) {
             //신고목록에서 k번 이상인 사람이 신고당한 경우
 
-              //info[j][0]은 신고 당한 사람
+              //info[j][0]은 신고 한 사람
             for (let k = 0; k < status.length; k++) {
               if (status[k][0] === info[j][0]) {
                 answer[k]++
