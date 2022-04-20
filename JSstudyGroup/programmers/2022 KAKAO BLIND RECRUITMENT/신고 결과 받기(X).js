@@ -1,3 +1,6 @@
+//해당 풀이는 답은 출력은 제대로 나오나 시간 초과가 걸립니다
+
+
 function solution(id_list, report, k) {
     let status = id_list.map((item) => item.split())
     
@@ -18,15 +21,11 @@ function solution(id_list, report, k) {
          // console.log(info[i] , info[i])
 
           info.splice(j,1)
-        }
-        
-        
+          j--
+
+        }   
       }
     }
-//여기서 처리할때 그냥 인덱스가 꼬이는 것 같으니까
-//차라리 새로 배열하나 만들어서 조건문 통과하면 그 때 info배열에 다시 push해주는
-//방식으로 해봐야겠다
-
 
  // console.log(info)
 
