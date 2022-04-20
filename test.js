@@ -30,7 +30,7 @@ rl.on('line', (input) => {
       } 
     })
 
-   // console.log(status)
+    console.log(status)
 
 
     let answer=new Array(id_list.length).fill(0)
@@ -47,9 +47,9 @@ rl.on('line', (input) => {
 
   
   console.log(solution(
-    ["con", "ryan"],
-    ["ryan con", "ryan con", "ryan con", "ryan con"],
-    3
+    ["muzi", "frodo", "apeach", "neo"],
+    ["muzi frodo","apeach frodo","frodo neo","muzi neo","apeach muzi"],
+    2
   ))
   
 

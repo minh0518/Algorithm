@@ -67,8 +67,6 @@ function solution(id_list, report, k) {
               if (status[k][0] === info[j][0]) {
                 answer[k]++
                 
-
-                //자기자신을 신고할 경우, 중복신고 할 경우를 배제해야 함
               }
             }
           }
