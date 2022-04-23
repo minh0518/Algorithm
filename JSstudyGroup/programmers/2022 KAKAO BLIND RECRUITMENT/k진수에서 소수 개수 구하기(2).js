@@ -1,20 +1,4 @@
-const { off, mainModule } = require('process')
-const readline = require('readline')
-const { fileURLToPath } = require('url')
-
-const rl = readline.createInterface({
-  input: process.stdin,
-  output: process.stdout,
-})
-
-const data = []
-
-rl.on('line', (input) => {
-  data.push(input)
-}).on('close', () => {
- 
-
-  function solution(n, k) {
+function solution(n, k) {
     
 
     function checkPrime(num){ 
@@ -30,7 +14,7 @@ rl.on('line', (input) => {
     }
 
     
-    let num = n.toString(k) //kì§„ìˆ˜ë¡œ ë³€í™˜
+    let num = n.toString(k) //kÁø¼ö·Î º¯È¯
     //211020101011
 
     let primes=num.split('0')
@@ -43,8 +27,3 @@ rl.on('line', (input) => {
   }
 
   console.log(solution(437674, 3))
-
-  process.exit()
-})
-
-
