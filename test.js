@@ -12,20 +12,24 @@ const data = []
 rl.on('line', (input) => {
   data.push(input)
 }).on('close', () => {
+ 
 
-  const obj = {
-    d: 'ddd',
-    a: 'aaa',
-    c: 'ccc',
-    b: 'bbb',
-    e: 'eee',
+  
+  const checkPrime2=(num)=>{
+
+    for(let i=2; i*i<=num; i++){
+      if((num%i)===0){
+        return false  
+      }
+    }
+    return true
   }
 
-  const newObj = {}
-  Object.keys(obj).sort().forEach(function (key) {
-      newObj[key] = obj[key]
-    })
-  console.log(newObj) /* {a: 'aaa', b: 'bbb', c: 'ccc', d: 'ddd', e: 'eee'} */
+
+  console.log(checkPrime2(2231))
+  
 
   process.exit()
 })
+
+
