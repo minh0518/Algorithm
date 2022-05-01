@@ -1,36 +1,21 @@
-const { off, mainModule } = require('process')
-const readline = require('readline')
-const { fileURLToPath } = require('url')
-
-const rl = readline.createInterface({
-  input: process.stdin,
-  output: process.stdout,
-})
-
-const data = []
-
-rl.on('line', (input) => {
-  data.push(input)
-}).on('close', () => {
-
 
   function solution(new_id) {
 
 
-    //1ë‹¨ê³„
+    //1´Ü°è
     new_id=new_id.toLowerCase()
 
 
-    //2ë‹¨ê³„
+    //2´Ü°è
     let tmp2=[]
-    for(let i of new_id){ //ë§¨ ì²˜ìŒ ì‹ ê³ ì„œë¹„ìŠ¤ë¬¸ì œì—ì„œ ì²˜ëŸ¼ ì‹¤ì‹œê°„ìœ¼ë¡œ í•´ë‹¹ ì›ë³¸ ë°°ì—´ì˜ ê°’ì„ ì§€ìš°ëŠ” ë°©ë²•ìœ¼ë¡œëŠ”?
+    for(let i of new_id){ //2022 ½Å°í¼­ºñ½º¹®Á¦¿¡¼­ Ã³·³ ½Ç½Ã°£À¸·Î ÇØ´ç ¿øº» ¹è¿­ÀÇ °ªÀ» Áö¿ì´Â ¹æ¹ıÀ¸·Îµµ °¡´ÉÇÒµí
       if(i.charCodeAt(0) >= 97 && i.charCodeAt(0) <=122  || !(isNaN(i))  || i==='-' || i==='.' || i==='_'){
         tmp2.push(i)
       }
     }
 
 
-    //3ë‹¨ê³„ (2ê°œ ë°©ë²• ë‹¤ ê°€ëŠ¥)
+    //3´Ü°è (2°³ ¹æ¹ı ´Ù °¡´É)
     let tmp3=[]
     // for(let i=0; i<tmp2.length; i++){
     //   if(tmp2[i]==='.'){
@@ -60,7 +45,7 @@ rl.on('line', (input) => {
     }
 
 
-    //4ë‹¨ê³„ (3ë‹¨ê³„ ì²«ë²ˆì§¸ ë°©ë²•ê³¼ í˜¼ìš©í•´ì„œ í•œë²ˆì— ê°€ëŠ¥í• ì§€ë„?)
+    //4´Ü°è (3´Ü°è Ã¹¹øÂ° ¹æ¹ı°ú È¥¿ëÇØ¼­ ÇÑ¹ø¿¡ °¡´ÉÇÒÁöµµ?)
     if(tmp3[0]==='.' ){
       tmp3.splice(0,1)
     }
@@ -70,7 +55,7 @@ rl.on('line', (input) => {
     }
 
 
-    //5ë‹¨ê³„
+    //5´Ü°è
     let tmp4=[]
     if(tmp3.length===0){
       tmp4.push('a')
@@ -80,7 +65,7 @@ rl.on('line', (input) => {
     }
 
 
-    //6ë‹¨ê³„
+    //6´Ü°è
     if(tmp4.length>=16){
       tmp4.splice(15)
     }
@@ -89,7 +74,7 @@ rl.on('line', (input) => {
     }
 
 
-    //7ë‹¨ê³„
+    //7´Ü°è
     if(tmp4.length<=2){
       let lastword=tmp4[tmp4.length-1]
       while(tmp4.length<3){
@@ -111,12 +96,3 @@ rl.on('line', (input) => {
 
   //solution('...!@BaT#*..y.abcdefghijklm')
   solution('123_.def')
-
-
-  process.exit()
-})
-
-//ì•„ìŠ¤í‚¤ì½”ë“œ ë³€í™˜ (ë°°ì—´ì„ ì•ˆì“°ê³  ë‹¨ì¼ ë¬¸ìë„ ê°€ëŠ¥)
-//isNaNìœ¼ë¡œ ìˆ«ìí™•ì¸( ë¬¸ìì—´ ìˆ«ìë„ ìˆ«ìë¡œ ì¹¨ )
-//ë¹ˆ ë¬¸ìì—´ í™•ì¸ https://www.delftstack.com/ko/howto/javascript/javascript-check-if-string-is-empty/
- 
