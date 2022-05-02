@@ -1,4 +1,4 @@
-const { off, mainModule } = require('process')
+const { off, mainModule, resourceUsage } = require('process')
 const readline = require('readline')
 const { fileURLToPath } = require('url')
 
@@ -12,7 +12,6 @@ const data = []
 rl.on('line', (input) => {
   data.push(input)
 }).on('close', () => {
-
   function solution(orders, course) {
     let info = orders.map((item) => item.split('').sort())
 
@@ -52,12 +51,9 @@ rl.on('line', (input) => {
     for (let i = 0; i < course.length; i++) {
       let tmp = 0
       for (let j in status) {
-        //console.log(course[i])
 
         if (j.length === course[i]) {
-          // console.log(course[i])
-          // console.log(j)
-
+          
           if (tmp < status[j]) {
             tmp = status[j]
           }
@@ -83,18 +79,12 @@ rl.on('line', (input) => {
   console.log(solution(['ABCFG', 'AC', 'CDE', 'ACDE', 'BCFG', 'ACDEH'], [2, 3, 4]))
   console.log(solution(['ABCDE', 'AB', 'CD', 'ADE', 'XYZ', 'XYZ', 'ACD'], [2, 3, 5]))
   console.log(solution(['XYZ', 'XWY', 'WXA'], [2, 3, 4]))
+  
+
+
 
   process.exit()
 })
 
-//단순히 각 메뉴를 개별로 보는 것이 아니라 조합 그 자체를 봐야 함
-//A, B, C, F, G가 있고 2개 코스라면 각 2개씩 묶은 것들을 하나의 경우로 봐야 한다
-//단지 A, B, C, F, G 각각 몇개씩 있는지 세는 것이 아니다.
 
-// let x={
-//   a:1,
-//   b:2
-// }
-
-// x.a= (x.a===undefined) ? 0 : ((x.a)+1)
-// //++도 안되네
+//배욜 요소 제거
