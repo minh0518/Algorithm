@@ -12,79 +12,73 @@ const data = []
 rl.on('line', (input) => {
   data.push(input)
 }).on('close', () => {
-  function solution(orders, course) {
-    let info = orders.map((item) => item.split('').sort())
-
-    // console.log(info)
+  function solution(info, query) {
 
 
-    const getCombinations = function (arr, selectNumber) {
-      const results = []
-      if (selectNumber === 1) return arr.map((el) => [el])
+    info=info.map(item=>item.split(' '))
 
-      arr.forEach((fixed, index, origin) => {
-        const rest = origin.slice(index + 1)
-        const combinations = getCombinations(rest, selectNumber - 1)
+    console.log(info)
 
-        const attached = combinations.map((el) => [fixed, ...el])
-        results.push(...attached)
+    let require=query.map(item1=>{
+      return item1.split(' ').filter(item2=>{ //이걸 map으로 돌면서 splice로 
+                                          //하는 것은 안 되려나
+        return item2!=='and' 
       })
+    })
 
-      return results
-    }
+    console.log(require)
 
+    let answer=[]
+    
+    for(let i=0; i<require.length; i++){
+      let tmp=new Array(require.length).fill().map(()=>[]) 
 
+      for(let j=0; j<require[i].length; j++){ //각 행의 열 정보들을 비교
+        for(let k=0; k<info.length; k++){
 
-    let status = {}
-
-    for (let i = 0; i < course.length; i++) {
-      for (let j = 0; j < info.length; j++) {
-        getCombinations(info[j], course[i]).map((item) => {
-          status[item.join('')] = status[item.join('')] === undefined ? 1 : status[item.join('')] + 1
-        })
-      }
-    }
-
-    //console.log(status)
-
-    let menu = []
-    for (let i = 0; i < course.length; i++) {
-      let tmp = 0
-      for (let j in status) {
-
-        if (j.length === course[i]) {
-          
-          if (tmp < status[j]) {
-            tmp = status[j]
-          }
-        }
-      }
-
-      if (tmp > 1) {
-        for (let k in status) {
-          if (k.length === course[i]) {
-            if (tmp === status[k]) {
-              menu.push(k)
+            if(!isNaN(require[i][j])){
+              if(require[i][j]<=Number(info[k][j])){
+                tmp[k].push(info[k][j])  
+              }
             }
+            else if(require[i][j]!=='-'&&require[i][j]===info[k][j]){ 
+                  //어차피 각 행의 비교하는 인덱스는 동일하므로 
+                  //4중for문까진 필요x
+              
+              tmp[k].push(info[k][j])
+            }
+            
           }
         }
-      }
-
-      // console.log(menu)
-    }
-
-    return menu.sort()
-  }
-
-  console.log(solution(['ABCFG', 'AC', 'CDE', 'ACDE', 'BCFG', 'ACDEH'], [2, 3, 4]))
-  console.log(solution(['ABCDE', 'AB', 'CD', 'ADE', 'XYZ', 'XYZ', 'ACD'], [2, 3, 5]))
-  console.log(solution(['XYZ', 'XWY', 'WXA'], [2, 3, 4]))
+      
+        console.log(tmp)
   
+        let count=0
+        for(let x=0; x<tmp.length; x++){
+          if(tmp[x].length===(require[i].filter(item=>item!=='-')).length){
+            count++
+          }
+        }
+        answer.push(count)
+        
+      }
+  
+        
+    
+    
 
+    console.log(answer)
+
+
+    
+    return answer;
+}
+
+
+console.log(solution(["java backend junior pizza 150","python frontend senior chicken 210","python frontend senior chicken 150","cpp backend senior pizza 260","java backend junior chicken 80","python backend senior chicken 50"],["java and backend and junior and pizza 100","python and frontend and senior and chicken 200","cpp and - and senior and pizza 250","- and backend and senior and - 150","- and - and - and chicken 100","- and - and - and - 150"]))
 
 
   process.exit()
 })
-
 
 //배욜 요소 제거

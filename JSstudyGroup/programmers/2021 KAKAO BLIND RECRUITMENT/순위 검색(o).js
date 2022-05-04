@@ -2,6 +2,7 @@ function solution(info, query) {
     let answer = [];
     let map = {};
     
+    
     function combination(infos, score, map, start){
         let key = infos.join("");  // 키 값으로 쓸거 합쳐주기
         let value = map[key];      // 값 있는지 없는지 확인해주기
