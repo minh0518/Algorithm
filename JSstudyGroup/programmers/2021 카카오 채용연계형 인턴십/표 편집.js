@@ -1,19 +1,4 @@
-const { off, mainModule } = require('process')
-const readline = require('readline')
-const { fileURLToPath } = require('url')
-
-const rl = readline.createInterface({
-  input: process.stdin,
-  output: process.stdout,
-})
-
-const data = []
-
-rl.on('line', (input) => {
-  data.push(input)
-}).on('close', () => {
-
-  function solution(n, k, cmd) {
+function solution(n, k, cmd) {
     const Node = function (index, prev) {
       this.index = index;
       this.prev = prev;
@@ -21,9 +6,9 @@ rl.on('line', (input) => {
     };
   
     let prevNode = new Node(0);
-    let select; //ì„ íƒëœ ë…¸ë“œ
+    let select; //¼±ÅÃµÈ ³ëµå
   
-    // ë§í¬ë“œë¦¬ìŠ¤íŠ¸ ìƒì„±
+    // ¸µÅ©µå¸®½ºÆ® »ı¼º
     for (let i = 1; i < n; i++) {
       const cntNode = new Node(i, prevNode);
       prevNode.next = cntNode;
@@ -40,7 +25,7 @@ rl.on('line', (input) => {
       for (let i = 0; i < count; i++) {
         if (!select[direction]) {
           break;
-        }//prev ë‚˜ nextì˜ ê°’ì´ ì¡´ì¬í•˜ì§€ ì•Šìœ¼ë©´ ì•„ë¬´ê²ƒë„ ì•ˆ í•¨
+        }//prev ³ª nextÀÇ °ªÀÌ Á¸ÀçÇÏÁö ¾ÊÀ¸¸é ¾Æ¹«°Íµµ ¾È ÇÔ
 
         select = select[direction];
 
@@ -53,12 +38,12 @@ rl.on('line', (input) => {
   
       trashBin.push(select);
   
-      //í˜„ì¬ ì„ íƒëœ ë…¸ë“œ ë³€ê²½
+      //ÇöÀç ¼±ÅÃµÈ ³ëµå º¯°æ
       select = next ? next : prev;
-      //í˜„ì¬ ë…¸ë“œì— nextê°€ ìˆìœ¼ë©´ ë‹¤ìŒ ë…¸ë“œê°€ ìˆëŠ” ê²ƒì´ë‹ˆê¹Œ ë‹¤ìŒ ë…¸ë“œë¥¼ ì„ íƒ
-      //ì—†ë‹¤ë©´ ë‹¤ìŒ ë…¸ë“œê°€ ì—†ëŠ” ê²ƒì´ë‹ˆê¹Œ ì´ì „ ë…¸ë“œë¥¼ ì„ íƒ
+      //ÇöÀç ³ëµå¿¡ next°¡ ÀÖÀ¸¸é ´ÙÀ½ ³ëµå°¡ ÀÖ´Â °ÍÀÌ´Ï±î ´ÙÀ½ ³ëµå¸¦ ¼±ÅÃ
+      //¾ø´Ù¸é ´ÙÀ½ ³ëµå°¡ ¾ø´Â °ÍÀÌ´Ï±î ÀÌÀü ³ëµå¸¦ ¼±ÅÃ
   
-      //ì‚­ì œí•œ ë…¸ë“œë¥¼ ê¸°ì¤€ìœ¼ë¡œ ì•ë’¤ ì—°ê²°í•´ì£¼ê¸°
+      //»èÁ¦ÇÑ ³ëµå¸¦ ±âÁØÀ¸·Î ¾ÕµÚ ¿¬°áÇØÁÖ±â
       if (prev) { 
         prev.next = next; 
       }
@@ -75,7 +60,7 @@ rl.on('line', (input) => {
       const next = targetNode.next;
   
 
-      //êº¼ë‚´ì™€ì„œ ì—°ê²°
+      //²¨³»¿Í¼­ ¿¬°á
       if (prev) {
         prev.next = targetNode;
       }
@@ -110,8 +95,3 @@ rl.on('line', (input) => {
 
   console.log(solution(8,2,["D 2","C","U 3","C","D 4","C","U 2","Z","Z"]))
   console.log(solution(8,2,["D 2","C","U 3","C","D 4","C","U 2","Z","Z","U 1","C"]))
-
-  
-
-  process.exit()
-})
