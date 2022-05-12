@@ -12,96 +12,89 @@ const data = []
 rl.on('line', (input) => {
   data.push(input)
 }).on('close', () => {
+  
+  function solution(n, k, cmd) {
 
-
-  function solution(places) {
-
-
-    const move =[[-1, 0], [1, 0], [0, -1], [0, 1]]
-    const SIZE = 5
-
-    const isValid = (x, y) => {
-      return (x >= 0 && y >= 0 && x < SIZE && y < SIZE)
-    }
-    const isAvailableSeat = (x, y, visited) =>{
-      return(isValid(x, y) && visited[x][y] === 0)
-    }
-      
-
-    // bfs
-    const bfs = (start, info, visited) => {
-      let queue = [start]
-
-      while (queue.length > 0) {
-        const [x, y, n] = queue.shift()
-
-        //bfs는 항상 shift해놓고 그 값에 대한 조건을 걸어줘야 한다
-        //여기서 조건이란 바로 다음 shift를 해야 하는 조건이다
-        
-
-        if (n !== 0 && info[x][y] === 'P') return false
-        //p를 만나면 끝나는 것인데
-        //맨 처음 시작할때 p부터 시작한다(n이 0)
-        //그래서 n은 0이 아니라는 조건을 추가한다
-
-        move.forEach(([mx, my]) => {
-          const dx = x + mx
-          const dy = y + my
-
-          if (isAvailableSeat(dx,dy, visited) && info[dx][dy] != 'X') {
-            if (n < 2) {
-                  //거리가 2인 범위 내에서 dfs탐색을 시도한다
-                  //거리가 2인 범위 내에서 p가 발견되면 false를 리턴
-              visited[dx][dy] = 1
-              queue.push([dx,dy, n + 1])
-            }//애초에 거리가 2 이상이 되면, queue에 push를 하지 않는다
-              //그러므로 queue를 계속 shift만 하다가 while문이 끝나게 된다
-              // >> bfs종료
-          }
-        })
+    const Node = function (index, prev) {
+      this.index = index;
+      this.prev = prev;
+      this.next = null;
+    };
+  
+    let prevNode = new Node(0);
+    let select; //선택된 노드
+  
+    // 링크드리스트 생성
+    for (let i = 1; i < n; i++) {
+      const cntNode = new Node(i, prevNode);
+      prevNode.next = cntNode;
+      prevNode = cntNode;
+  
+      // 처음 선택된 노드 저장
+      if (i === k) {
+        select = cntNode;
       }
-
-      return true //그냥 종료하게 되면 true를 리턴
     }
-
-
-    const checkDistancing = (info) => {
-      
-      //방문처리 배열
-      let visited = new Array(SIZE)
-      for(let i=0; i<SIZE; i++){
-        visited[i]=new Array(SIZE).fill(0)
+  
+    let trashBin = [];
+  
+    const moveSelectedNode = (count, direction) => {
+      for (let i = 0; i < count; i++) {
+        if (!select[direction]) break;
+        select = select[direction];
       }
-
-      for (let i = 0; i < SIZE; i++) {
-        for (let j = 0; j < SIZE; j++) {
-          if (info[i][j] !== 'P') continue
-
-          //P를 만나면 방문처리하고 탐색 시작
-          visited[i][j] = 1
-          if (!bfs([i, j, 0], info, visited)) return 0
-        }
+    };
+  
+    const deleteNode = () => {
+      const prev = select.prev;
+      const next = select.next;
+  
+      trashBin.push(select);
+  
+      select = next ? next : prev;
+  
+      if (prev) prev.next = next;
+      if (next) next.prev = prev;
+    };
+  
+    const recoverNode = () => {
+      const targetNode = trashBin.pop();
+  
+      const prev = targetNode.prev;
+      const next = targetNode.next;
+  
+      if (prev) prev.next = targetNode;
+      if (next) next.prev = targetNode;
+    };
+  
+    cmd.forEach((c) => {
+      switch (c[0]) {
+        case "U":
+          moveSelectedNode(c.split(" ")[1], "prev");
+          break;
+        case "D":
+          moveSelectedNode(c.split(" ")[1], "next");
+          break;
+        case "C":
+          deleteNode();
+          break;
+        case "Z":
+          recoverNode();
+          break;
       }
+    });
+  
+    let result = Array(n).fill("O");
+    trashBin.forEach((node) => {
+      result[node.index] = "X";
+    });
+    return result.join("");
 
-     // console.log(visited)
-    //결국 1은 탐색을 다 한 것이고
-    //0은 x가 있던 곳이라 탐색을 하지 않은 것이다
-      return 1
-    }
-
-
-
-    return places.map(checkDistancing)
+    
   }
 
-  console.log(solution([["POOOP", "OXXOX", "OPXPX", "OOXOX", "POXXP"], ["POOPX", "OXPXP", "PXXXO", "OXXXO", "OOOPP"], ["PXOPX", "OXOXP", "OXPOX", "OXXOP", "PXPOX"], ["OOOXX", "XOOOX", "OOOXX", "OXOOX", "OOOOO"], ["PXPXP", "XPXPX", "PXPXP", "XPXPX", "PXPXP"]]))
-
+  console.log(solution(8,2,["D 2","C","U 3","C","D 4","C","U 2","Z","Z"]))
 
 
   process.exit()
 })
-
-//  x
-//   xp
-//   px
-//     x
