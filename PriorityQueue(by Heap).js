@@ -1,20 +1,4 @@
-const { off, mainModule } = require('process')
-const readline = require('readline')
-const { fileURLToPath } = require('url')
-
-const rl = readline.createInterface({
-  input: process.stdin,
-  output: process.stdout,
-})
-
-const data = []
-
-rl.on('line', (input) => {
-  data.push(input)
-}).on('close', () => {
-
-
-  class Heap {
+class Heap {
     constructor() {
       this.heap = []
     }
@@ -93,14 +77,16 @@ rl.on('line', (input) => {
       super()
     }
   
-    //Min Heap ì— ë„£ê¸°
+    //Min Heap ¿¡ ³Ö±â
     enqueue = (priority, value) => this.insert(priority, value)
-    //Min Heap ì—ì„œ ì‚­ì œí•˜ê¸° (= ìš°ì„ ìˆœìœ„ê°€ ê°€ìž¥ ë†’ì€ ë…¸ë“œ êº¼ë‚´ê¸°)
+    //Min Heap ¿¡¼­ »èÁ¦ÇÏ±â (= ¿ì¼±¼øÀ§°¡ °¡Àå ³ôÀº ³ëµå ²¨³»±â)
     dequeue = () => this.remove()
-    //heap ì´ ë¹„ì—ˆëŠ”ì§€ ì²´í¬í•˜ê¸°
+    //heap ÀÌ ºñ¾ú´ÂÁö Ã¼Å©ÇÏ±â
     isEmpty = () => this.heap.length <= 0
   }
 
+
+  //use
   let test=new PriorityQueue()
 
   test.enqueue(2,"a")
@@ -109,22 +95,8 @@ rl.on('line', (input) => {
   test.enqueue(1,"d")
   test.enqueue(9,"e")
 
-
   console.log(test.heap)
 
   test.dequeue()
   
-
   console.log(test.heap)
-
-  // [
-  //   { key: 0, value: 'c' },
-  //   { key: 1, value: 'd' },
-  //   { key: 2, value: 'a' },
-  //   { key: 3, value: 'b' },
-  //   { key: 9, value: 'e' } 
-  // ]
-
-
-  process.exit()
-})
