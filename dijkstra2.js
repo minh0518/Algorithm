@@ -1,3 +1,6 @@
+ //출처 : https://github.com/dongkyun-dev/TIL/blob/master/algorithm/%F0%9F%94%B4%EB%8B%A4%EC%9D%B5%EC%8A%A4%ED%8A%B8%EB%9D%BC(dijkstra).md
+ //코테를 위한 보다 더 간편한 다익스트라 구현
+
 const { off, mainModule } = require('process')
 const readline = require('readline')
 const { fileURLToPath } = require('url')
@@ -12,8 +15,6 @@ const data = []
 rl.on('line', (input) => {
   data.push(input)
 }).on('close', () => {
-
-  //異쒖쿂 : https://github.com/dongkyun-dev/TIL/blob/master/algorithm/%F0%9F%94%B4%EB%8B%A4%EC%9D%B5%EC%8A%A4%ED%8A%B8%EB%9D%BC(dijkstra).md
 
   let graph = Array.from(new Array(N + 1), () => [])
 
