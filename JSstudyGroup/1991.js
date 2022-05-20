@@ -72,17 +72,5 @@ rl.on('line', (input) => {
   console.log(thirdResult)
    
 
-
-
-
-  console.log()
-
-
   process.exit()
 })
-//배열인데 왼 , 오 순으로 들어감
-
-//전위순회는 왼쪽으로 최대한 깊게 갔다가 다시 
-//돌아올라오면서 그 노드에 오른쪽이 있으면 방문
-
-//중위순회는 
