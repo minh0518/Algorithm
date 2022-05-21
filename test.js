@@ -1,88 +1,17 @@
-const { off, mainModule } = require('process')
+const { off } = require('process')
 const readline = require('readline')
 const { fileURLToPath } = require('url')
 
 const rl = readline.createInterface({
-  input: process.stdin,
-  output: process.stdout,
+   input: process.stdin,
+   output: process.stdout,
 })
 
 const data = []
 
 rl.on('line', (input) => {
-  data.push(input)
+   data.push(input)
 }).on('close', () => {
-
-  data.shift()
-
-  let vertex=data.map(item=>item.split(' '))
-
-  // let graph=Array.from(new Array(N), (e,i) => [String.fromCharCode(65 + i)])
-  // //[ [ 'A' ], [ 'B' ], [ 'C' ], [ 'D' ], [ 'E' ] ]
-
-  let tree = {}
-
-  for(let i=0; i<vertex.length; i++){
-    const [node,left,right]=vertex[i]
-    tree[node]=[left,right]
-  }
-
-  //console.log(tree)
-
-  let firstResult='' 
-  //전위순회
-  const first=node=>{
-    if(node==='.') return
-    firstResult+=node
-    const [left,right]=tree[node]
-    first(left)
-    first(right)
-  }
-
-
-
-  let secondResult=''
-  //중위순회
-  const second=node=>{
-    if(node==='.') return
-    const [left,right]=tree[node]
-    second(left)
-    secondResult+=node
-    second(right)
-  }
-
-  let thirdResult=''
-  //후위순회
-  const third=node=>{
-    if(node==='.') return
-    const [left,right]=tree[node]
-    third(left)
-    third(right)
-    thirdResult+=node
-  }
-  
-  
-  first('A')
-  second('A')
-  third('A')
-
-
-  console.log(firstResult)
-  console.log(secondResult)
-  console.log(thirdResult)
-   
-
-
-
-
-  console.log()
-
-
-  process.exit()
+    
+   process.exit()
 })
-//배열인데 왼 , 오 순으로 들어감
-
-//전위순회는 왼쪽으로 최대한 깊게 갔다가 다시 
-//돌아올라오면서 그 노드에 오른쪽이 있으면 방문
-
-//중위순회는 
