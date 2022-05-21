@@ -35,8 +35,6 @@ rl.on('line', (input) => {
     }
   }
 
-  
-  
   let result=[]
   for(let i=0; i<M+1; i++){
     if(DP[N][i]!==true){
@@ -65,4 +63,3 @@ rl.on('line', (input) => {
 //   [False, False, False, False, False, False, False, False, False, False, False], 
 //   [False, False, False, False, False, False, False, False, False, False, False]
 // ]
-
