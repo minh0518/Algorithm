@@ -16,8 +16,7 @@ rl.on('line', (input) => {
   let N = +data.shift()
 
   let result = []
-                  
-                  //7,8,9
+
   const printOrNot=(i,j,N)=>{
     if(i%3===1 &&j%3===1){
       result.push(' ')
@@ -28,13 +27,11 @@ rl.on('line', (input) => {
       }
       else{
         printOrNot(Math.floor(i/3),Math.floor(j/3),Math.floor(N/3))
-        //2,2,3 »£√‚
-        //0,0,1
       }
     }
   }
 
-  //7,8
+  
 
     for(let i=0; i<N; i++){
       for(let j=0;j<N; j++){
