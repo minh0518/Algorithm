@@ -38,8 +38,7 @@ rl.on('line', (input) => {
    
    
    //console.log(DP)
-	 
-		console.log(DP[N-1].reduce((a,b)=>a+b)%10007)
+	console.log(DP[N-1].reduce((a,b)=>a+b)%10007)
   
 
    
