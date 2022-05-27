@@ -13,7 +13,6 @@ rl.on('line', (input) => {
   data.push(input)
 }).on('close', () => {
 
-
    let inputString=data.shift().split('')
    let M=+data.shift()
    let command=data.map(item=>item.split(' '))
