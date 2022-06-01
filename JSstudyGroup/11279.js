@@ -14,7 +14,7 @@ rl.on('line', (input) => {
 }).on('close', () => {
 
   class Heap {
-    constructor (compare = (a, b) => a > b) { // default : ìµœì†Œ í™
+    constructor (compare = (a, b) => a > b) { // default : ÃÖ¼Ò Èü
       this.heap = [null]; 
       this.compare = compare;
     }
@@ -58,7 +58,7 @@ rl.on('line', (input) => {
 
 
 
-class PriorityQueue { // ìš°ì„ ìˆœìœ„ í
+class PriorityQueue { // ¿ì¼±¼øÀ§ Å¥
     constructor (compare) {
       this.heap = new Heap(compare);
     }

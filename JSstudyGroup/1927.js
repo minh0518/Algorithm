@@ -14,7 +14,7 @@ rl.on('line', (input) => {
 }).on('close', () => {
 
   class Heap {
-    constructor (compare = (a, b) => a > b) { // default : 최소 힙
+    constructor (compare = (a, b) => a < b) { // default : �ּ� ��
       this.heap = [null]; 
       this.compare = compare;
     }
@@ -58,7 +58,7 @@ rl.on('line', (input) => {
 
 
 
-class PriorityQueue { // 우선순위 큐
+class PriorityQueue { // �켱���� ť
     constructor (compare) {
       this.heap = new Heap(compare);
     }
@@ -75,7 +75,7 @@ class PriorityQueue { // 우선순위 큐
   }
 
   const pq=new PriorityQueue((a,b)=>{
-    if(a[0] > b[0]) return true;
+    if(a[0] < b[0]) return true;
     else return false;
   })
 
@@ -99,8 +99,8 @@ class PriorityQueue { // 우선순위 큐
     }
   })
 
+  
   console.log(result)
 
   process.exit()
 })
-
