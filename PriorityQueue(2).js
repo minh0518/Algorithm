@@ -99,7 +99,7 @@ rl.on('line', (input) => {
   })
 
 
-  //넣을때는 배열로
+  //넣을때는 배열형태로
   pq.push([3])
   pq.push([4])
   pq.push([1])
