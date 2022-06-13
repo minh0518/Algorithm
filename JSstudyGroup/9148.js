@@ -42,8 +42,8 @@ rl.on('line', (input) => {
 
 
 
-    //ì•„ëž˜ì˜ ê° if/elseì—ì„œ tmp[a][b][c]ë¥¼ ë¦¬í„´í•´ë„ ë˜ê³ , ë§ˆì§€ë§‰ì— 
-		//í•œë²ˆë§Œ ë¦¬í„´í•´ë„ ë¨
+    //¾Æ·¡ÀÇ °¢ if/else¿¡¼­ tmp[a][b][c]¸¦ ¸®ÅÏÇØµµ µÇ°í, ¸¶Áö¸·¿¡ 
+		//ÇÑ¹ø¸¸ ¸®ÅÏÇØµµ µÊ
     if(a<b && b<c){
       // tmp[a][b][c-1]=w(a, b, c-1)
       // tmp[a][b-1][c-1]=w(a, b-1, c-1)
