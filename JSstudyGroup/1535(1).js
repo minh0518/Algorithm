@@ -30,23 +30,12 @@ rl.on('line', (input) => {
   for(let i=1; i<=N; i++){
     for(let j=100; j>0; j--){
       if(j-health[i]>0){ //죽지 않는다면
-        DP[i][j]=DP[i-1][j-health[i]]+happy[i]
-        //100부터 0까지 모조리 j-health[i]가 0이 안되는 것들의 값을
-        //갱신함
-
-        //21이라면 j가22일때까지만 적용
-        //DP[2][22]=DP[1][22-21]+happy[i]
-        //그래서 바로 직전 사람에게 인사한 경우에서 남은 목숨을 고려할 수 있는 것이다
+        DP[i][j]=Math.max(DP[i-1][j],DP[i-1][j-health[i]]+happy[i])
       }
       else{
-
         DP[i][j]=DP[i-1][j]
       }
     }
-
-
-
-    
   }
 
   let result=0
