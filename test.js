@@ -12,50 +12,47 @@ const data = []
 rl.on('line', (input) => {
   data.push(input)
 }).on('close', () => {
-
-  let N=+data.shift()
-
-  let health=data.shift().split(' ').map(Number)
-  health.unshift(0)
-  let happy=data.shift().split(' ').map(Number)
-  happy.unshift(0)
-
-  let DP=new Array(N+1).fill().map(()=>new Array(101).fill(0))
-  //DP[i][j]
-  //i번째 사람, 남은 체력이 j 일때  최대 행복값
-
-
-
-
-  for(let i=1; i<=N; i++){
-    for(let j=100; j>0; j--){
-      if(j-health[i]>0){ //죽지 않는다면
-        DP[i][j]=DP[i-1][j-health[i]]+happy[i]
-        //100부터 0까지 모조리 j-health[i]가 0이 안되는 것들의 값을
-        //갱신함
-
-        //21이라면 j가22일때까지만 적용
-        //DP[2][22]=DP[1][22-21]+happy[i]
-        //그래서 바로 직전 사람에게 인사한 경우에서 남은 목숨을 고려할 수 있는 것이다
-      }
-      else{
-
-        DP[i][j]=DP[i-1][j]
-      }
+  function solution(lottos, win_nums) {
+    let zeroCount = 0
+    for (let i = 0; i < 6; i++) {
+      if (lottos[i] === 0) zeroCount++
     }
 
+    let same = 0
+    for (let i = 0; i < 6; i++) {
+      if (lottos.includes(win_nums[i])) same++
+    }
 
+    let best = zeroCount + same
+    let worse = same
 
-    
+    const rank = [6, 6, 5, 4, 3, 2, 1]
+
+    return [rank[best], rank[worse]]
   }
 
-  let result=0
-  for(let i=100; i>0; i--){
-    result=Math.max(DP[N][i],result)
-  }
-
-  console.log(result)
+  console.log(solution([44, 1, 0, 0, 31, 25], [31, 10, 45, 1, 6, 19]))
+  console.log(solution([0, 0, 0, 0, 1, 2], [7, 6, 33, 8, 4, 2]))
+  console.log(solution([0, 0, 0, 0, 0, 1], [9, 43, 7, 5, 2, 8]))
+  console.log(solution([0, 1, 6, 32, 5, 0], [1, 6, 2, 4, 17, 36]))
   
 
   process.exit()
 })
+
+//0이 2개
+//다른게 2개 , 같은게 2개
+// > 0을 전부 맞추거나, 다른거를 그대로 두거나
+
+// [0,0,0,0,1,2] , [7,6,33,8,4,2]
+// 0이 4개
+// 다른게 1개 , 같은게 1개
+// > 0을 전부 맞추거나, 다른거를 그대로 두거나
+// 5개 맞춤 or 1개 맞춤
+
+//[0,1,6,32,5,0] , [1,6,2,4,17,36]
+// 0이 2개
+// 같은게 2개
+// 다른게 2개
+// 4 or 2
+// 3,5
