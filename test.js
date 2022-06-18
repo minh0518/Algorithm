@@ -1,58 +1,85 @@
-const { off } = require('process')
-const readline = require('readline')
-const { fileURLToPath } = require('url')
+function solution(rows, columns, queries) {
+  let arr = new Array(rows).fill().map(() => [])
+  let arr2 = new Array(rows).fill().map(() => [])
 
-const rl = readline.createInterface({
-  input: process.stdin,
-  output: process.stdout,
-})
-
-const data = []
-
-rl.on('line', (input) => {
-  data.push(input)
-}).on('close', () => {
-  function solution(lottos, win_nums) {
-    let zeroCount = 0
-    for (let i = 0; i < 6; i++) {
-      if (lottos[i] === 0) zeroCount++
+  //arr , arr2 ì´ˆê¸°í™”
+  for (let i = 0; i < rows; i++) {
+    for (let j = 0; j < columns; j++) {
+      arr[i][j] = j + 1 + i * columns
+      arr2[i][j] = j + 1 + i * columns
     }
-
-    let same = 0
-    for (let i = 0; i < 6; i++) {
-      if (lottos.includes(win_nums[i])) same++
-    }
-
-    let best = zeroCount + same
-    let worse = same
-
-    const rank = [6, 6, 5, 4, 3, 2, 1]
-
-    return [rank[best], rank[worse]]
   }
 
-  console.log(solution([44, 1, 0, 0, 31, 25], [31, 10, 45, 1, 6, 19]))
-  console.log(solution([0, 0, 0, 0, 1, 2], [7, 6, 33, 8, 4, 2]))
-  console.log(solution([0, 0, 0, 0, 0, 1], [9, 43, 7, 5, 2, 8]))
-  console.log(solution([0, 1, 6, 32, 5, 0], [1, 6, 2, 4, 17, 36]))
+  const rotate = (x1, y1, x2, y2) => {
+    let tmp = []
+
+    //ë²”ìœ„ x1~x2 , y1~y2
+    for (let i = x1; i <= x2; i++) {
+      for (let j = y1; j <= y2; j++) {
+        if (!(i === x1 || i === x2 || j === y1 || j === y2)) {
+          continue
+        }
+
+        tmp.push(arr[i][j])
+
+        if (i === x1) {
+          //ë§¨ ìœ„ìª½ í…Œë‘ë¦¬
+
+          if (j === y1) {
+            //ì²«ë²ˆì§¸ í–‰ ì™¼ìª½ ì‚¬ì´ë“œ
+            arr[i][j] = arr2[i + 1][j]
+          } else if (j !== y1) {
+            //ì²«ë²ˆì§¸ í–‰ ì¤‘ê°„ê³¼ ì˜¤ë¥¸ìª½
+            arr[i][j] = arr2[i][j - 1]
+          }
+        } else if (i !== x1 && i !== x2) {
+          //ì–‘ ì‚¬ì´ë“œ í…Œë‘ë¦¬
+          if (j === y1) {
+            //ì™¼ìª½ í…Œë‘ë¦¬
+            arr[i][j] = arr2[i + 1][j]
+          } else if (j === y2) {
+            //ì˜¤ë¥¸ìª½ í…Œë‘ë¦¬
+            arr[i][j] = arr2[i - 1][j]
+          }
+        } else if (i === x2) {
+          //ë§¨ ì•„ëž˜ í…Œë‘ë¦¬
+          if (j === y2) {
+            //ì²«ë²ˆì§¸ í–‰ ì˜¤ë¥¸ìª½ ì‚¬ì´ë“œ
+            arr[i][j] = arr2[i - 1][j]
+          } else if (j !== y2) {
+            //ì²«ë²ˆì§¸ í–‰ ì¤‘ê°„ , ë§¨ ì™¼ìª½
+            arr[i][j] = arr2[i][j + 1]
+          }
+        }
+      }
+    }
+
+    //ì „ê°œì—°ì‚°ìžë¥¼ í†µí•œ ê¹Šì€ ë³µì‚¬
+    //2ë ˆë²¨ì´ì–´ë„ ì´ë ‡ê²Œ ë³µì‚¬í•˜ëŠ” ë°©ë²•ì´ ìžˆë‹¤
+    //forë¬¸ì˜ ì¡°ê±´ì„ row.lengthë¡œ í•´ë„ ë¨
+    for (let i = 0; i < arr.length; i++) {
+      arr2[i] = [...arr[i]]
+    }
+
+    return Math.min(...tmp)
+  }
+
+
+
   
 
-  process.exit()
-})
+  //ë©”ì¸ë¡œì§
+  let answer = []
+  for (let i = 0; i < queries.length; i++) {
+    //-1í•œ ê²ƒì€ ë°°ì—´ì˜ ì¸ë±ìŠ¤ë¥¼ ë§žì¶”ê¸° ìœ„í•¨
+    let [x1, y1] = [queries[i][0] - 1, queries[i][1] - 1]
+    let [x2, y2] = [queries[i][2] - 1, queries[i][3] - 1]
+    answer.push(rotate(x1, y1, x2, y2))
+  }
 
-//0ÀÌ 2°³
-//´Ù¸¥°Ô 2°³ , °°Àº°Ô 2°³
-// > 0À» ÀüºÎ ¸ÂÃß°Å³ª, ´Ù¸¥°Å¸¦ ±×´ë·Î µÎ°Å³ª
+  return answer
+}
 
-// [0,0,0,0,1,2] , [7,6,33,8,4,2]
-// 0ÀÌ 4°³
-// ´Ù¸¥°Ô 1°³ , °°Àº°Ô 1°³
-// > 0À» ÀüºÎ ¸ÂÃß°Å³ª, ´Ù¸¥°Å¸¦ ±×´ë·Î µÎ°Å³ª
-// 5°³ ¸ÂÃã or 1°³ ¸ÂÃã
-
-//[0,1,6,32,5,0] , [1,6,2,4,17,36]
-// 0ÀÌ 2°³
-// °°Àº°Ô 2°³
-// ´Ù¸¥°Ô 2°³
-// 4 or 2
-// 3,5
+console.log(solution(6, 6, [[2, 2, 5, 4],[3, 3, 6, 6],[5, 1, 6, 3]]))
+console.log(solution(3, 3, [[1, 1, 2, 2],[1, 2, 2, 3],[2, 1, 3, 2],[2, 2, 3, 3]]))
+console.log(solution(100, 97, [[1, 1, 100, 97]]))
