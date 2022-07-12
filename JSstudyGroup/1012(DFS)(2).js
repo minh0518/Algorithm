@@ -35,7 +35,7 @@ rl.on('line', (input) => {
   }
 
   for (let t = 0; t < T; t++) {
-    ;[M, N, K] = data.shift().split(' ').map(Number)
+    [M, N, K] = data.shift().split(' ').map(Number)
 
     let location = []
     for (let k = 0; k < K; k++) {
