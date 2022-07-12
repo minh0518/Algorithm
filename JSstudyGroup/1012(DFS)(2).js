@@ -16,8 +16,8 @@ rl.on('line', (input) => {
   let T = Number(data.shift())
 
   let [M, N, K] = []
-  //Mì´ ê°€ë¡œ , Nì´ ì„¸ë¡œ
-  //ì¢Œí‘œëŠ” ì—´,í˜• (ê°€ë¡œ,ì„¸ë¡œ)
+  //MÀÌ °¡·Î , NÀÌ ¼¼·Î
+  //ÁÂÇ¥´Â ¿­,Çü (°¡·Î,¼¼·Î)
 
   const dfs = (i, j, farm) => {
     if (i >= 0 && i < N && j >= 0 && j < M) {
@@ -45,7 +45,7 @@ rl.on('line', (input) => {
     let farm = new Array(N).fill().map(() => new Array(M).fill(0))
 
     location.map((item) => (farm[item[1]][item[0]] = 1))
-    //ì¢Œí‘œê°€ ì—´,í–‰ìœ¼ë¡œ ì£¼ì–´ì ¸ì„œ [1] [0] ìˆœìœ¼ë¡œ ë„£ì–´ì•¼ í•¨
+    //ÁÂÇ¥°¡ ¿­,ÇàÀ¸·Î ÁÖ¾îÁ®¼­ [1] [0] ¼øÀ¸·Î ³Ö¾î¾ß ÇÔ
     let count = 0
     for (let i = 0; i < N; i++) {
       for (let j = 0; j < M; j++) {
