@@ -1,7 +1,6 @@
 const { count } = require('console')
 const { off, mainModule } = require('process')
 const readline = require('readline')
-const { fileURLToPath } = require('url')
 
 const rl = readline.createInterface({
   input: process.stdin,
@@ -13,52 +12,69 @@ const data = []
 rl.on('line', (input) => {
   data.push(input)
 }).on('close', () => {
-  let T = Number(data.shift())
 
-  let [M, N, K] = []
-  //M이 가로 , N이 세로
-  //좌표는 열,형 (가로,세로)
+  let N = +data.shift()
 
-  const dfs = (i, j, farm) => {
-    if (i >= 0 && i < N && j >= 0 && j < M) {
-      if (farm[i][j] === 1) {
-        farm[i][j] = 0
+  let location = data.map((i) => i.split(' ').map(Number))
 
-        dfs(i - 1, j, farm)
-        dfs(i + 1, j, farm)
-        dfs(i, j - 1, farm)
-        dfs(i, j + 1, farm)
-      } else {
-        return
+  let width=Math.max(...data.map(i=>Number(i.split(' ')[0])))+10
+  let height=Math.max(...data.map(i=>Number(i.split(' ')[1])))+10
+  
+  let paper = new Array(height+1).fill().map(() => new Array(width+1).fill(0))
+
+  let cord = [
+    [-1, 1, 0, 0],
+    [0, 0, -1, 1],
+  ]
+  let result=0
+
+  const check=(x,y)=>{
+
+  
+    for(let i=0; i<4; i++){
+      if(paper[x+cord[0][i]][y+cord[1][i]]===0) {
+        result++
+      }
+
+    }
+
+
+  }
+
+  
+  //저기서 location의 =가 뭔 차이
+//이게 7~17까지 정확히 따지는게 아니라
+//하나의 블록 형태로 따지므로 정확히 10개인 것으로 생각해야 한다
+//노션에 링크 걸어놓은 사진을 보면 이해가 간다
+//좌표를 딱 맞추는 것이 아니라 갯수가 10개여야 한다
+  for(let i=0; i<N; i++){
+    for(let j=location[i][1]; j<location[i][1]+10; j++){
+      for(let k=location[i][0]; k<location[i][0]+10; k++){
+          paper[j][k]=1
       }
     }
   }
 
-  for (let t = 0; t < T; t++) {
-    ;[M, N, K] = data.shift().split(' ').map(Number)
+  //console.log(paper)
 
-    let location = []
-    for (let k = 0; k < K; k++) {
-      location.push(data.shift().split(' ').map(Number))
+
+  //1
+  for(let i=1; i<height; i++){
+    for(let j=1; j<width; j++){
+      if(paper[i][j]!==1) continue
+
+      check(i,j)
+
     }
-
-    let farm = new Array(N).fill().map(() => new Array(M).fill(0))
-
-    location.map((item) => (farm[item[1]][item[0]] = 1))
-    //좌표가 열,행으로 주어져서 [1] [0] 순으로 넣어야 함
-    let count = 0
-    for (let i = 0; i < N; i++) {
-      for (let j = 0; j < M; j++) {
-        if (farm[i][j] === 0) continue
-
-        dfs(i, j, farm)
-
-        count++
-      }
-    }
-
-    console.log(count)
   }
+
+
+  console.log(result)
+
+  for(let i=3; i<3+10; i++){
+    console.log(i)
+  }
+  //3부터 12까지인데 횟수는 10이 맞음 > 노션에 필기
 
   process.exit()
 })
