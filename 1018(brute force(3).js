@@ -15,7 +15,7 @@ rl.on('line', (input) => {
   let [N, M] = data.shift().split(' ').map(Number)
 
   let board = data.map((i) => i.split(''))
-  //ì—¬ê¸°ì„œ split()ê³¼ split('')ì˜ ì°¨ì´
+  //¿©±â¼­ split()°ú split('')ÀÇ Â÷ÀÌ
 
   let black = ['BWBWBWBW', 'WBWBWBWB']
   let white = ['WBWBWBWB', 'BWBWBWBW']
@@ -37,12 +37,12 @@ rl.on('line', (input) => {
           }
         }
         result.push(Math.min(countBlack,countWhite))
-        //í•œ ì¢Œí‘œë¥¼ ê¸°ì¤€ìœ¼ë¡œ blackìœ¼ë¡œ ì‹œì‘ í•œ ê²½ìš°,whiteìœ¼ë¡œ ì‹œì‘ í•œ ê²½ìš°ë¥¼
-        //ë‘˜ ë‹¤ ë¹„êµí•´ì„œ ë‘˜ ì¤‘ ìµœì†Ÿê°’ì„ push
+        //ÇÑ ÁÂÇ¥¸¦ ±âÁØÀ¸·Î blackÀ¸·Î ½ÃÀÛ ÇÑ °æ¿ì,whiteÀ¸·Î ½ÃÀÛ ÇÑ °æ¿ì¸¦
+        //µÑ ´Ù ºñ±³ÇØ¼­ µÑ Áß ÃÖ¼Ú°ªÀ» push
       }
       
       //result.push(Math.min(countBlack,countWhite))
-      //ì—¬ê¸°ë‹¤ í•˜ë©´ ifì— ì•ˆ ê±¸ë¦¬ë”ë¼ë„ countBlack,countWhiteê°€ 0ìœ¼ë¡œ ê³„ì† pushê°€ ëœë‹¤
+      //¿©±â´Ù ÇÏ¸é if¿¡ ¾È °É¸®´õ¶óµµ countBlack,countWhite°¡ 0À¸·Î °è¼Ó push°¡ µÈ´Ù
     }
   }
 
