@@ -36,9 +36,10 @@ rl.on('line', (input) => {
             }
           }
         }
-        result.push(Math.min(countBlack,countWhite))
+        result.push(countBlack,countWhite)
         //한 좌표를 기준으로 black으로 시작 한 경우,white으로 시작 한 경우를
-        //둘 다 비교해서 둘 중 최솟값을 push
+        //모두 다 push
+        
       }
       
       //result.push(Math.min(countBlack,countWhite))
