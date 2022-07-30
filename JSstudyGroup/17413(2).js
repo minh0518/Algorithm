@@ -27,7 +27,7 @@ rl.on('line', (input) => {
     }
     else if(i==='>'){
       isTag=false
-      result.push(tmp.join('')) // ê´„í˜¸ ì•ˆì— ìˆë˜ ë¶€ë¶„ë“¤ ì£„ë‹¤ ë„£ì–´ì¤Œ
+      result.push(tmp.join('')) // °ıÈ£ ¾È¿¡ ÀÖ´ø ºÎºĞµé ÁË´Ù ³Ö¾îÁÜ
       result.push(i)
       tmp=[]
     }
