@@ -12,48 +12,55 @@ const data = []
 rl.on('line', (input) => {
   data.push(input)
 }).on('close', () => {
-  let S = data.shift().split('')
-
-  let isTag=false
-  let tmp=[]
-  let result=[]
-
-  for(let i of S){
-    if(i==='<'){
-      isTag=true
-      result.push(tmp.reverse().join(''))
-      result.push(i)
-      tmp=[]
-    }
-    else if(i==='>'){
-      isTag=false
-      result.push(tmp.join('')) // ê´„í˜¸ ì•ˆì— ìˆë˜ ë¶€ë¶„ë“¤ ì£„ë‹¤ ë„£ì–´ì¤Œ
-      result.push(i)
-      tmp=[]
-    }
-    else {
-      if(i===' '){
   
-        if(!isTag){
-          result.push(tmp.reverse().join(''))
-        }
-        else{
-          result.push(tmp.join(''))
-        }
-        result.push(' ')
-        tmp=[]
+  const dfs=(a,b)=>{
+
+    //¹üÀ§°Ë»ç ¿Ö ÇÏ³Ä ½ÍÀ»ÅÙµ¥ »óÇÏÁÂ¿ì·Î °è¼Ó Å½»öÇÏ´Ùº¸¸é
+    //¹«Á¶°Ç ¹üÀ§ ¹ÛÀ¸·Î ¹ş¾î³ª´À °æ¿ì°¡ ¹İµå½Ã Á¸ÀçÇÏ¹Ç·Î ¹«Á¶°Ç ÇØÁà¾ß ÇÕ´Ï´Ù
+      if(a<=-1 ||a>=N || b<=-1 || b>=M){
+        return false
+      }
+    
+      if(graph[a][b]==0){
+        graph[a][b]=1
+        dfs(a - 1, b); //»ó
+        dfs(a + 1, b); //ÇÏ
+        dfs(a, b - 1); //ÁÂ
+        dfs(a, b + 1); //¿ì
+        return true
       }
       else{
-        tmp.push(i)
+        return false
       }
     }
-    
-
-  }
   
-  result.push(tmp.reverse().join(''))
-
-  console.log(result.join(''))
-
+    
+     let [N, M] = data.shift().split(' ').map(Number) //NÀÌ rols , MÀÌ cols
+     let graph = []
+  
+     graph = data.map((item) => {
+        return item.split('').map(Number)
+     })
+  
+  
+     result=0
+  //3x3ÀÌ¸é N,Mµµ 3ÀÌ µé¾î°¨.
+  //½ÇÁ¦ ¹è¿­ÀÎµ¦½º´Â 3°³ ÀÌ¹Ç·Î [0]~[2]
+     for(let i=0; i<N; i++){
+       for(let j=0; j<M; j++){
+            if(dfs(i,j)){
+              result++
+            }
+       }
+     }
+  
+     console.log(result)
+  
   process.exit()
 })
+
+// 4 5
+// 00110
+// 00011
+// 11111
+// 00000
