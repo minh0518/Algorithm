@@ -16,21 +16,24 @@ rl.on('line', (input) => {
 
   let tmp = data.map((i) => i.split(' ').map(Number))
 
-  //+1ì„ í•´ì¤˜ì•¼ í•˜ëŠ”ê²Œ ì—¬ê¸°ì„œ ì‚¬ìš©ë˜ëŠ” ì¢Œí‘œëŠ” 0ë¶€í„°ê°€ ì•„ë‹ˆë¼
-  //1ë¶€í„°ì´ë¯€ë¡œ ë°˜ë“œì‹œ +1ì„ í•´ì¤˜ì•¼ í•œë‹¤
+  //+1À» ÇØÁà¾ß ÇÏ´Â°Ô ÀÌ ¹®Á¦¿¡¼­ »ç¿ëµÇ´Â ÁÂÇ¥´Â 0ºÎÅÍ°¡ ¾Æ´Ï¶ó
+  //1ºÎÅÍÀÌ¹Ç·Î ¹İµå½Ã +1À» ÇØÁà¾ß ÇÑ´Ù
   let graph = new Array(N + 1).fill().map(() => [])
   for (let i = 0; i < tmp.length; i++) {
     graph[tmp[i][0]].push(tmp[i][1])
     graph[tmp[i][1]].push(tmp[i][0])
-    //ì–‘ë°©í–¥
+    //¾ç¹æÇâÀÌ¹Ç·Î µÑ ´Ù ÇØÁà¾ß ÇÑ´Ù
+		//±âº»ÀûÀ¸·Î dfs,dfs´Â ¾ç¹æÇâÀÌ°í
+		//Áßº¹ÀÌ´õ¶óµµ µÑ ´Ù ÇØÁà¾ß ÇÑ´Ù
+		//ex 1->2 , 2->1
   }
 
-  graph=graph.map(i=>{
-    return i.sort((a,b)=>a-b)
+//ÀÌ ¹®Á¦¿¡¼­ ¹æ¹®ÇÒ ¼ö ÀÖ´Â Á¤Á¡ÀÌ ¿©·¯ °³ÀÎ °æ¿ì¿¡´Â 
+//Á¤Á¡ ¹øÈ£°¡ ÀÛÀº °ÍÀ» ¸ÕÀú ¹æ¹®ÇÑ´Ù°í ÇßÀ¸¹Ç·Î Á¤·ÄÀ» ÇØÁà¾ßÇÑ´Ù
+  graph = graph.map((i) => {
+    return i.sort((a, b) => a - b)
   })
-
-  
-
+//[ [],[],[5,1]]  => //[ [],[],[1,5]]
 
   let dfsVisited = new Array(N + 1).fill(false)
   let bfsVisited = new Array(N + 1).fill(false)
@@ -40,7 +43,8 @@ rl.on('line', (input) => {
   const dfs = (start) => {
     dfsVisited[start] = true
     dfsResult.push(start)
-    
+
+	//ÀÏºÎ·¯ for ofÀ» »ç¿ëÇÏÁö ¾Ê°í ÀÏÀÏÀÌ ÀÎµ¦½º·Î ±¸Çö
     for (let i = 0; i < graph[start].length; i++) {
       if (!dfsVisited[graph[start][i]]) {
         dfs(graph[start][i])
@@ -48,7 +52,6 @@ rl.on('line', (input) => {
     }
   }
 
-  
   const bfs = (start) => {
     let queue = []
     queue.push(start)
@@ -57,10 +60,11 @@ rl.on('line', (input) => {
     while (queue.length) {
       let v = queue.shift()
       bfsResult.push(v)
+	//ÀÏºÎ·¯ for ofÀ» »ç¿ëÇÏÁö ¾Ê°í ÀÏÀÏÀÌ ÀÎµ¦½º·Î ±¸Çö
       for (let i = 0; i < graph[v].length; i++) {
         if (!bfsVisited[graph[v][i]]) {
           queue.push(graph[v][i])
-          bfsVisited[graph[v][i]]=true
+          bfsVisited[graph[v][i]] = true
         }
       }
     }
