@@ -18,7 +18,7 @@ rl.on('line', (input) => {
   const location = {
     R: [0, 1],
     L: [0, -1],
-    B: [-1, 0], //여기 좌표는 아래서부터 시작하므로
+    B: [-1, 0], //���� ��ǥ�� �Ʒ������� �����ϹǷ�
     T: [1, 0],
     RT: [1, 1],
     LT: [1, -1],
@@ -26,7 +26,6 @@ rl.on('line', (input) => {
     LB: [-1, -1],
   }
 
-  //우선 다들 인덱스를 0부터, 전체 크기를 7까지로 하고 출력할때만 +1해서 출력
   for (let i = 0; i < N; i++) {
     let kingRow = Number(king[1])
     let kingCol = king[0].charCodeAt(0) - 64
@@ -36,16 +35,16 @@ rl.on('line', (input) => {
     let [row, col] = location[move[i]]
 
     if (kingRow + row > 8 || kingRow + row<1|| kingCol + col > 8 || kingCol + col<1) {
-      //console.log(`킹 아웃`)
+      //console.log(`ŷ �ƿ�`)
       continue
     }
 
     if (kingRow + row == stoneRow && kingCol + col == stoneCol) {
       if (stoneRow + row > 8 ||stoneRow + row<1 || stoneCol + col > 8 || stoneCol + col <1) {
-        //console.log(`돌 아웃`)
+        //console.log(`�� �ƿ�`)
         continue
       }
-      //console.log(`겹침${king},${stone}`)
+      //console.log(`��ħ${king},${stone}`)
       king = king.replace(king[1], kingRow + row)
       king = king.replace(king[0], String.fromCharCode(kingCol+64 + col))
       stone = stone.replace(stone[1], stoneRow + row)
