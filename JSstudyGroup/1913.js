@@ -38,7 +38,7 @@ rl.on('line', (input) => {
     }
     arr[nx][ny] = value--
     count++
-    ;[x, y] = [nx, ny]
+    [x, y] = [nx, ny]
   }
 
   console.log(arr.map((i) => i.join(' ')).join('\n'))
