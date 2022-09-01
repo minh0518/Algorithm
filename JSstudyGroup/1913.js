@@ -14,7 +14,7 @@ rl.on('line', (input) => {
   let find = +data.shift()
   let arr = new Array(N).fill().map(() => new Array(N).fill(0))
 
-  //го©Л╩Саб
+  //Л┐│М∙≤Л╒▄Л ╟
   let [dx, dy] = [
     [1, 0, -1, 0],
     [0, 1, 0, -1],
