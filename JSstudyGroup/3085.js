@@ -92,6 +92,9 @@ rl.on('line', (input) => {
           continue
 
         if (swap(i, j, i + dx[k], j + dy[k])) {
+          //swap함수에서 같은색상끼리는 swap을 안 돼서 바로 리턴해버리면
+					//undefined가 반환되므로 if문으로 걸러줘야 함
+
           //console.log(swap(i,j,i+dx[k],j+dy[k]))
           final.push(check(swap(i, j, i + dx[k], j + dy[k])))
         }
