@@ -20,17 +20,17 @@ rl.on('line', (input) => {
     for (let j = 0; j < N; j++) {
       if (friend[i][j] !== 'Y') continue
 
-      count++
+      count++ //우선 자기가 친구들이니까 ++해줌
       
-      for (let k = 0; k < N; k++) {
+      for (let k = 0; k < N; k++) { //새로 탐색용 인덱스
 
         if (k === i) continue
-
         //새로로 오는데 자기 자신은 피해야 하므로
-
+          
+          
         if (friend[k][j] === 'Y') {
           //중복 제거
-          if (friend[k][i] === 'N') {
+          if (friend[k][i] === 'N') { //이미 자기 자신을 알고 있으면 안되므로
             count++
           }
         }
