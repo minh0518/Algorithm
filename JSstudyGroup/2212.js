@@ -24,7 +24,8 @@ rl.on('line', (input) => {
   }
 
   // distance=(distance.sort((a,b)=>a-b)).slice(0,distance.length-(K-1))
-  // let result=distance.reduce((a,b)=>a+b)
+  // let result=distance.reduce((a,b)=>a+b,0)
+  //반드시 reduce에서 여기서 초기값 0을 지정해줘야 런타임 에러가 발생하지 않음
 
   let arr=distance.sort((a,b)=>a-b)
   let result=0

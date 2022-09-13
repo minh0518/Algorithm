@@ -8,37 +8,32 @@ const rl = readline.createInterface({
 const data = []
 
 rl.on('line', (input) => {
-  data.push(input)
+  data.push(input.trim())
 }).on('close', () => {
+  let arr = [4, 7, 3, 1]
 
-  data.shift()
+  let sortedArr = []
 
-  let K=+data.shift()
+  arr.sort().map((i) => {
+    sortedArr.push([i,i*10])
+    
+  })
 
-  let sensor=data.shift().split(' ').map(Number)
-  sensor=sensor.sort((a,b)=>a-b)
-
-  let distance=[]
-  for(let i=0; i<sensor.length-1; i++){
-    distance.push(sensor[i+1]-sensor[i])
-  }
-
-  // distance=(distance.sort((a,b)=>a-b)).slice(0,distance.length-(K-1))
-  // let result=distance.reduce((a,b)=>a+b)
-
-  let arr=distance.sort((a,b)=>a-b)
-  let result=0
-  for(let i=0; i<distance.length-(K-1); i++){
-    result+=arr[i]
-  }
-
-  console.log(result)
+  console.log(sortedArr)
+  // [ 
+  //   [ 1, 10 ], 
+  //   [ 3, 30 ], 
+  //   [ 4, 40 ], 
+  //   [ 7, 70 ] 
+  // ]
   
+  // { 
+  //   '1': 10, 
+  //   '3': 30, 
+  //   '4': 40, 
+  //   '7': 70 
+  // }
+
+
   process.exit()
 })
-
-//  3,    6,    7,    8,  10  ,  12 ,  14 ,   15  ,  18 ,  20   
-//    3      1     1     2    2      2     1     3       2  
-//여기서 4개를 상쇄
-
-//          1     1     2    2           1

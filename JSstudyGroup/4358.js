@@ -8,7 +8,7 @@ const rl = readline.createInterface({
 const data = []
 
 rl.on('line', (input) => {
-  data.push(input)
+  data.push(input.trim())
 }).on('close', () => {
   let trees = data
 
@@ -18,24 +18,16 @@ rl.on('line', (input) => {
     info[trees[i]] = info[trees[i]] === undefined ? 1 : info[trees[i]] + 1
   }
 
-  let sortedInfo = {}
+  let sortedInfo = []
 
   Object.keys(info)
     .sort()
     .map((i) => {
-      sortedInfo[i] = ((info[i] / trees.length) * 100).toFixed(4)
+      sortedInfo.push(`${i} ${((info[i] / trees.length) * 100).toFixed(4)}`)
     })
 
-  // for(let i in sortedInfo){
-  //   sortedInfo[i]=((sortedInfo[i]/trees.length)*100).toFixed(4)
-  // }
+  console.log(sortedInfo.join('\n'))
 
-  let result = []
-  for (let i in sortedInfo) {
-    result.push(i + ' ' + sortedInfo[i])
-  }
-
-  console.log(result.join('\n'))
 
   process.exit()
 })
