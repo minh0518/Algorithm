@@ -10,75 +10,80 @@ const data = []
 rl.on('line', (input) => {
   data.push(input)
 }).on('close', () => {
+  let N = +data.shift()
 
-  //출처 : https://velog.io/@silver_star/%EB%B0%B1%EC%A4%80-1105-%ED%8C%94-Greedy
-  // https://dlwnsdud205.tistory.com/18
-  // https://kjs-dev.tistory.com/entry/%EB%B0%B1%EC%A4%80-%EC%9E%90%EB%B0%94-1105-%ED%8C%94
+  let bridge = data.shift().split(' ').map(Number)
 
-  let [L,R]=data.shift().split(' ')
+  let target = data.shift().split(' ').map(Number)
 
-  L=L.split('').map(Number)
-  R=R.split('').map(Number)
+  let graph = new Array(N + 1).fill().map(() => [])
 
+  for (let i = 0; i < N; i++) {
+    for (let j = i + 1; j < N; j++) {
+      if (j + bridge[i] <= N) {
+        graph[i + 1].push(j + bridge[i])
 
-  let result=0
-
-  if(L.length!==R.length){
-    result=0
-  }
-  else{
-    for(let i=0; i<L.length; i++){
-
-      if((L[i]===8 && R[i]===8) ){
-        result++
+        if (bridge[i] !== 1) {
+          //해당 인덱스를 기반으로 계속
+          j += bridge[i] - 1 //j++를 해주는 것 때문에 -1해줘야함
+        }
       }
-      else if(L[i]!==R[i]){ //else로 하면 안되고 반드시 이 조건 필요
-                            //1280 ,1281
-                            //숫자가 틀리면 아예 끝인데
-                            //같기라도 하면 끝까지 봐야 함
-        break
-      }
-
-
     }
   }
 
+  console.log(graph)
 
-  console.log(result)
+  //[1]는 2,3,4,5번째로 이동가능
+  //[2]는 4번째로 이동가능
 
+  const bfs = (node, end) => {
+    let visited = new Array(N + 1).fill(false)
 
+    let queue = []
+    queue.push([node, 1])
+    visited[node] = true
 
-  
+    while (queue.length) {
+      let [v, depth] = queue.shift()
 
+      for (let i of graph[v]) {
+        if (graph[v].includes(end)) {
+          return depth
+        } else {
+          if (!visited[i]) {
+            queue.push([i, depth + 1])
+            visited[i] = true
+          }
+        }
+      }
+    }
+  }
 
+  let result = bfs(target[0], target[1])
+  if (result === undefined) {
+    console.log(-1)
+  } else {
+    console.log(result)
+  }
 
-  
   process.exit()
 })
 
+// [
+//   []
+//   1번째 징검다리는 인덱스(1,2,3,4)의 징검다리로 이동가능
+//   1 [1,2,3,4]
+//   2 [3]
+//   3 [4]
+//   4 [4]
+//   []
+// ]
 
-  //8이 가장 적게 들어가있다는게 8 중에서가 아니라
-  //8이 없는것도 치는것 같다
+//케빈베이컨 문제처럼 이렇게 타고타고
+//2 3 2 1 2 8 5
+//2 7
 
-  //자리수가 다르면 무조건 8이 아닌 수가 들어가므로 x
-  
-  //자리수가 같으면 
-  //한자리씩 비교해가며 8로 같으면++ 틀리면 바로 끝
-
-
-
-//8181
-//8189
-
-//812
-//821
-
-//888
-//898
-
-//8
-//81
-
-//111
-//121
-//비교를 하다가 숫자가 다르면 분명 10이든 100이든  넘어가는 경우이므로 8이 안 들어감
+//[ [], [ 3, 5, 7 ], [ 5 ], [ 5, 7 ], [ 5, 6, 7 ], [ 7 ], [], [] ]
+// 7
+// 2 3 2 1 2 8 5
+// 2 7
