@@ -26,16 +26,16 @@ rl.on('line', (input) => {
 
     
     visited.push([x, y])
-    //ifë¬¸ ì „ì— ë°˜ë“œì‹œ ë¯¸ë¦¬ pushë¥¼ í•´ì¤˜ì•¼ í•œë‹¤
-    //visitedëŠ” ì „ì—­ìœ¼ë¡œ ê´€ë¦¬ê°€ ë˜ê³  ìžˆê³ 
-    //ë°©ë¬¸ë°°ì—´ì— ìš°ì„  ì¢Œí‘œë¥¼ ì°ê³  ë§Œì•½ 
-    //ifë¬¸ì— ê±¸ë ¤ì„œ ë¦¬í„´ëœë‹¤ë©´ popì„ í•´ì£¼ëŠ”ë°
-    //ê·¸ëž˜ì•¼ ì—¬ê¸°ì„œ ë§ˆì§€ë§‰ì— ë°©ë¬¸í•œ(=pushí•œ) ì´ ì¢Œí‘œë¥¼ popí•´ì£¼ëŠ” ê²ƒì´ë‹¤
+    //if¹® Àü¿¡ ¹Ýµå½Ã ¹Ì¸® push¸¦ ÇØÁà¾ß ÇÑ´Ù
+    //visited´Â Àü¿ªÀ¸·Î °ü¸®°¡ µÇ°í ÀÖ°í
+    //¹æ¹®¹è¿­¿¡ ¿ì¼± ÁÂÇ¥¸¦ Âï°í ¸¸¾à 
+    //if¹®¿¡ °É·Á¼­ ¸®ÅÏµÈ´Ù¸é popÀ» ÇØÁÖ´Âµ¥
+    //±×·¡¾ß ¿©±â¼­ ¸¶Áö¸·¿¡ ¹æ¹®ÇÑ(=pushÇÑ) ÀÌ ÁÂÇ¥¸¦ popÇØÁÖ´Â °ÍÀÌ´Ù
 
 
-                  //Nì´ 2ë¼ë©´ 2ë²ˆê¹Œì§€ëŠ” ë°©ë¬¸ì„ í•˜ê³  3ë²ˆì§¸ë¶€í„° ì»·
-                  //ì´ ë¬¸ì œì—ì„œ ì²˜ìŒ ìœ„ì¹˜í•œ ê³³ë„ ì›€ì§ì¸ ê±°ë¼ í–ˆìœ¼ë¯€ë¡œ
-                  //ì‹œìž‘ì´ 1ì´ë‹¤
+                  //NÀÌ 2¶ó¸é 2¹ø±îÁö´Â ¹æ¹®À» ÇÏ°í 3¹øÂ°ºÎÅÍ ÄÆ
+                  //ÀÌ ¹®Á¦¿¡¼­ Ã³À½ À§Ä¡ÇÑ °÷µµ ¿òÁ÷ÀÎ °Å¶ó ÇßÀ¸¹Ç·Î
+                  //½ÃÀÛÀÌ 1ÀÌ´Ù
     if (depth === (Number(N)+1)) {
       answer += prob
       return
@@ -69,8 +69,8 @@ rl.on('line', (input) => {
   }
 
   dfs(0, 0, 1, 1)
-  //ì´ ë¬¸ì œì—ì„œ ì²˜ìŒ ìœ„ì¹˜í•œ ê³³ë„ ì›€ì§ì¸ ê±°ë¼ í–ˆìœ¼ë¯€ë¡œ
-  //depthì˜ ì‹œìž‘ì€ 1ì´ë‹¤
+  //ÀÌ ¹®Á¦¿¡¼­ Ã³À½ À§Ä¡ÇÑ °÷µµ ¿òÁ÷ÀÎ °Å¶ó ÇßÀ¸¹Ç·Î
+  //depthÀÇ ½ÃÀÛÀº 1ÀÌ´Ù
   console.log(answer)
 
   process.exit()

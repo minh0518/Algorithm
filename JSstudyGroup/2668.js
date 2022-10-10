@@ -74,6 +74,8 @@ rl.on('line', (input) => {
     if(check(value)){
         result.push(Number(i))
     }
+
+    //다음 dfs함수를 사용하기 위해 다시 초기화
     visited=new Array(N+1).fill(false) 
     value=new Array(2).fill().map(()=>[])
   }
