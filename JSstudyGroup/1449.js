@@ -25,41 +25,61 @@ rl.on('line', (input) => {
 
   for (let i = 0; i < N; i++) {
     if (i === N - 1) {
-      count++
+      count++//마지막 종료할때 ++를 해줘야 한다
+            //비교를 하다가 끝나면
+            //조건이 어찌되든 마지막 부분까지 테이프를 붙이고 끝내야 하니까
       break
     }
     let reachable = location[i][0] + L
 
     for (let j = i + 1; j < N; j++) {
-      if (reachable < location[j][1]) {
+      if (reachable < location[j][1]) { 
+        //현재 i좌표에서 테이프가 커버 가능한 거리가 2.5 까지면
+        //다음 물이 세는 좌표가 5일때(4.5~5.5)
+
         count++
-        i = j - 1
+        i = j - 1 //j전까지 커버가 가능하므로 
+                  //j위치로 이동 (-1한 것은 for때문에 ++하는 것 고려)
         break
       }
 
-      if (reachable === location[j][1]) {
-        i = j //j 다음으로
+      if (reachable === location[j][1]) { 
+         //현재 i좌표에서 테이프가 커버 가능한 거리가 2.5 까지면
+         //다음 물이 세는 좌표가 2일때(1.5~2.5)
+
+        
+        i = j //현재 j까지 커버가 가능하므로
+              //j 다음으로 이동 
         count++
         break
       } 
       else if (reachable > location[j][1]) { //reachable이 크면
                                               //끊어야 함
+          //현재 i좌표에서 테이프가 커버 가능한 거리가 4.5 까지면
+         //다음 물이 세는 좌표가 3일때(2.5~3.5)                               
 
         if (j + 1 < N) {
           //런타임 에러 방지를 위해 인덱스 고려
           //(다음 인덱스가 없을 때)
 
           if (reachable < location[j + 1][1]) {
-              count++
-             i = j
+            //한칸 더 뒤로 가서(j+1) 그 다음 좌표까지는 커버가 불가능하다면
+            //j까지만 커버가 가능한 것이다
+
+            count++
+             i = j //j다음으로 이동 
              break
             }
 
-          //reachable더 큰데 다음 위치가 남아 있으므로
+          //한칸 더 뒤로 가서(j+1) 그 다음 좌표까지도 커버가 가능하다면
+          //reachable >= location[j + 1][1]
           //ex) 4.5까지 도달가능한데 location[j + 1][1]가 3.5같은 경우
           //다음 j의 다음 for문으로 넘어감
          } 
-          else {
+
+          else { 
+          //런타임 에러 방지를 위해 인덱스 고려
+          //(다음 인덱스가 없을 때)
            i = N - 2 //i++고려
                     //어차피 맨 위에서 i가 N-1되면 count++가 되므로
                     //여기선 count++ 안 해줌

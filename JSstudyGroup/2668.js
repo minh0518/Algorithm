@@ -48,7 +48,7 @@ rl.on('line', (input) => {
   }
 
 
-  let visited=new Array(N+1).fill(false) //¹æ¹®¹è¿­Àº Ã¹¹øÂ° ÁÙ ±âÁØ
+  let visited=new Array(N+1).fill(false) //ë°©ë¬¸ë°°ì—´ì€ ì²«ë²ˆì§¸ ì¤„ ê¸°ì¤€
 
   
 
@@ -61,7 +61,7 @@ rl.on('line', (input) => {
     visited[start]=true
 
     if(!visited[table[1][start]]){ 
-        //µÎ¹øÂ° ÁÙÀÇ °ªÀÌ °¡¸®Å°´Â Ã¹¹ø¤Š ¹è¿­À» ¹æ¹® ¾È Çß´Ù¸é
+        //ë‘ë²ˆì§¸ ì¤„ì˜ ê°’ì´ ê°€ë¦¬í‚¤ëŠ” ì²«ë²ˆì¨° ë°°ì—´ì„ ë°©ë¬¸ ì•ˆ í–ˆë‹¤ë©´
       dfs(table[1][start])
     }
   }
@@ -75,7 +75,7 @@ rl.on('line', (input) => {
         result.push(Number(i))
     }
 
-    //´ÙÀ½ dfsÇÔ¼ö¸¦ »ç¿ëÇÏ±â À§ÇØ ´Ù½Ã ÃÊ±âÈ­
+    //ë‹¤ìŒ dfsí•¨ìˆ˜ë¥¼ ì‚¬ìš©í•˜ê¸° ìœ„í•´ ë‹¤ì‹œ ì´ˆê¸°í™”
     visited=new Array(N+1).fill(false) 
     value=new Array(2).fill().map(()=>[])
   }
@@ -89,11 +89,11 @@ rl.on('line', (input) => {
 
 
 
-  // ¹Ý·Ê
+  // ë°˜ë¡€
   //1 x 3  x  5 
   //3 x 5  x  1
 
-  // ¹Ý·Ê
+  // ë°˜ë¡€
   //1 2 3  4  5  6
   //3 6 5  1  1  1
 
@@ -102,10 +102,10 @@ rl.on('line', (input) => {
 
 
 
-//Å¸°íÅ¸°í °¡´Â °ÍÀÎµ¥
-//1ÀÌ °¡¸®Å°´Â °ÍÀÌ 3
-//3ÀÌ °¡¸®Å°´Â °ÍÀÌ 1
-//5°¡ °¡¸®Å°´Â °ÍÀÌ 5
+//íƒ€ê³ íƒ€ê³  ê°€ëŠ” ê²ƒì¸ë°
+//1ì´ ê°€ë¦¬í‚¤ëŠ” ê²ƒì´ 3
+//3ì´ ê°€ë¦¬í‚¤ëŠ” ê²ƒì´ 1
+//5ê°€ ê°€ë¦¬í‚¤ëŠ” ê²ƒì´ 5
 
 
 

@@ -10,76 +10,113 @@ const data = []
 rl.on('line', (input) => {
   data.push(input)
 }).on('close', () => {
-  let [N, e, w, s, n] = data.shift().split(' ')
-  let probs = [e / 100, w / 100, s / 100, n / 100]
-
-  let [dx, dy] = [
-    [0, 0, 1, -1],
-    [1, -1, 0, 0],
-  ]
-
-  let visited = []
-
-  let answer=0
-
-  const dfs = (x, y, depth, prob) => {
-
-    
-    visited.push([x, y])
-    //if문 전에 반드시 미리 push를 해줘야 한다
-    //visited는 전역으로 관리가 되고 있고
-    //방문배열에 우선 좌표를 찍고 만약 
-    //if문에 걸려서 리턴된다거나 for문을 다 도는데 이미 4개 방면으로
-    //다 방문을 했다면 이 재귀는 끝이 나게 되는데
-    //그러고 나면 직전 재귀에서 바로 pop을 해준다
-    //그러므로 pop을 한 좌표는 여기서 마지막에 방문한(=push한) 이 좌표를 pop해주는 것이다
 
 
-    if (depth === (Number(N))) {
-      answer += prob
-      return
+  let N=+data.shift()
+
+  // let first=new Array(N).fill().map((_,i)=>i+1)
+
+  // let second=data.map(Number)
+
+  // let table=[]
+  // table.push(first)
+  // table.push(second)
+
+  let table=new Array(2).fill().map((_,index)=>{
+    if(index===0){
+      return [0,...(new Array(N).fill().map((_,i)=>i+1))]
     }
+    else{
+      return [0]
+    }
+  }) 
 
-    for (let i = 0; i < 4; i++) {
-      let nx = x + dx[i]
-      let ny = y + dy[i]
+  data.map(i=>{
+    table[1].push(+i)
+  })
+  
 
-      if (!isVisited([nx, ny])) {
-        
-        dfs(nx, ny, depth + 1, prob * probs[i])
-        
-        visited.pop() 
 
-      }
+
+  const check=(value)=>{
+
+    console.log(value)
+    const first=value[0].sort((a,b)=>a-b)
+    const second=value[1].sort((a,b)=>a-b)
+
+    if(JSON.stringify(first)===JSON.stringify(second)){
+      return true
     }
   }
 
 
-	//이미 방문했는지 확인
-  const isVisited = (arr) => {
-    let [x, y] = arr
-
-    let result = false
-
-    visited.map((i) => {
-      if (i[0] === x && i[1] === y) {
-        result = true
-      }
-    })
-    return result
-  }
-
-  dfs(0, 0, 0, 1)
-  //N이 2라면 시작 좌표를 제외하고
-  //2번 이동을 하는 것이다
-  //ex) (시작 - 동쪽 - 북쪽)
-
-  //그래서 N이2라면 2번움직여고 끝내야 하므로
-  //depth를 0으로 주고 
-  //재귀 종료 조건을 depth가 N과 같을 때로 해줬다
+  let visited=new Array(N+1).fill(false) 
+  //방문배열은 첫번째 줄 기준
 
   
-  console.log(answer)
+
+  let value=new Array(2).fill().map(()=>[])
+
+  const dfs=(start)=>{
+
+    value[0].push(start)
+    value[1].push(table[1][start])
+    visited[start]=true
+
+    if(!visited[table[1][start]]){ 
+        //두번째 줄의 값이 가리키는 첫번쨰 배열을 방문 안 했다면
+      dfs(table[1][start])
+    }
+  }
+
+
+  let result=[]
+  for(let i=1; i<=N; i++){
+    dfs(i)
+    
+    if(check(value)){
+        result.push(Number(i))
+    }
+
+    //다음 dfs함수를 사용하기 위해 다시 초기화
+    visited=new Array(N+1).fill(false) 
+    value=new Array(2).fill().map(()=>[])
+  }
+
+  
+
+  console.log(result.length)
+  console.log(result.join('\n'))
+
+
+  
+
+
+
+  // 반례
+  //1 x 3  x  5 
+  //3 x 5  x  1
+
+  // 반례
+  //1 2 3  4  5  6
+  //3 6 5  1  1  1
 
   process.exit()
 })
+
+
+
+//타고타고 가는 것인데
+//1이 가리키는 것이 3
+//3이 가리키는 것이 1
+//5가 가리키는 것이 5
+
+
+
+// 1 : [ 3, 1 ]
+// 2 : [ 1, 3, 1 ]
+// 3 : [ 1, 3 ]
+// 4 : [ 5, 5 ]
+// 5 : [ 5 ]
+// 6 : [ 4, 5, 5 ]
+// 7 : [ 6, 4, 5, 5 ]
