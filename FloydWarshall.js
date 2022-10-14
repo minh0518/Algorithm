@@ -17,13 +17,15 @@ rl.on('line', (input) => {
   let N = 4
   let M = 7
 
+  //'a b c' >> 'aºÎÅÍ b±îÁö°¡´Âµ¥ °É¸®´Â ºñ¿ëc'
   let edge = ['1 2 4', '2 1 3', '1 4 6', '2 3 7', '3 1 5', '3 4 4', '4 3 2']
 
   let graph = new Array(N + 1).fill().map(() => new Array(N + 1).fill(INF))
 
   //console.log(graph)
 
-  //0í–‰0ì—´ì€ ì•ˆ ì“°ëŠ” ê²ƒì´ë¯€ë¡œ ë²„ë¦¼
+  //ÀÚ±âÀÚ½ÅÀ¸·Î °¡´Â ºñ¿ëÀº 0À¸·Î ÃÊ±âÈ­(±×·¡ÇÁ ´ë°¢¼±)
+  //0Çà0¿­Àº ¾È ¾²´Â °ÍÀÌ¹Ç·Î ¹ö¸²
   for (let i = 1; i < N + 1; i++) {
     for (let j = 1; j < N + 1; j++) {
       if (i === j) graph[i][j] = 0
@@ -32,6 +34,7 @@ rl.on('line', (input) => {
 
   //console.log(graph)
 
+  //°¢ °£¼±ÀÇ ºñ¿ëÀ¸·Î ¾÷µ¥ÀÌÆ® 
   for (let i = 0; i < M; i++) {
     let [a, b, c] = edge[i].split(' ').map(Number)
 
@@ -40,10 +43,8 @@ rl.on('line', (input) => {
   
   console.log(graph)
 
-  // kê°€ 1ì¼ë•Œ
-  // aë¶€í„° bê¹Œì§€ ê°€ëŠ” ëª¨ë“  ê²½ìš°ì˜ ìˆ˜ ì²´í¬ 
-  // kê°€ 2ì¼ë•Œ
-  // aë¶€í„° bê¹Œì§€ ê°€ëŠ” ëª¨ë“  ê²½ìš°ì˜ ìˆ˜ ì²´í¬
+
+  //ÇÃ·ÎÀÌµå ¿Í¼£ ¾Ë°í¸®Áò ¼öÇà(k³ëµå Àû¿ë)
   for(let k=1; k<N+1; k++){
     for(let a=1; a<N+1; a++){
       for(let b=1; b<N+1; b++){
