@@ -23,6 +23,7 @@ rl.on('line', (input) => {
   } 
   else {
     console.log(houses[parseInt(N / 2)])
+    //parseInt안하면 오답
   }
 
   
