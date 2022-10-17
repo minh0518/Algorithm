@@ -18,8 +18,14 @@ rl.on('line', (input) => {
     .map(Number)
     .sort((a, b) => a - b)
 
-  console.log(houses[N / 2 - 1])
+  if (N % 2 === 0) {
+    console.log(houses[(N / 2) - 1])
+  } 
+  else {
+    console.log(houses[parseInt(N / 2)])
+  }
 
+  
   process.exit()
 })
 
@@ -40,8 +46,3 @@ rl.on('line', (input) => {
 //1 2  7  12 13
 //12 11 6 1
 //6 5 5 6
-
-//fill하면 첨부터 undefined
-// let arr=new Array(3)
-// console.log(arr)
-// console.log(arr[2])
