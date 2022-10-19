@@ -20,23 +20,26 @@ rl.on('line', (input) => {
 
   let checkList = ['a', 'e', 'i', 'o', 'u']
 
-  const dfs = (str, visited, start, depth) => {
+
+  const dfs = (str, start, depth) => {
     if (depth === L) {
       result.push(str)
       return
     }
 
     for (let i = start + 1; i < C; i++) {
-      if (!visited[i]) {
-        dfs(str + alphabet[i], visited, i, depth + 1)
-      }
+      
+        dfs(str + alphabet[i], i, depth + 1)
+      
     }
   }
 
   for (let i = 0; i < C; i++) {
-    let visited = new Array(C).fill(false)
+  
+    //정렬해놓고 정렬해놓고 순서에 따른 조합을 구하는 것이기 때문에 
+    //방문처리는 할 필요가 없다
     if (i + L <= C) {
-      dfs(alphabet[i], visited, i, 1)
+      dfs(alphabet[i], i, 1)
     }
   }
 

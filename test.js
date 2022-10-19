@@ -10,35 +10,62 @@ const data = []
 rl.on('line', (input) => {
   data.push(input)
 }).on('close', () => {
+  let [L, C] = data.shift().split(' ').map(Number)
 
-  
-  
-  if('truthyëŠ” ê³¼ì—° trueì¼ê¹Œ?'){
-    console.log('truthyëŠ” ì¡°ê±´ë¬¸ì—ì„œ true ì²˜ëŸ¼ ì‘ë™í•˜ê¸´ í•˜ì§€ë§Œ')
+  let alphabet = data.shift().split(' ').sort()
+
+  //console.log(alphabet)
+
+  let result = []
+
+  let checkList = ['a', 'e', 'i', 'o', 'u']
+
+  const dfs = (str, start, depth) => {
+    if (depth === L) {
+      result.push(str)
+      return
+    }
+
+    for (let i = start + 1; i < C; i++) {
+      
+        dfs(str + alphabet[i], i, depth + 1)
+      
+    }
   }
 
-  console.log(true===1)//false 
-                      //truthyëŠ” true ìì²´ëŠ” ì•„ë‹ˆë‹¤
-                      
-
-  console.log(true==1)//true 
-                      //ë¬¼ë¡  ==ë¥¼ ì“°ë©´ í˜•ë³€í™˜ì„ ìë™ìœ¼ë¡œ í•´ì„œ
-                      //1ì€ trueê°€ ë˜ì§€ë§Œ (0ì€ false)
-
-  console.log(true==43)//false
-                      //í˜•ë³€í™˜ì„ í•œë‹¤ í•´ì„œ ëª¨ë“  truthyê°€ 
-                      //trueê°€ ë˜ëŠ”ê²ƒì€ ì•„ë‹ˆë‹¤
-                      
-
-
-  console.log(false==0) //true
-                        //í˜•ë³€í™˜í•˜ë©´ falsyì˜ 0ì€ falseê°€ ë¨
+  for (let i = 0; i < C; i++) {
   
-  
+    if (i + L <= C) {
+      dfs(alphabet[i], i, 1)
+    }
+  }
 
 
-  
-  
- 
+  //¸¶Áö¸· ÇÊÅÍ¸µ (¸ğÀ½1°³ , ÀÚÀ½2°³)
+  let sortedResult=[]
+  for (let i = 0; i < result.length; i++) {
+    let count = 0
+    let string = result[i]
+    for (let j = 0; j < checkList.length; j++) {
+      if (string.includes(checkList[j])) {
+        count++
+      }
+    }
+
+    //¸ğÀ½ÀÌ 1°³ÀÌ»ó , ÀÚÀ½ÀÌ2°³ ÀÌ»ó
+    if(count>0 && L-count>=2){
+      sortedResult.push(string)
+    }
+  }
+
+  console.log(sortedResult.join('\n'))
+
   process.exit()
 })
+
+// ¾ÏÈ£´Â L°³ÀÇ ¾ËÆÄºª
+// ÃÖ¼Ò ÇÑ °³ÀÇ ¸ğÀ½(a, e, i, o, u)
+// ÃÖ¼Ò µÎ °³ÀÇ ÀÚÀ½
+// Á¤·ÄµÈ ¾ÏÈ£ (abc -- o , bac -- x)
+
+//ÁÖ¾îÁø C¹®ÀÚµéÀ» Á¶ÇÕÇØ¼­ L°³ÀÇ ¾ËÆÄºªÀ¸·Î µÈ ¾ÏÈ£ »ı¼º
