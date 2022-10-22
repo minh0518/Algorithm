@@ -10,62 +10,56 @@ const data = []
 rl.on('line', (input) => {
   data.push(input)
 }).on('close', () => {
-  let [L, C] = data.shift().split(' ').map(Number)
 
-  let alphabet = data.shift().split(' ').sort()
+  let N=+data.shift()
 
-  //console.log(alphabet)
+  let stack=[]
 
-  let result = []
+  let time=data.map(i=>i.split(' ').map(Number))
 
-  let checkList = ['a', 'e', 'i', 'o', 'u']
-
-  const dfs = (str, start, depth) => {
-    if (depth === L) {
-      result.push(str)
-      return
+  time=time.sort((a,b)=>{
+    if(a[0]===b[0]){
+      return a[1]-b[1]
     }
-
-    for (let i = start + 1; i < C; i++) {
-      
-        dfs(str + alphabet[i], i, depth + 1)
-      
+    else{
+      return a[0]-b[0]
     }
-  }
+  })
 
-  for (let i = 0; i < C; i++) {
-  
-    if (i + L <= C) {
-      dfs(alphabet[i], i, 1)
-    }
-  }
+  let count=1
+  let result=[]
+  for(let i=0; i<time.length; i++){
+    let endTime=time[i][1]
 
+    for(let j=i+1; j<time.length; j++){
 
-  //마지막 필터링 (모음1개 , 자음2개)
-  let sortedResult=[]
-  for (let i = 0; i < result.length; i++) {
-    let count = 0
-    let string = result[i]
-    for (let j = 0; j < checkList.length; j++) {
-      if (string.includes(checkList[j])) {
-        count++
+      if(endTime>time[j][0]) {
+        stack.push()
+      }
+
+      else if(endTime<=time[j][0]){
+        result.push(count)
+        count=1
+        i=(j-1)
+        break
+      }
+
+      if(j===(time.length-1)){
+        result.push(count)
+        i=(j-1)
       }
     }
 
-    //모음이 1개이상 , 자음이2개 이상
-    if(count>0 && L-count>=2){
-      sortedResult.push(string)
-    }
+    
   }
 
-  console.log(sortedResult.join('\n'))
+  console.log(Math.max(...result))
 
-  process.exit()
+
+
+
+    process.exit()
 })
 
-// 암호는 L개의 알파벳
-// 최소 한 개의 모음(a, e, i, o, u)
-// 최소 두 개의 자음
-// 정렬된 암호 (abc -- o , bac -- x)
 
-//주어진 C문자들을 조합해서 L개의 알파벳으로 된 암호 생성
+
