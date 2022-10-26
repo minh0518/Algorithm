@@ -71,22 +71,28 @@ rl.on('line', (input) => {
       else return null
     }
   }
-  const pq=new PriorityQueue((a,b)=>{
-    if(a < b) return true;
-    else return false;
+
+  const pq = new PriorityQueue((a, b) => {
+    if (a < b) return true
+    else return false
   })
 
+  let N = +data.shift()
+  let classes = data
+    .map((i) => i.split(' ').map(Number))
+    .sort((a, b) => a[0] - b[0])
 
-  //넣을때는 배열로
-  pq.push([3])
-  pq.push([4])
-  pq.push([1])
-  console.log(pq.heap)
+  pq.push(classes[0][1])
+  for (let i = 1; i < N; i++) {
+    if (pq.heap.heap[1] > classes[i][0]) {
+      pq.push(classes[i][1])
+    } else {
+      pq.pop()
+      pq.push(classes[i][1])
+    }
+  }
 
-// Heap {
-//   heap: [ null, [ 1 ], [ 4 ], [ 3 ] ],
-//   compare: [Function (anonymous)]
-// }
+  console.log(pq.heap.heap.length - 1)
 
   process.exit()
 })
