@@ -10,83 +10,21 @@ const data = []
 rl.on('line', (input) => {
   data.push(input)
 }).on('close', () => {
-  class Heap {
-    constructor(compare = (a, b) => a < b) {
-      // default : 최소 힙
-      this.heap = [null]
-      this.compare = compare
-    }
-    insert(item) {
-      this.heap.push(item)
-      let i = this.heap.length - 1
-      while (i !== 1 && this.compare(item, this.heap[Math.floor(i / 2)])) {
-        this.heap[i] = this.heap[Math.floor(i / 2)]
-        i = Math.floor(i / 2)
-      }
-      this.heap[i] = item
-    }
-    delete() {
-      const item = this.heap[1]
-      const tmp = this.heap.pop()
-      const len = this.heap.length - 1
-      let parent = 1
-      let child = 2
-      while (child <= len) {
-        if (
-          child < len &&
-          this.compare(this.heap[child + 1], this.heap[child])
-        ) {
-          child += 1
-        }
-        if (this.compare(tmp, this.heap[child])) {
-          break
-        }
-        this.heap[parent] = this.heap[child]
-        parent = child
-        child *= 2
-      }
-      //end of while
+  const MissionUtils = require('@woowacourse/mission-utils')
 
-      if (this.heap.length > 1) this.heap[parent] = tmp
-      return item
-    }
-    empty() {
-      return this.heap.length === 1
+  class Lotto {
+    #numbers
+
+    constructor() {
+      this.#numbers = Randoms.pickUniqueNumbersInRange(1, 45, 6)
     }
   }
 
-  class PriorityQueue {
-    // 우선순위 큐
-    constructor(compare) {
-      this.heap = new Heap(compare)
-    }
-    empty() {
-      return this.heap.empty()
-    }
-    push(item) {
-      this.heap.insert(item)
-    }
-    pop() {
-      if (!this.empty()) return this.heap.delete()
-      else return null
+  class LottoMachine {
+    execute() {
+      const lotto = new Lotto()
     }
   }
-  const pq=new PriorityQueue((a,b)=>{
-    if(a < b) return true;
-    else return false;
-  })
-
-
-  //넣을때는 배열로
-  pq.push([3])
-  pq.push([4])
-  pq.push([1])
-  console.log(pq.heap)
-
-// Heap {
-//   heap: [ null, [ 1 ], [ 4 ], [ 3 ] ],
-//   compare: [Function (anonymous)]
-// }
 
   process.exit()
 })
