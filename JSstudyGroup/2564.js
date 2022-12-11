@@ -22,6 +22,7 @@ rl.on('line', (input) => {
   let distance = [];
 
   for (let i = 0; i < target.length; i++) {
+    //변이 같은 경우
     if (standardSide === target[i][0]) {
       distance.push(Math.abs(target[i][1] - start[1]));
       continue;
@@ -44,8 +45,7 @@ rl.on('line', (input) => {
     }
 
     if (standardSide === 2) {
-      if (target[i][0] === 1) {
-        //둘 다 비교
+      if (target[i][0] === 1) {// 반대인 경우
 
         // 시계방향
         let clockwise = target[i][1] + height + start[1];
@@ -95,10 +95,11 @@ rl.on('line', (input) => {
     }
   }
 
-  console.log(distance.reduce((a,b)=>a+b,0))
+  console.log(distance.reduce((a, b) => a + b, 0));
 
   process.exit();
 });
-//변의 방면이 같으면 차이만
-//변의 방면이 다른 경우 인접한 경우면 그 방향대로
-//변의 방면이 반대편인 경우에는 둘 다 방향을 비교
+//변이 같으면 차이만
+//변이 다른 경우
+//두 변이 인접한 경우면 인접한 거리를
+//두 변이 서로 반대편인 경우에는 시계방향 , 반 시계방향 둘 다 구해서 최솟값을
