@@ -10,61 +10,78 @@ const data = [];
 rl.on('line', (input) => {
   data.push(input);
 }).on('close', () => {
-  let [N, M] = data.shift().split(' ').map(Number);
-
-  let warZone = data.map((i) => i.split(''));
-
-  let scoreForBlue = [];
-  let scoreForWhite = [];
+  let N = +data.shift();
+  let board = data.map((i) => i.split(''));
 
   let [dx, dy] = [
     [-1, 1, 0, 0],
     [0, 0, -1, 1],
   ];
 
-  const dfsForBlue = (x, y) => {
-    let count = 1;
-    warZone[x][y] = 'X';
+  const swap = (x, y) => {
+    let result = [];
     for (let i = 0; i < 4; i++) {
       let nx = x + dx[i];
       let ny = y + dy[i];
 
-      if (nx >= 0 && nx < M && ny >= 0 && ny < N && warZone[nx][ny] === 'B') {
-        count += dfsForBlue(nx, ny);
+      if (nx >= 0 && nx < N && ny >= 0 && ny < N) {
+        if (board[x][y] !== board[nx][ny]) {
+          [board[x][y], board[nx][ny]] = [board[nx][ny], board[x][y]];
+          result.push(calcForSame());
+          [board[nx][ny], board[x][y]] = [board[x][y], board[nx][ny]];
+
+          // swap하고 계산하고 다시 원상복구
+        }
       }
     }
-    return count;
+
+    return result;
   };
 
-  const dfsForWhite = (x, y) => {
+  const calcForSame = () => {
+    //가로 비교
     let count = 1;
-    warZone[x][y] = 'X';
-    for (let i = 0; i < 4; i++) {
-      let nx = x + dx[i];
-      let ny = y + dy[i];
-
-      if (nx >= 0 && nx < M && ny >= 0 && ny < N && warZone[nx][ny] === 'W') {
-        count += dfsForWhite(nx, ny);
+    let result = [];
+    for (let i = 0; i < N; i++) {
+      for (let j = 0; j < N - 1; j++) {
+        if (board[i][j] === board[i][j + 1]) count++;
+        else {
+          //CCPPP같은 경우, 중간에 다른게 있으면 끊고 다시 시작
+          result.push(count);
+          count = 1;
+        }
       }
+      result.push(count);
+      count = 1;
+      //각 행or열이 끝날때도 push를 반드시 해줘야 한다
+      //마지막 값까지 같다면 거기까지 count한 것을 저장해야 하고
+      //다시 count값을 초기화 해야 하기 때문
     }
-    return count;
+
+    //세로 비교
+    for (let i = 0; i < N; i++) {
+      for (let j = 0; j < N - 1; j++) {
+        if (board[j][i] === board[j + 1][i]) count++;
+        else {
+          result.push(count);
+          count = 1;
+        }
+      }
+      result.push(count);
+      count = 1;
+    }
+
+    return Math.max(...result);
   };
 
-  for (let i = 0; i < M; i++) {
+  let result = [];
+  for (let i = 0; i < N; i++) {
     for (let j = 0; j < N; j++) {
-      if (warZone[i][j] === 'B') {
-        let score=dfsForBlue(i, j)
-        scoreForBlue.push(score*score);
-      }
-      if (warZone[i][j] === 'W') {
-        let score=dfsForWhite(i, j)
-        scoreForWhite.push(score*score);
-      }
+      result.push(...swap(i, j));
     }
   }
 
-  console.log(`${scoreForWhite.reduce((a,b)=>a+b,0)} ${scoreForBlue.reduce((a,b)=>a+b,0)}`)
-  
+  console.log(Math.max(...result));
 
   process.exit();
 });
