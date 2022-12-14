@@ -23,10 +23,6 @@ rl.on('line', (input) => {
       result.push(Math.abs(i - rank[i - 1]));
     }
   }
-
-  // console.log(real)
-  // console.log(rank)
-
   // 1 1 2 3 5
   // 1 2 3 4 5
   //   1 1 1
