@@ -10,7 +10,6 @@ const data = [];
 rl.on('line', (input) => {
   data.push(input);
 }).on('close', () => {
-
   let [N, W, L] = data.shift().split(' ').map(Number);
   //트럭수 , 다리길이, 최대하중
 
@@ -21,7 +20,7 @@ rl.on('line', (input) => {
   let count = 0;
 
   while (trucks.length) {
-    console.log(`trucks ${trucks} ,  queue ${queue}`);
+    //console.log(`trucks ${trucks} ,  queue ${queue}`);
     let currentTruck = trucks[0]; //바로 shift를 하면 안된다
 
     if (queue.length === W) { // 다리에 공간이 없을 때
