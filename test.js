@@ -10,32 +10,29 @@ const data = [];
 rl.on('line', (input) => {
   data.push(input);
 }).on('close', () => {
-  let N = +data.shift();
+  const getCombinations = function (arr, selectNumber) {
+    const results = [];
+    if (selectNumber === 1) return arr.map((el) => [el]);
 
-  let entrance = new Map();
-  let exit = new Map();
-  for (let i = 0; i < 2 * N; i++) {
-    if (i < N) entrance.set(data.shift(),i+1);
-    if (i >= N) exit.set(data.shift(),(i+1)-N);
+    arr.forEach((fixed, index, origin) => {
+      const rest = origin.slice(index + 1);
+
+      const combinations = getCombinations(rest, selectNumber - 1);
+
+      const attached = combinations.map((el) => [fixed, ...el]);
+
+      results.push(...attached);
+    });
+
+    return results;
+  };
+
+  for (let i = 2; i <= 3; i++) {
+    console.log(getCombinations([1, 2, 4, 7], i));
   }
-  // console.log(entrance)
-  // console.log(exit)
 
-
-
-  
-//등수가 1씩 밀린 갯수만큼?
-//흐름이끊기면?
-  
-
-//1 2 3 4
-//2 1 4 3
-
-//1 2 3 4
-//1 4 2 3
-
-
-
+  // 1 2 4 7 (2~3개)
+  // 5 9
 
   process.exit();
 });
