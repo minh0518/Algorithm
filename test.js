@@ -10,32 +10,17 @@ const data = [];
 rl.on('line', (input) => {
   data.push(input);
 }).on('close', () => {
-  let N = +data.shift();
+  let arr = [
+    [1, 2],
+    [3, 4],
+    [5, 6],
+  ];
 
-  let time = data.map((i) => i.split(' ').map(Number));
-
-  time = time.sort((a, b) => {
-    return (a[1] - b[1]||a[0]-b[0]);
+  let result = arr.filter((i) => {
+    let tmp = i.join('');
+    return tmp !== '12' && tmp !== '56';
   });
-
-  let target=time[0][1]
-
-  let result=1
-  for(let i=1; i<time.length; i++){
-    if(time[i][0]>=target) {
-      result+=1
-      target=time[i][1]
-    }
-  }
-
-
-  console.log(result)  
+  console.log(result); //[ [ 3, 4 ] ]
 
   process.exit();
 });
-
-// 1 6
-// 4 7
-
-// 6 10
-// 7 8
