@@ -12,7 +12,6 @@ rl.on('line', (input) => {
 }).on('close', () => {
   let puzzle = data.map((i) => i.split('').map(Number));
 
-
   const existNumOnSquare = (x, y) => {
     let visited = [];
 
@@ -66,62 +65,35 @@ rl.on('line', (input) => {
     return result;
   };
 
-  const findZero = () => {
-    for (let i = 0; i < 9; i++) {
-      for (let j = 0; j < 9; j++) {
-        if (puzzle[i][j] === 0) return true;
+  //메인 로직
+  function dfs(puzzle) {
+    for (let row = 0; row < 9; row++) {
+      for (let col = 0; col < 9; col++) {
+        if (puzzle[row][col] !== 0) continue; // 0이 아니면 패스
+
+        // 해당 좌표에서 스도쿠로 가능한 값을 받아옴
+        let numbers = findPossibleNumber(row, col);
+
+        // 그 값들을 순회하면서 0의 좌표에 차례대로 넣어줌
+        for (let i of numbers) {
+          puzzle[row][col] = i; //값 대입
+
+          // 다음 0 좌표에 대해 재귀 호출
+          if (dfs(puzzle)) return true;
+          //dfs가 true면 바로 true를 리턴하고 해당 재귀 종료
+          //dfs가 false면 다음 숫자를 집어넣고 재귀 실행
+        }
+        puzzle[row][col] = 0;
+        return false;
       }
     }
-    return false;
-  };
 
-  let answer;
+    return true;
+  }
 
-  const findZeroIndex = () => {
-    let index = [];
+  dfs(puzzle);
 
-    for (let i = 0; i < 9; i++) {
-      for (let j = 0; j < 9; j++) {
-        if (puzzle[i][j] === 0) index.push([i, j]);
-      }
-    }
-    return index;
-  };
-  let zeroIndex = findZeroIndex();
+  console.log(puzzle.map((i) => i.join('')).join('\n'));
 
-  const dfs = (index) => {
-
-    if (!findZero()) {
-      answer = ((puzzle.map((i) => i.join('')).join('\n')));
-      console.log(answer)
-      process.exit();
-      
-    }
-
-    for (let i = index; i < zeroIndex.length; i++) {
-      let [x, y] = zeroIndex[i];
-
-      if (puzzle[x][y] !== 0) continue;
-      //if (puzzle[x][y] !== 0) dfs(i+1);
-
-      let NextNumbers = findPossibleNumber(x, y);
-
-      if (!NextNumbers.length) {
-        return;
-      }
-
-      for (let num of NextNumbers) {
-        puzzle[x][y] = num;
-        dfs(i + 1);
-      }
-      puzzle[x][y] = 0;
-      return;
-    }
-  };
-
-  dfs(0);
-
-  console.log(answer.join('\n'));
-
- 
+  process.exit();
 });
