@@ -23,15 +23,15 @@ rl.on('line', (input) => {
 
     //1~n-1개를 start에서 나머지(목표하는 곳 말고)로 옮긴다
     //console.log(`1단계 재귀 호출 ${n - 1} ${start} ${6 - start - end}`)
-    move(n - 1, start, 6 - start - end);
+    move(n - 1, start, 6 - start - end);  // 1단계
 
     //맨 아래 있던 것을 목표하고자 하는 곳 맨 아래로 이동
     //console.log(`탈출 , 2단계 ${n} ${start} ${end}`)
-    result.push([start, end]);
+    result.push([start, end]);  // 2단계
 
     //1~n-1개를 나머지에서 목표하고자 했던 곳으로 옮긴다
     //console.log(`3단계 재귀 호출 ${n - 1} ${6 - start - end} ${end}`)
-    move(n - 1, 6 - start - end, end);
+    move(n - 1, 6 - start - end, end);  // 3단계
   };
 
   
