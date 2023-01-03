@@ -47,15 +47,12 @@ rl.on('line', (input) => {
             if (value >= 0) {
               value = Math.floor(value / numbers[index + 1]);
             } else {
-              value = Math.floor((-1 * value) / numbers[index + 1]);
-              if (value > 0) value = value * -1; 
-              // -0이 나올 수도 있기 때문에
+              value = -(Math.floor((-1 * value) / numbers[index + 1]))
             }
             break;
         }
 
         operators[i]--;
-        console.log(operators)
         dfs(index + 1, value);
         value = originalValue;
         operators[i]++;
