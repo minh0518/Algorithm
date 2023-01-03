@@ -14,6 +14,7 @@ rl.on('line', (input) => {
 
   let map = data.map((i) => i.split(' ').map(Number));
 
+  // 집의 거리와 치킨매장의 거리를 구하는 함수
   const getDistance = (home, market) => {
     let [homeX, homeY] = home;
     let [marketX, marketY] = market;
@@ -23,7 +24,7 @@ rl.on('line', (input) => {
     return result;
   };
 
-  // 집의 거리와 치킨매장의 거리를 구하는 함수
+  // 도시에 있는 모든 치킨매장들의 좌표를 구하는 함수
   const getMarketLocation = (map) => {
     let result = [];
     for (let i = 0; i < N; i++) {
@@ -52,9 +53,6 @@ rl.on('line', (input) => {
     return results;
   };
 
-  let marketLocations = getMarketLocation(map);
-  let combinationsOfMarket = getCombinations(marketLocations, M);
-
   // 매장의 위치들을 인자로 받으면
   // 모든 집들의 거리를 기반으로 각 매장들까지의 최단거리를 구하고
   // 최단거리들의 합을 통해 도시거리를 리턴함
@@ -80,9 +78,13 @@ rl.on('line', (input) => {
     return results.reduce((a, b) => a + b, 0);
   };
 
+
+  // 메인 로직
+  let marketLocations = getMarketLocation(map);
+  let combinationsOfMarket = getCombinations(marketLocations, M);
   let answer = [];
   for (let i = 0; i < combinationsOfMarket.length; i++) {
-    let locations = combinationsOfMarket[i]; //2차원 배열
+    let locations = combinationsOfMarket[i]; //2차원 배열로 받아줌
 
     answer.push(calc(locations));
   }
