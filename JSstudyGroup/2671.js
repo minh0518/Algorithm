@@ -34,7 +34,7 @@ rl.on('line', (input) => {
         continue;
       }
       if (currentTmpStr === '100') {
-        if (i === str.length - 1) {
+        if (i === str.length - 1) { // 맨 마지막에 100뜨면 NOISE
           break;
         }
         tmpStr.splice(0, 3);
@@ -46,14 +46,16 @@ rl.on('line', (input) => {
           }
           if (oneFlag) {
             if (!str.slice(j + 1).includes('0')) {
+              // 100으로 시작해서 111..로 끝나도 SUBMARINE
               i = str.length;
               break;
             }
+
             if (checkNextPattern(j)) {
               i = j;
               break;
             } else if (str[j + 1] === '0') {
-              // 1 다음에 01의 0이 아닌 0이 있으면 바로 끝
+              // 1 다음에 01의 0이 아닌 0이 있으면 바로 더 볼것도 없이 NOISE
               return [1];
             }
           }
