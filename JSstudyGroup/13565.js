@@ -22,6 +22,8 @@ rl.on('line', (input) => {
   const dfs = (index) => {
     let [x, y] = index;
     map[x][y] = 1;
+
+    //재귀 탈출 조건
     if (x === M - 1) {
       return true;
     }
