@@ -19,22 +19,15 @@ rl.on('line', (input) => {
     [0, 0, -1, 1],
   ];
 
-  const dfs = (index) => {
-    let [x, y] = index;
-    map[x][y] = 1;
+  const dfs = (x,y) => {
 
-    //재귀 탈출 조건
-    if (x === M - 1) {
-      return true;
-    }
+    map[x][y] = 1;
 
     for (let i = 0; i < 4; i++) {
       let nx = x + dx[i];
       let ny = y + dy[i];
       if (nx >= 0 && nx < M && ny >= 0 && ny < N && map[nx][ny] === 0) {
-        if (dfs([nx, ny])) {
-          return true;
-        }
+        dfs(nx, ny);
       }
     }
   };
@@ -44,7 +37,7 @@ rl.on('line', (input) => {
   let beforeInnerSide = [...map[M - 1]];
   for (let i = 0; i < N; i++) {
     if (map[0][i] === 1) continue;
-    dfs([0, i]);
+    dfs(0, i);
   }
   let afterInnerSide = [...map[M - 1]];
 

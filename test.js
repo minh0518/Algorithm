@@ -1,6 +1,4 @@
-const { off, mainModule } = require('process');
 const readline = require('readline');
-const { fileURLToPath } = require('url');
 
 const rl = readline.createInterface({
   input: process.stdin,
@@ -12,64 +10,40 @@ const data = [];
 rl.on('line', (input) => {
   data.push(input);
 }).on('close', () => {
-  let T = +data.shift();
+  let [M, N] = data.shift().split(' ').map(Number);
 
-  let index = 0;
+  let map = data.map((i) => i.split('').map(Number));
 
-  let answer = [];
+  const [dx, dy] = [
+    [-1, 1, 0, 0],
+    [0, 0, -1, 1],
+  ];
 
-  for (let i = 0; i < T; i++) {
-    let [command, n, arr] = data.slice(index, index + 3);
+  const dfs = (x,y) => {
 
-    arr = eval(arr);
+    map[x][y] = 1;
 
-    let direction = true;
-    let errorFlag = false;
-
-    for (let str of command) {
-      if (str === 'D' && !arr.length) {
-        answer.push('error');
-        errorFlag = true;
-        break;
-      }
-
-      if (str === 'D' && arr.length) {
-        if (direction) {
-          arr.shift();
-        }
-        if (!direction) {
-          arr.pop();
-        }
-      }
-
-      if (str === 'R' && arr.length) {
-        direction = !direction;
+    for (let i = 0; i < 4; i++) {
+      let nx = x + dx[i];
+      let ny = y + dy[i];
+      if (nx >= 0 && nx < M && ny >= 0 && ny < N && map[nx][ny] === 0) {
+        dfs(nx, ny);
       }
     }
+  };
 
-
-
-		// 정답생성
-
-		// 만약 빈 arr인데 D가 나온 경우 error를 답에 넣고
-		// errorFlag를 통해 바로 넘어감
-		// 굳이 이렇게 하는 이유가 arr가 빈 배열인 경우가 정답이 될 수도
-    // 있으므로 arr.length로 걸러내면 정답이 되는 빈 배열도 걸러지기 때문
-    if (errorFlag) {
-      index += 3;
-      continue;
-    }
-
-    if (!direction) {
-      answer.push(`[${arr.reverse()}]`);
-    } else {
-      answer.push(`[${arr}]`);
-    }
-
-    index += 3;
+  // 깊은복사를 해주지 않으면 map이 아래에서 바뀔 때 beforeInnerSide도
+  // 같이 바뀌게 된다
+  let beforeInnerSide = [...map[M - 1]];
+  for (let i = 0; i < N; i++) {
+    if (map[0][i] === 1) continue;
+    dfs(0, i);
   }
+  let afterInnerSide = [...map[M - 1]];
 
-  console.log(answer.join('\n'));
+  console.log(
+    beforeInnerSide.join('') === afterInnerSide.join('') ? 'NO' : 'YES',
+  );
 
   process.exit();
 });
