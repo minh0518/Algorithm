@@ -1,6 +1,6 @@
-const { off, mainModule } = require('process');
+//bfs
+
 const readline = require('readline');
-const { fileURLToPath } = require('url');
 
 const rl = readline.createInterface({
   input: process.stdin,
@@ -24,35 +24,33 @@ rl.on('line', (input) => {
     tree[to].push(from);
   }
 
-  //console.log(tree)
+  // console.log(tree)
 
+  // ex) check[2]=5 >> 2번노드의 부모노드는 5번노드
   let check = new Array(N + 1).fill(0);
 
-  const bfs = () => {
+  check[1] = Infinity; //임의로 0을 피한 값을 넣어줌
 
-    // queue에 push되는 노드들은 곧 현재 노드의 자식 노드들이다
-    const queue = [];
+  const queue = [];
 
-    check[1] = 1;
-
-    for (let i of tree[1]) {
-      // i는 1번노드의 자식을 의미하며
-      // 각 자식 노드 값의 인덱스에 1(부모 노드)값을 넣어주고, 큐에도 넣어준다.
-      check[i] = 1;
-      queue.push(i);
-    }
+  const bfs = (start) => {
+    queue.push(start);
 
     while (queue.length) {
       const node = queue.shift();
       for (let i of tree[node]) {
-        // 노드를 순회하면서, 방문한 노드라면 건너뛴다.
+        //i는 tree[node]에 연결되어 있는노드들이다
+
+        // 부모 노드가 아닌 노드를 걸러낸다
         if (check[i]) continue;
-        check[i] = node; //i번노드의 부모인 node를 넣어주고
-        queue.push(i); //다음에 i번을 타고 또 가야 하므로 i를 넣어준다
+
+        check[i] = node; // i노드의 부모노드는 node라는 것이다
+        queue.push(i); // 현재 탐색중인 node의 자식노드인 i를
+        // 다음에 탐색하기 위해 queue에 push
       }
     }
   };
-  bfs();
+  bfs(1);
 
   console.log(check.slice(2).join('\n'));
 
