@@ -12,6 +12,7 @@ rl.on('line', (input) => {
 }).on('close', () => {
   const originTree = {};
 
+  // 좌 우 자식 노드가 들어가야 하므로 0 , 0으로 초기화
   for (let i of data) {
     originTree[i] = [0, 0];
   }
@@ -23,34 +24,33 @@ rl.on('line', (input) => {
     if (parent > node) {
       if (originTree[parent][0] === 0) {
         originTree[parent][0] = node;
-        return;
+        return
       } else {
         parent = originTree[parent][0];
         makeOriginTree(node);
-        parent = root;
-        return;
+        return
       }
     }
 
+    // 24 28
     if (parent < node) {
       if (originTree[parent][1] === 0) {
         originTree[parent][1] = node;
-        return;
+        return
       } else {
         parent = originTree[parent][1];
         makeOriginTree(node);
-        parent = root;
-        return;
+        return
       }
     }
   };
 
   for (let i = 1; i < data.length; i++) {
     makeOriginTree(Number(data[i]));
-    // parent = root;
+    parent = root; // 필수
   }
 
-  let result = '';
+  let reulst = [];
   const postOrder = (node) => {
     if (originTree[node][0]) {
       postOrder(originTree[node][0]);
@@ -59,10 +59,10 @@ rl.on('line', (input) => {
       postOrder(originTree[node][1]);
     }
 
-    result += `${node}\n`;
+    reulst.push(node);
   };
   postOrder(root);
-  console.log(result.trim());
+  console.log(reulst.join('\n'));
 
   process.exit();
 });
