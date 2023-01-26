@@ -16,6 +16,7 @@ rl.on('line', (input) => {
   const cache = Array(N).fill(-1);
 
   const solve = (currentIndex) => {
+    
     // 메모이제이션
     if (cache[currentIndex] !== -1) {
       return cache[currentIndex];
