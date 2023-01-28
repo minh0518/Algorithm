@@ -18,7 +18,7 @@ rl.on('line', (input) => {
 
   let lowerBoundIndex = Infinity;
 
-  //재귀
+  //재귀로 lowerBound 를 구현
   const lowerBound = (start, end, key) => {
     if (start > end) {
       return;
@@ -35,10 +35,7 @@ rl.on('line', (input) => {
   for (let i = 1; i < arr.length; i++) {
     let lastVectorValue = vector[vector.length - 1];
     let arrValue = arr[i];
-
-    // 매 연산마다 lowerBoundIndex를 초기화
     lowerBoundIndex = Infinity;
-
     if (arrValue > lastVectorValue) {
       vector.push(arrValue);
       continue;
@@ -46,10 +43,10 @@ rl.on('line', (input) => {
     if (arrValue <= lastVectorValue) {
       lowerBound(0, vector.length - 1, arrValue);
       vector.splice(lowerBoundIndex, 1, arrValue);
-      continue;
     }
   }
 
   console.log(vector.length);
+
   process.exit();
 });
