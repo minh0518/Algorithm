@@ -10,46 +10,52 @@ const data = [];
 rl.on('line', (input) => {
   data.push(input);
 }).on('close', () => {
-  data.shift();
+  let N = data.shift()
 
-  let arr = data.shift().split(' ').map(Number);
+  let M = +data.shift();
 
-  let vector = [arr[0]];
+  let fromHundred = N - 100;
 
-  let lowerBoundIndex = Infinity;
+  let disabled;
 
-  //재귀
-  const lowerBound = (start, end, key) => {
-    if (start > end) {
-      return;
+  if (M !== 0) {
+    let count=0
+
+    disabled = data.shift().split(' ').map(Number);
+
+    for (let i = 0; i < 1000000; i++) {
+      const numString = i.toString();
+      let isValid = true;
+      for (let j = 0; j < numString.length; j++) {
+        if (disabled[numString[j]]) {
+          isValid = false;
+          break;
+        }
+      }
+      if (isValid) {
+        count = Math.min(count, Math.abs(i - N) + numString.length);
+      }
     }
-    const mid = Math.floor((start + end) / 2);
-    if (vector[mid] < key) {
-      lowerBound(mid + 1, end, key);
-      return;
-    }
-    lowerBoundIndex = Math.min(lowerBoundIndex, mid);
-    lowerBound(start, mid - 1, key);
-  };
 
-  for (let i = 1; i < arr.length; i++) {
-    let lastVectorValue = vector[vector.length - 1];
-    let arrValue = arr[i];
-
-    // 매 연산마다 lowerBoundIndex를 초기화
-    lowerBoundIndex = Infinity;
-
-    if (arrValue > lastVectorValue) {
-      vector.push(arrValue);
-      continue;
-    }
-    if (arrValue <= lastVectorValue) {
-      lowerBound(0, vector.length - 1, arrValue);
-      vector.splice(lowerBoundIndex, 1, arrValue);
-      continue;
-    }
+    console.log(count)
+  } else {
+    console.log(N.length);
   }
 
-  console.log(vector.length);
+  //6 7 8 9 o
+  //9871
+  //9876 --
+  //9869 ++
+
+  //0 1 2 3 4 5 6 o
+  //3219
+  //3216 ++
+  //3220 --
+
+  //0 6 8 o
+  //6871
+  //6866 ++
+  //6880 --
+
   process.exit();
 });
