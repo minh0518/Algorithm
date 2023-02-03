@@ -49,7 +49,6 @@ rl.on('line', (input) => {
 
     for (let i = 0; i < possibleNum.length; i++) {
       currentArr.push(possibleNum[i]);
-      console.log(currentArr);
       dfs(index + 1, currentArr);
       currentArr.pop(); // 백트래킹을 위해 pop()
     }
