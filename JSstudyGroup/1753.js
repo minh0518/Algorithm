@@ -17,7 +17,8 @@ rl.on('line', (input) => {
   let graph = Array.from(new Array(N + 1), () => []);
 
   class Heap {
-    constructor(compare = (a, b) => a < b) { // default : 최소 힙
+    constructor(compare = (a, b) => a < b) {
+      // default : 최소 힙
       this.heap = [null];
       this.compare = compare;
     }
@@ -86,7 +87,6 @@ rl.on('line', (input) => {
     const [from, to, cost] = info[i];
     graph[from].push({ to: to, cost: cost });
   }
-
 
   let distance = new Array(N + 1).fill(Infinity);
 
