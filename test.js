@@ -10,45 +10,24 @@ const data = [];
 rl.on('line', (input) => {
   data.push(input);
 }).on('close', () => {
-  let [R, C, W] = data.shift().split(' ').map(Number);
+  let [n, m] = data.shift().split(' ').map(Number);
 
-  let pascal = new Array(30).fill().map(() => []);
-  for (let i = 0; i < 30; i++) {
-    if (i === 0) {
-      pascal[0].push(1);
-      continue;
-    }
-    for (let j = 0; j <= i; j++) {
-      if (j === 0) {
-        pascal[i].push(1);
-        continue;
-      }
+  // 조합 자체가 0행은 안 쓰고 1C0 1C1로 시작 되므로
+  // 1행부터 시작이 되는 것이다. 그래서 인덱스와 동일하게 만들어야 한다
+  let pascal = new Array(n + 1).fill().map(() => [BigInt(1)]);
+  for (let i = 1; i <= n; i++) {
+    for (let j = 1; j <= i; j++) {
       if (j === i) {
-        pascal[i].push(1);
-        continue;
+        pascal[i].push(BigInt(1));
+        break;
       }
-
       pascal[i].push(pascal[i - 1][j - 1] + pascal[i - 1][j]);
     }
   }
 
-  let [x, y] = [R - 1, C - 1];
+  //행은 위에서 언급한대로 인덱스와 동일시 하고
+  //열 역시 조합이 NC0 즉, 0부터 시작되므로 열 역시 인덱스와 동일하게 사용
+  console.log(String(pascal[n][m]));
 
-  let result = [];
-  for (let i = x; i < x + W; i++) {
-    for (let j = 0; j <= i - x; j++) {
-      result.push(pascal[i][y + j]);
-    }
-  }
-
-  console.log(result.reduce((a, b) => a + b));
   process.exit();
 });
-
-// 1
-// 1 1
-// 1 2 1
-// 1 3 3 1
-// 1 4 6 4 1
-// 1 5 10 10 5 1
-// 1 6 15 20 15 6 1
