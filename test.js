@@ -10,24 +10,62 @@ const data = [];
 rl.on('line', (input) => {
   data.push(input);
 }).on('close', () => {
-  let [n, m] = data.shift().split(' ').map(Number);
+  let N = +data.shift();
 
-  // 조합 자체가 0행은 안 쓰고 1C0 1C1로 시작 되므로
-  // 1행부터 시작이 되는 것이다. 그래서 인덱스와 동일하게 만들어야 한다
-  let pascal = new Array(n + 1).fill().map(() => [BigInt(1)]);
-  for (let i = 1; i <= n; i++) {
-    for (let j = 1; j <= i; j++) {
-      if (j === i) {
-        pascal[i].push(BigInt(1));
-        break;
-      }
-      pascal[i].push(pascal[i - 1][j - 1] + pascal[i - 1][j]);
-    }
+  let info = data.map((i) => i.split(' ').map(Number));
+
+  let graph = new Array(N + 1).fill().map(() => []);
+
+  for (let i of info) {
+    let [from, to, weight] = i;
+
+    graph[from].push({ to, weight });
+    graph[to].push({ to: from, weight });
   }
 
-  //행은 위에서 언급한대로 인덱스와 동일시 하고
-  //열 역시 조합이 NC0 즉, 0부터 시작되므로 열 역시 인덱스와 동일하게 사용
-  console.log(String(pascal[n][m]));
+  let visited = new Array(N + 1).fill(false);
+
+  let arrForFarNode = [];
+  const dfs = (index, weight) => {
+    visited[index] = true;
+
+    let adjNode = graph[index].filter((i) => !visited[i.to]);
+
+    if (!adjNode.length) {
+      arrForFarNode.push({ node: index, weight });
+      return;
+    }
+    for (let i = 0; i < adjNode.length; i++) {
+      let nextNode = adjNode[i].to;
+      let nextWeight = weight + adjNode[i].weight;
+      if (!visited[nextNode]) {
+        dfs(nextNode, nextWeight);
+      }
+    }
+  };
+  dfs(1, 0);
+
+  arrForFarNode.sort((a, b) => {
+    return b.weight - a.weight;
+  });
+
+  let farNode = arrForFarNode[0].node;
+
+  arrForFarNode = [];
+  visited = new Array(N + 1).fill(false);
+
+  dfs(farNode, 0);
+  console.log(
+    arrForFarNode.sort((a, b) => {
+      return b.weight - a.weight;
+    })[0].weight,
+  );
 
   process.exit();
 });
+
+// 모든 단말노드까지 탐색을 하고 각 단말노드까지의 누적 가중치를 배열에 둠
+// sort해서 가장 먼 곳 발견
+
+// 여기서 부터 다시 한번 더
+// 그리고 또 최종적으로 sort
