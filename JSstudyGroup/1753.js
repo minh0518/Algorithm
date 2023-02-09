@@ -10,12 +10,6 @@ const data = [];
 rl.on('line', (input) => {
   data.push(input);
 }).on('close', () => {
-  let [N, E] = data.shift().split(' ').map(Number);
-  let start = +data.shift();
-  let info = data.map((i) => i.split(' ').map(Number));
-
-  let graph = Array.from(new Array(N + 1), () => []);
-
   class Heap {
     constructor(compare = (a, b) => a < b) {
       // default : 최소 힙
@@ -38,21 +32,13 @@ rl.on('line', (input) => {
       let parent = 1;
       let child = 2;
       while (child <= len) {
-        if (
-          child < len &&
-          this.compare(this.heap[child + 1], this.heap[child])
-        ) {
+        if (child < len && this.compare(this.heap[child + 1], this.heap[child]))
           child += 1;
-        }
-        if (this.compare(tmp, this.heap[child])) {
-          break;
-        }
+        if (this.compare(tmp, this.heap[child])) break;
         this.heap[parent] = this.heap[child];
         parent = child;
         child *= 2;
       }
-      //end of while
-
       if (this.heap.length > 1) this.heap[parent] = tmp;
       return item;
     }
@@ -62,7 +48,6 @@ rl.on('line', (input) => {
   }
 
   class PriorityQueue {
-    // 우선순위 큐
     constructor(compare) {
       this.heap = new Heap(compare);
     }
@@ -78,70 +63,65 @@ rl.on('line', (input) => {
     }
   }
 
-  const pq = new PriorityQueue((a, b) => {
-    if (a.currCnt < b.currCnt) return true;
-    else return false;
-  });
+  const pq = new PriorityQueue((a, b) => a.cost < b.cost);
+
+  const [N, E] = data.shift().split(' ').map(Number);
+
+  const start = parseInt(data.shift());
+
+  let info = data.map((i) => i.split(' ').map(Number));
+
+  const graph = Array.from(Array(N + 1), () => []);
 
   for (let i = 0; i < E; i++) {
     const [from, to, cost] = info[i];
-    graph[from].push({ to: to, cost: cost });
+
+    graph[from].push({ to, cost });
   }
 
-  let distance = new Array(N + 1).fill(Infinity);
+  const distance = Array(N + 1).fill(Infinity);
 
-  let visited = new Array(N + 1).fill(false);
+  const bfs = (x) => {
+    pq.push({ to: x, cost: 0 });
 
-  function bfs(x) {
     distance[x] = 0;
 
-    visited[x] = true;
-
-    //queue.push({ currNode: x, currCnt: 0 });
-    pq.push({ currNode: x, currCnt: 0 });
-
     while (!pq.empty()) {
-      const { currNode, currCnt } = pq.pop();
-      visited[currNode] = true;
+      const { to, cost } = pq.pop();
 
-      if (distance[currNode] < currCnt) continue;
+      // (pq에서 꺼내온) 노드까지 필요한 cost가
+      // (기존 거리테이블에 있는) 노드까지의 cost보다 크다면
+      // 이 노드에 인접한 노드들도 최솟값으로 갱신될리가 없으므로 continue
+      if (distance[to] < cost) {
+        continue;
+      }
 
-      let linkedNode = graph[currNode];
+      let adjNodes = graph[to];
+      for (let i = 0; i < adjNodes.length; i++) {
+        let { to: nextNode, cost: nextCost } = adjNodes[i];
 
-      for (let i = 0; i < linkedNode.length; i++) {
-        let nextNodeCost = currCnt + linkedNode[i]['cost'];
+        // 현재 노드에서 인접한 노드까지의 cost + 현재 노드까지 걸린 cost
+        nextCost += cost;
 
-        let nextNodeNum = linkedNode[i]['to'];
+        // 거리테이블과 비교 후 갱신
+        if (nextCost < distance[nextNode]) {
+          distance[nextNode] = nextCost;
 
-        if (visited[nextNodeNum]) {
-          continue;
-        }
-
-        if (nextNodeCost < distance[nextNodeNum]) {
-          distance[nextNodeNum] = nextNodeCost;
-
-          pq.push({
-            currNode: nextNodeNum,
-            currCnt: nextNodeCost,
-          });
+          // 갱신한 노드를 나중에 방문할 목록에 둬야하므로 우선순위 큐에 push
+          pq.push({ to: nextNode, cost: nextCost });
         }
       }
     }
-  }
+  };
 
   bfs(start);
 
-  let result = [];
-  for (let i = 1; i < distance.length; i++) {
-    let value = distance[i];
-    if (distance[i] !== Infinity) {
-      result.push(value);
-      continue;
-    }
-    result.push('INF');
-  }
-
-  console.log(result.join('\n'));
+  console.log(
+    distance
+      .slice(1)
+      .map((value) => (value === Infinity ? 'INF' : value))
+      .join('\n'),
+  );
 
   process.exit();
 });
