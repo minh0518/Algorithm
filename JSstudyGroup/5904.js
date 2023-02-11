@@ -21,17 +21,16 @@ rl.on('line', (input) => {
     totalLength = totalLength + (index + 2) + 1 + totalLength;
   }
 
-  //
   const calc = (totalLength, middlLength, N) => {
     let firstLength = (totalLength - middlLength) / 2;
-    if (N <= firstLength) {
-      // 앞
-      return calc(firstLength, middlLength - 1, N); // 중간의 길이를 이전 단계로 줄임
+    if (N <= firstLength) { // 왼쪽 문자열에 있을 경우
+      return calc(firstLength, middlLength - 1, N); 
     }
-    if (N > firstLength + middlLength) {
-      // 끝
+    if (N > firstLength + middlLength) { // 오른쪽 문자열에 있을 경우
       return calc(firstLength, middlLength - 1, N - firstLength - middlLength);
     }
+
+    // 중간 문자열에 있을 경우 정답 도출
     if (N > firstLength && N <= firstLength + middlLength) {
       if (N - firstLength === 1) {
         return 'm';

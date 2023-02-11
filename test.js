@@ -10,74 +10,42 @@ const data = [];
 rl.on('line', (input) => {
   data.push(input);
 }).on('close', () => {
-  function solution(grid) {
-    grid = grid.map((i) => i.split(''));
+  let N = +data.shift();
 
-    let width = grid[0].length;
-    let height = grid.length;
+  let totalLength = 3;
+  let index = 0;
 
-    let visited = new Array(height).fill().map(() => new Array(width).fill(0));
-
-    let [dx, dy] = [
-      [-1, 1, 0, 0],
-      [0, 0, -1, 1],
-    ];
-    const dfs = (x, y) => {
-      visited[x][y] = 1;
-
-      for (let i = 0; i < 8; i++) {
-        let nx = x + dx[i];
-        let ny = y + dy[i];
-
-        if (
-          nx < height &&
-          nx >= 0 &&
-          ny < width &&
-          ny >= 0 &&
-          visited[nx][ny] === 0
-        ) {
-          if (grid[nx][ny] === '.') {
-            dfs(nx, ny);
-          }
-        }
-      }
-    };
-    for (let i = 0; i < width; i++) {
-      if (grid[0][i] === '.' && visited[0][i] === 0) dfs(0, i);
-      if (grid[height - 1][i] === '.' && visited[height - 1][i] === 0)
-        dfs(height - 1, i);
-    }
-
-    for (let i = 0; i < height; i++) {
-      if (grid[i][0] === '.' && visited[i][0] === 0) dfs(i, 0);
-      if (grid[i][width - 1] === '.' && visited[i][width - 1] === 0)
-        dfs(i, width - 1);
-    }
-
-    //console.log(visited.map((i) => i.join('')));
-
-    let answer = 0;
-    //0의 갯수
-    visited.map((i) => {
-      answer += i.filter((number) => {
-        return number !== 1;
-      }).length;
-    });
-    console.log(answer);
+  while (!(N <= totalLength)) {
+    //같아도 끝
+    index += 1;
+    totalLength = totalLength + (index + 2) + 1 + totalLength;
   }
 
-  // 가장자리의 . 에 대해서 dfs
-  solution([
-    '.....####',
-    '..#...###',
-    '.#.##..##',
-    '..#..#...',
-    '..#...#..',
-    '...###...',
-  ]);
-  solution(['.#.', '#..', '.#.']);
-  solution(['####', '##.#', '.#.#']);
+  const calc = (totalLength, middlLength, N) => {
+    let firstLength = (totalLength - middlLength) / 2;
+    if (N <= firstLength) { // 왼쪽 문자열에 있을 경우
+      return calc(firstLength, middlLength - 1, N); 
+    }
+    if (N > firstLength + middlLength) { // 오른쪽 문자열에 있을 경우
+      return calc(firstLength, middlLength - 1, N - firstLength - middlLength);
+    }
+
+    // 중간 문자열에 있을 경우 정답 도출
+    if (N > firstLength && N <= firstLength + middlLength) {
+      if (N - firstLength === 1) {
+        return 'm';
+      } else {
+        return 'o';
+      }
+    }
+  };
+
+  let middlLength = index + 2 + 1;
+  console.log(calc(totalLength, middlLength, N));
 
   process.exit();
 });
-
+// m o o
+// m o o m o o o m o o
+// m o o m o o o m o o m o o o o m o o m o o o m o o
+// m o o m o o o m o o m o o o o m o o m o o o m o o m o o o o o o m o o m o o o m o o m o o o o m o o m o o o m o o
