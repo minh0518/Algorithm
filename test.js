@@ -10,62 +10,93 @@ const data = [];
 rl.on('line', (input) => {
   data.push(input);
 }).on('close', () => {
-  let N = +data.shift();
+  function solution(grid) {
+    grid = grid.map((i) => i.split(''));
 
-  let info = data.map((i) => i.split(' ').map(Number));
+    let width = grid[0].length;
+    let height = grid.length;
 
-  let graph = new Array(N + 1).fill().map(() => []);
+    let visited = new Array(height).fill().map(() => new Array(width).fill(0));
 
-  for (let i of info) {
-    let [from, to, weight] = i;
+    let [dx, dy] = [
+      [-1, 1, 0, 0],
+      [0, 0, -1, 1],
+    ];
+    const dfs = (x, y) => {
+      visited[x][y] = 1;
 
-    graph[from].push({ to, weight });
-    graph[to].push({ to: from, weight });
+      for (let i = 0; i < 8; i++) {
+        let nx = x + dx[i];
+        let ny = y + dy[i];
+
+        if (
+          nx < height &&
+          nx >= 0 &&
+          ny < width &&
+          ny >= 0 &&
+          visited[nx][ny] === 0
+        ) {
+          if (grid[nx][ny] === '.') {
+            dfs(nx, ny);
+          }
+        }
+      }
+    };
+    for (let i = 0; i < width; i++) {
+      if (grid[0][i] === '.' && visited[0][i] === 0) dfs(0, i);
+      if (grid[height - 1][i] === '.' && visited[height - 1][i] === 0)
+        dfs(height - 1, i);
+    }
+
+    for (let i = 0; i < height; i++) {
+      if (grid[i][0] === '.' && visited[i][0] === 0) dfs(i, 0);
+      if (grid[i][width - 1] === '.' && visited[i][width - 1] === 0)
+        dfs(i, width - 1);
+    }
+
+    //console.log(visited.map((i) => i.join('')));
+
+    let answer = 0;
+    //0의 갯수
+    visited.map((i) => {
+      answer += i.filter((number) => {
+        return number !== 1;
+      }).length;
+    });
+    console.log(answer);
   }
 
-  let visited = new Array(N + 1).fill(false);
-
-  let arrForFarNode = [];
-  const dfs = (index, weight) => {
-    visited[index] = true;
-
-    let adjNode = graph[index].filter((i) => !visited[i.to]);
-
-    if (!adjNode.length) {
-      arrForFarNode.push({ node: index, weight });
-      return;
-    }
-    for (let i = 0; i < adjNode.length; i++) {
-      let nextNode = adjNode[i].to;
-      let nextWeight = weight + adjNode[i].weight;
-      if (!visited[nextNode]) {
-        dfs(nextNode, nextWeight);
-      }
-    }
-  };
-  dfs(1, 0);
-
-  arrForFarNode.sort((a, b) => {
-    return b.weight - a.weight;
-  });
-
-  let farNode = arrForFarNode[0].node;
-
-  arrForFarNode = [];
-  visited = new Array(N + 1).fill(false);
-
-  dfs(farNode, 0);
-  console.log(
-    arrForFarNode.sort((a, b) => {
-      return b.weight - a.weight;
-    })[0].weight,
-  );
+  // 가장자리의 . 에 대해서 dfs
+  solution([
+    '.....####',
+    '..#...###',
+    '.#.##..##',
+    '..#..#...',
+    '..#...#..',
+    '...###...',
+  ]);
+  solution(['.#.', '#..', '.#.']);
+  solution(['####', '##.#', '.#.#']);
 
   process.exit();
 });
 
-// 모든 단말노드까지 탐색을 하고 각 단말노드까지의 누적 가중치를 배열에 둠
-// sort해서 가장 먼 곳 발견
+// 정답
+// 23
+// 3
+// 9
 
-// 여기서 부터 다시 한번 더
-// 그리고 또 최종적으로 sort
+// '####'
+// '##.#'
+// '.#.#'
+
+// '.#.'
+// '#..'
+// '.#.'
+
+// '.....####'
+// '..#...###'
+// '.#.##..##'
+// '..#..#...'
+// '..#...#..'
+// '...###...'
