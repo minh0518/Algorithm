@@ -19,53 +19,51 @@ rl.on('line', (input) => {
   for (let i of info) {
     let [from, to, weight] = i;
 
+    // 양방향
     graph[from].push({ to, weight });
     graph[to].push({ to: from, weight });
   }
 
-  let visited = new Array(N + 1).fill(false);
+  // console.log(graph)
 
-  let arrForFarNode = [];
-  const dfs = (index, weight) => {
+  const dfs = (index, weight, visited, arrForFarNode) => {
     visited[index] = true;
 
+    // 인접한 노드 중에서 방문하지 않은 노드를 리턴
     let adjNode = graph[index].filter((i) => !visited[i.to]);
 
+    // 현재 index가 단말 노드라면
     if (!adjNode.length) {
       arrForFarNode.push({ node: index, weight });
       return;
     }
     for (let i = 0; i < adjNode.length; i++) {
-      let nextNode = adjNode[i].to;
-      let nextWeight = weight + adjNode[i].weight;
+      let nextNode = adjNode[i].to; // 다음 노드번호
+      let nextWeight = weight + adjNode[i].weight; // 다음 노드번호까지의 가중치 누적
       if (!visited[nextNode]) {
-        dfs(nextNode, nextWeight);
+        dfs(nextNode, nextWeight, visited, arrForFarNode);
       }
     }
   };
-  dfs(1, 0);
 
+ 
+  let arrForFarNode = []; 
+  dfs(1, 0, new Array(N + 1).fill(false), arrForFarNode);
+
+  // 가장 가중치가 큰 노드를 찾기 위해 내림차순 sort
   arrForFarNode.sort((a, b) => {
-    return b.weight - a.weight;
+    return b.weight - a.weight
   });
 
   let farNode = arrForFarNode[0].node;
 
-  arrForFarNode = [];
-  visited = new Array(N + 1).fill(false);
-
-  dfs(farNode, 0);
+  let final = [];
+  dfs(farNode, 0, new Array(N + 1).fill(false), final);
   console.log(
-    arrForFarNode.sort((a, b) => {
+    final.sort((a, b) => {
       return b.weight - a.weight;
     })[0].weight,
   );
 
   process.exit();
 });
-
-// 모든 단말노드까지 탐색을 하고 각 단말노드까지의 누적 가중치를 배열에 둠
-// sort해서 가장 먼 곳 발견
-
-// 여기서 부터 다시 한번 더
-// 그리고 또 최종적으로 sort
