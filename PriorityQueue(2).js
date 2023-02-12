@@ -1,83 +1,84 @@
-const { off } = require('process')
-const readline = require('readline')
-const { fileURLToPath } = require('url')
+const { off } = require('process');
+const readline = require('readline');
+const { fileURLToPath } = require('url');
 
 const rl = readline.createInterface({
   input: process.stdin,
   output: process.stdout,
-})
+});
 
-const data = []
+const data = [];
 
 rl.on('line', (input) => {
-  data.push(input)
+  data.push(input);
 }).on('close', () => {
-
   class Heap {
-    constructor (compare = (a, b) => a < b) { // default : ÃÖ¼Ò Èü
-      this.heap = [null]; //ÃÊ±â°ªÀ» null·Î Áà¼­ ÀÏºÎ·¯ [1]ºÎÅÍ »ç¿ëÇÏ·Á°í ÇÔ
+    constructor(compare = (a, b) => a < b) {
+      // default : ìµœì†Œ íž™
+      this.heap = [null]; //ì´ˆê¸°ê°’ì„ nullë¡œ ì¤˜ì„œ ì¼ë¶€ëŸ¬ [1]ë¶€í„° ì‚¬ìš©í•˜ë ¤ê³  í•¨
       this.compare = compare;
     }
     insert(item) {
       this.heap.push(item);
-      let i = this.heap.length-1;
-      while(i !== 1 && this.compare(item, this.heap[Math.floor(i/2)])){
-        this.heap[i] = this.heap[Math.floor(i/2)];
-        i = Math.floor(i/2);
+      let i = this.heap.length - 1;
+      while (i !== 1 && this.compare(item, this.heap[Math.floor(i / 2)])) {
+        this.heap[i] = this.heap[Math.floor(i / 2)];
+        i = Math.floor(i / 2);
       }
       this.heap[i] = item;
     }
     delete() {
       const item = this.heap[1];
-      const tmp = this.heap.pop(); //¸Ç µÚ¿¡ ÀÖ´Â ³ëµå¸¦ Á¦°Å
-      const len = this.heap.length-1;
+      const tmp = this.heap.pop(); //ë§¨ ë’¤ì— ìžˆëŠ” ë…¸ë“œë¥¼ ì œê±°
+      const len = this.heap.length - 1;
       let parent = 1;
       let child = 2;
-      while(child <= len){
-
-        //¾çÂÊ ÀÚ½ÄÀÌ µÑ ´Ù ÀÖ´Ù¸é, ÀÚ±â ÀÚ½Å°ú ´ÙÀ½ ÀÚ½ÄÀ» ºñ±³
-        //ÀÌ°Ô ¾çÂÊ ÀÚ½Ä Áß¿¡¼­, ÀÛÀº ÀÚ½ÄÀ» ¼±ÅÃÇÏ´Â °ÍÀÌ´Ù
-        //compare¿¡¼­ child¿Í child+1 Áß¿¡¼­ ÀÛÀº°Ô child+¶ó¸é child+=1¸¦ ÇÏ´Â °ÍÀÌ´Ù
-        if(child < len && this.compare(this.heap[child+1], this.heap[child])){
+      while (child <= len) {
+        //ì–‘ìª½ ìžì‹ì´ ë‘˜ ë‹¤ ìžˆë‹¤ë©´, ìžê¸° ìžì‹ ê³¼ ë‹¤ìŒ ìžì‹ì„ ë¹„êµ
+        //ì´ê²Œ ì–‘ìª½ ìžì‹ ì¤‘ì—ì„œ, ìž‘ì€ ìžì‹ì„ ì„ íƒí•˜ëŠ” ê²ƒì´ë‹¤
+        //compareì—ì„œ childì™€ child+1 ì¤‘ì—ì„œ ìž‘ì€ê²Œ child+ë¼ë©´ child+=1ë¥¼ í•˜ëŠ” ê²ƒì´ë‹¤
+        if (
+          child < len &&
+          this.compare(this.heap[child + 1], this.heap[child])
+        ) {
           child += 1;
         }
 
-        //°è¼Ó ÀÚ½Ä³ëµå·Î ³»·Á°¡¸é¼­ ¸Ç µÚ¿¡ ÀÖ´Â ³ëµå¿Í ºñ±³ÇÏ´Âµ¥
-        //¸¸¾à ÀÚ½Ä³ëµåÀÇ °ªÀÌ ´õ Å©´Ù¸é ¹Ýº¹¹® Áß´Ü
-        if(this.compare(tmp, this.heap[child])){
+        //ê³„ì† ìžì‹ë…¸ë“œë¡œ ë‚´ë ¤ê°€ë©´ì„œ ë§¨ ë’¤ì— ìžˆëŠ” ë…¸ë“œì™€ ë¹„êµí•˜ëŠ”ë°
+        //ë§Œì•½ ìžì‹ë…¸ë“œì˜ ê°’ì´ ë” í¬ë‹¤ë©´ ë°˜ë³µë¬¸ ì¤‘ë‹¨
+        if (this.compare(tmp, this.heap[child])) {
           break;
         }
 
-        //ÀÚ½Ä³ëµå°¡ ´õ ÀÛ¾Æ¼­ ±³Ã¼°¡ ÇÊ¿äÇÏ´Ù¸é
-        //±³Ã¼¸¦ ÁøÇà
-        //ºÎ¸ð³ëµåÀÇ À§Ä¡¿¡ ÀÚ½Ä³ëµåÀÇ °ªÀ» ³Ö¾îÁÖ°í
-        //ÀÎµ¦½º¸¸ º¯°æ
+        //ìžì‹ë…¸ë“œê°€ ë” ìž‘ì•„ì„œ êµì²´ê°€ í•„ìš”í•˜ë‹¤ë©´
+        //êµì²´ë¥¼ ì§„í–‰
+        //ë¶€ëª¨ë…¸ë“œì˜ ìœ„ì¹˜ì— ìžì‹ë…¸ë“œì˜ ê°’ì„ ë„£ì–´ì£¼ê³ 
+        //ì¸ë±ìŠ¤ë§Œ ë³€ê²½
         this.heap[parent] = this.heap[child];
         parent = child;
         child *= 2;
-        //ÀÚ½ÄÀº ´ç¿¬È÷ 2Ä­¾¿ ³»·Á°¡¾ß ÇÏ¹Ç·Î *2 ÁøÇà
+        //ìžì‹ì€ ë‹¹ì—°ížˆ 2ì¹¸ì”© ë‚´ë ¤ê°€ì•¼ í•˜ë¯€ë¡œ *2 ì§„í–‰
       }
       //end of while
 
-      //À§ÀÇ °úÁ¤Àº parent¿Í childÀÇ ÀÎµ¦½º¸¦ °è¼ÓÇØ¼­ ¼öÁ¤ÇØ ³ª°¡¸ç
-      //¸Å ·çÇÁ¸¶´Ù tmp°ªÀÌ ´õ heapifyµÇ¾î¾ß ÇÑ´Ù¸é ¸Å Æ®¸®¸¶´Ù parent¸¦ child·Î ³Ö¾îÁÖ°í
-      //child´Â *2¸¦ ÇØ¼­ ¾Æ·¡·Î ³»·Á°£´Ù
+      //ìœ„ì˜ ê³¼ì •ì€ parentì™€ childì˜ ì¸ë±ìŠ¤ë¥¼ ê³„ì†í•´ì„œ ìˆ˜ì •í•´ ë‚˜ê°€ë©°
+      //ë§¤ ë£¨í”„ë§ˆë‹¤ tmpê°’ì´ ë” heapifyë˜ì–´ì•¼ í•œë‹¤ë©´ ë§¤ íŠ¸ë¦¬ë§ˆë‹¤ parentë¥¼ childë¡œ ë„£ì–´ì£¼ê³ 
+      //childëŠ” *2ë¥¼ í•´ì„œ ì•„ëž˜ë¡œ ë‚´ë ¤ê°„ë‹¤
 
-      //°á±¹ while ·çÇÁ°¡ ³¡³ª¸é parentÀÚ¸®¿¡ ºñ·Î¼Ò tmp°¡ µé¾î°¥ ÀÚ¸®ÀÌ´Ù
-      //childº¸´Ù ´õ ÀÛÁö ¾Ê±â ¶§¹®ÀÌ´Ù
+      //ê²°êµ­ while ë£¨í”„ê°€ ëë‚˜ë©´ parentìžë¦¬ì— ë¹„ë¡œì†Œ tmpê°€ ë“¤ì–´ê°ˆ ìžë¦¬ì´ë‹¤
+      //childë³´ë‹¤ ë” ìž‘ì§€ ì•Šê¸° ë•Œë¬¸ì´ë‹¤
 
-
-      //¸¶Áö¸·¿¡ parentÀÚ¸®¿¡ tmp¸¦ ³Ö¾îÁÜ
-      if(this.heap.length > 1) this.heap[parent] = tmp;
+      //ë§ˆì§€ë§‰ì— parentìžë¦¬ì— tmpë¥¼ ë„£ì–´ì¤Œ
+      if (this.heap.length > 1) this.heap[parent] = tmp;
       return item;
     }
     empty() {
       return this.heap.length === 1;
     }
   }
-  
+
   class PriorityQueue {
-    constructor (compare) {
+    constructor(compare) {
       this.heap = new Heap(compare);
     }
     empty() {
@@ -87,29 +88,23 @@ rl.on('line', (input) => {
       this.heap.insert(item);
     }
     pop() {
-      if(!this.empty()) return this.heap.delete();
+      if (!this.empty()) return this.heap.delete();
       else return null;
     }
   }
 
-
-  const pq=new PriorityQueue((a,b)=>{
-    if(a[0] < b[0]) return true;
+  const pq = new PriorityQueue((a, b) => {
+    if (a < b) return true;
     else return false;
-  })
+  });
 
+  pq.push(3);
+  pq.push(4);
+  pq.push(1);
+  pq.push(8);
+  pq.push(6);
+  pq.push(9);
+  console.log(pq.heap);
 
-  //³ÖÀ»¶§´Â ¹è¿­ÇüÅÂ·Î
-  pq.push([3])
-  pq.push([4])
-  pq.push([1])
-  pq.push([8])
-  pq.push([6])
-  pq.push([9])
-  console.log(pq.heap)
-
-
-
-  process.exit()
-})
-
+  process.exit();
+});

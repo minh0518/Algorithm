@@ -77,11 +77,11 @@ class Heap {
       super()
     }
   
-    //Min Heap ¿¡ ³Ö±â
+    //Min Heap ì— ë„£ê¸°
     enqueue = (priority, value) => this.insert(priority, value)
-    //Min Heap ¿¡¼­ »èÁ¦ÇÏ±â (= ¿ì¼±¼øÀ§°¡ °¡Àå ³ôÀº ³ëµå ²¨³»±â)
+    //Min Heap ì—ì„œ ì‚­ì œí•˜ê¸° (= ìš°ì„ ìˆœìœ„ê°€ ê°€ìž¥ ë†’ì€ ë…¸ë“œ êº¼ë‚´ê¸°)
     dequeue = () => this.remove()
-    //heap ÀÌ ºñ¾ú´ÂÁö Ã¼Å©ÇÏ±â
+    //heap ì´ ë¹„ì—ˆëŠ”ì§€ ì²´í¬í•˜ê¸°
     isEmpty = () => this.heap.length <= 0
   }
 
