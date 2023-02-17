@@ -18,6 +18,17 @@ rl.on('line', (input) => {
   let end = string.length - 1;
 
   while (start <= end) {
+    if (string[start] < string[end]) {
+      result += string[start];
+      start += 1;
+      continue;
+    }
+    if (string[start] > string[end]) {
+      result += string[end];
+      end -= 1;
+      continue;
+    }
+
     if (string[start] === string[end]) {
       let insideStart = start + 1;
       let insideEnd = end - 1;
@@ -44,14 +55,6 @@ rl.on('line', (input) => {
         result += string[start];
         start += 1;
       }
-    } else if (string[start] < string[end]) {
-      result += string[start];
-      start += 1;
-      continue;
-    } else if (string[start] > string[end]) {
-      result += string[end];
-      end -= 1;
-      continue;
     }
   }
 
@@ -67,4 +70,3 @@ rl.on('line', (input) => {
 
   process.exit();
 });
-
