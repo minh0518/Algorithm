@@ -51,6 +51,8 @@ rl.on('line', (input) => {
         insideEnd -= 1;
       }
 
+      // start를 늘리던 , end를 줄이던 상관이 없음
+      // 단지 다음 단계로만 넘어가기만 하면 됨
       if (isSame) {
         result += string[start];
         start += 1;

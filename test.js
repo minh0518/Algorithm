@@ -52,8 +52,8 @@ rl.on('line', (input) => {
       }
 
       if (isSame) {
-        result += string[start];
-        start += 1;
+        result += string[end];
+        end -= 1;
       }
     }
   }
