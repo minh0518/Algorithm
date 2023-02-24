@@ -10,41 +10,16 @@ const data = [];
 rl.on('line', (input) => {
   data.push(input);
 }).on('close', () => {
-  // N이 최대 3만
-  let [N, d, k, c] = data.shift().split(' ').map(Number);
-  let table = data.map(Number);
+  let arr = [0, 1, 2, 3, 4, 5, 6, 7, 0, 1, 2, 3];
+  let k = 4;
 
-  const check = (arr) => {
-    let count = 0;
-
-    let set = new Set();
-    arr.forEach((i) => {
-      set.add(i);
-    });
-
-    count = set.size;
-    if (!set.has(c)) count += 1;
-
-    return count;
-  };
-
-  let result = [];
-  for (let i = 0; i < table.length; i++) {
+  for (let i = 0; i < arr.length - k; i++) {
     let getK;
     let from = i;
     let to = i + k;
-    if (to > table.length) {
-      let leftValue = k - (table.length - from);
-      getK = [...table.slice(from, table.length), ...table.slice(0, leftValue)];
-    } else {
-      getK = table.slice(from, to);
-    }
-
-    let getCount = check(getK);
-    result.push(getCount);
+    getK = arr.slice(from, to);
+    console.log(getK);
   }
-
-  console.log(Math.max(...result));
 
   process.exit();
 });
@@ -53,8 +28,7 @@ rl.on('line', (input) => {
 // k개 중에서는 최대한 겹치는게 없도록
 
 // k=4 , 쿠폰 30
-// 7 9 7 30 2 7 9 25
-//            5 6 7
+// 7 9 7 30 2 7 9 25 (길이 8)
+//          4 5 6 7
 // k=4 , 쿠폰 7
 // 2 7 9 25 7 9 7 30
-//
