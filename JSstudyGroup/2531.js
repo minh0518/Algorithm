@@ -10,6 +10,7 @@ const data = [];
 rl.on('line', (input) => {
   data.push(input);
 }).on('close', () => {
+    
   // N이 최대 3만
   let [N, d, k, c] = data.shift().split(' ').map(Number);
   let table = data.map(Number);
