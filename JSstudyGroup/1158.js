@@ -20,7 +20,12 @@ rl.on('line', (input) => {
   result.push(arr[index]);
   visited[index] = true;
 
+	// 모두 방문하면 끝
   while (visited.filter((i) => !i).length) {
+
+		// 방문하지 않은 K자리 뒤의 숫자를 골라야 하므로
+    // 다음 인덱스로 계속 이동하며 방문하지 않았던 수가 K번이 되면
+    // 그때 while문을 탈출
     let falseCount = 0;
     while (falseCount !== K) {
       index += 1;
@@ -45,4 +50,6 @@ rl.on('line', (input) => {
 // 1 2 (3) 4 5 (6) 7 
 // 1 (2) (3) 4 5 (6) 7  
 // 1 (2) (3) 4 5 (6) (7) 
-// 1 (2) (3) 4 5 (6) (7) 
+// 1 (2) (3) 4 (5) (6) (7) 
+// (1) (2) (3) 4 (5) (6) (7) 
+// (1) (2) (3) (4) (5) (6) (7) 
