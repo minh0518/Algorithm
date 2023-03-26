@@ -66,6 +66,11 @@ rl.on('line', (input) => {
 
   // 모든 노드들의 조상노드가 같아야 전체가 연결된 형태이다
   for (let i = 0; i < nodes.length; i++) {
+
+    // 여기선 parent배열을 사용할 수 없다
+    // 왜냐하면 문제의 조건에 맞는 최소 비용을 가진 노드들만 union하기 때문에
+    // 모든 노드들을 전부 union하지 않고 , 그러므로 parent배열을 기준으로 사용하면 틀리게 된다
+    // 그러므로 find()를 사용해야 한다
     if (find(i) !== ancestorNode) {
       flag = true; // 조상노드가 다르다면 전체가 연결된 것이 아니다
       break;
