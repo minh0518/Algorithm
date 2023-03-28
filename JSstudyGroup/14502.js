@@ -66,7 +66,6 @@ rl.on('line', (input) => {
     return cnt;
   };
 
-
   // let result=[]
 
   // 백트래킹으로 벽을 세울 수 있는 모든 경우의 수를 구함
@@ -86,9 +85,7 @@ rl.on('line', (input) => {
     }
   };
 
-  for (let i = 0; i < zero.length; i++) {
-    dfs(i, 0);
-  }
+  dfs(0, 0);
 
   // console.log(Math.max(...result));
   console.log(answer);
