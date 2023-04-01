@@ -82,7 +82,12 @@ rl.on('line', (input) => {
     }
   };
 
+
+  // 메인 로직
+  
   let targetArr = [...N];
+
+  // 숫자 길이가 3일때
   if (targetArr.length >= 3) {
     let firstCount = 0;
     targetArr.forEach((i) => {
