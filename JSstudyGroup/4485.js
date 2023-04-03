@@ -63,7 +63,6 @@ rl.on('line', (input) => {
     }
   }
 
-
   // 메인 로직
   let [dx, dy] = [
     [-1, 1, 0, 0],
@@ -84,10 +83,6 @@ rl.on('line', (input) => {
 
       while (!pq.empty()) {
         const { to, cost } = pq.pop();
-
-        if (to[0] === N - 1 && to[1] === N - 1) {
-          break;
-        }
 
         // 하나의 좌료를 기점으로 상하좌우로 연결된 노드들에 대해 갱신 작업
         for (let i = 0; i < 4; i++) {
