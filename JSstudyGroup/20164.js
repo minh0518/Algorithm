@@ -16,6 +16,9 @@ rl.on('line', (input) => {
 
   let count = 0;
   const dfs = (targetArr, firstCount) => {
+
+    // 3개의 구역으로 쪼개는 과정은 단순 for문으로 진행
+    // 3개로 쪼개야 하므로 쪼개는 지점은 i,j 2개
     for (let i = 1; i <= targetArr.length - 2; i++) {
       for (let j = i + 1; j <= targetArr.length - 1; j++) {
         let count = firstCount;
