@@ -12,11 +12,12 @@ rl.on('line', (input) => {
 }).on('close', () => {
   let [N, M, R] = data.shift().split(' ').map(Number);
   let arr = data.map((i) => i.split(' ').map(Number));
-  let copyArr = JSON.parse(JSON.stringify(arr));
 
   let minValue = Math.min(N, M);
 
   const rotate = (arr) => {
+		
+		// 새로운 배열
     let newArr = new Array(N).fill().map(() => new Array(M));
 
     for (let depth = 0; depth < Math.floor(minValue / 2); depth++) {
@@ -48,6 +49,8 @@ rl.on('line', (input) => {
 
   let result = arr;
   for (let i = 0; i < R; i++) {
+
+		// 매 회전의 결과값을 다음 회전에 사용
     let next = rotate(result);
     result = next;
   }
