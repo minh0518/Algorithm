@@ -14,6 +14,8 @@ function solution(gems) {
       tmpMap.set(gems[i], i);
 
       if (tmpMap.size === sectionSize) {
+        // Map(4) { 'RUBY' => 2, 'DIA' => 4, 'EMERALD' => 5, 'SAPPHIRE' => 6 }
+        // 처음 RUBY의 인덱스인 2와 , 현재 for문의 i(=SAPPHIRE의 인덱스)
         result.push([tmpMap.entries().next().value[1] + 1, i + 1]);
       }
     }
