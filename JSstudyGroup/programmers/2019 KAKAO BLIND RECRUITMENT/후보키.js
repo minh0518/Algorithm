@@ -40,21 +40,22 @@ function solution(relation) {
   // 조합 인덱스를 바탕으로 유일성 검사
   let uniqueIndex = [];
   for (let i = 0; i < combination.length; i++) {
-    let eachRows = [];
+    let joinResult = [];
     for (let k = 0; k < uniqueLength; k++) {
       let eachCols = [];
       for (let j = 0; j < combination[i].length; j++) {
         eachCols.push(newRelation[combination[i][j]][k]);
       }
-      eachRows.push(eachCols.join(''));
+      joinResult.push(eachCols.join(''));
     }
-    if (new Set(eachRows).size === uniqueLength) {
+    if (new Set(joinResult).size === uniqueLength) {
       uniqueIndex.push(combination[i]); // join된 문자열 말고 인덱스를 넣어야 함
     }
   }
 
   // 최소성 검사
   let index = 0;
+
   while (index < uniqueIndex.length - 1) {
     let current = uniqueIndex[index]; // 현재
 
