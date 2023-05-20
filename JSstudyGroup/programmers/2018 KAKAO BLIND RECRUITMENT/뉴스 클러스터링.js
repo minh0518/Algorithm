@@ -4,6 +4,8 @@ const solution = (str1, str2) => {
 
   let firstPair = [];
   let secondPair = [];
+
+  // 알파벳 제외
   for (let i = 0; i < str1.length - 1; i++) {
     let pair = str1.slice(i, i + 2);
     if (pair[0].charCodeAt(0) < 97 || pair[0].charCodeAt(0) > 122 || pair[1].charCodeAt(0) < 97 || pair[1].charCodeAt(0) > 122) {
@@ -21,6 +23,7 @@ const solution = (str1, str2) => {
     secondPair.push(pair);
   }
 
+  // 둘 다 공집합이라면 자카드 유사도가 1이므로 65536 리턴
   if (firstPair.length === 0 && secondPair.length === 0) {
     return 65536;
   }
@@ -50,10 +53,13 @@ const solution = (str1, str2) => {
     }
 
     if (secondPairSame.length === 0) {
-      i -= 1;
+      i -= 1; // while문에서 같은 값이 나오지 않는 인덱스까지
+      // i를 +1을 했으므로 다음 for문에서(= i++가 됨) 같은 값이 나오지 않는
+      // 위치부터 시작하려면 -1을 해야 함
       continue;
     }
 
+    // 길이를 기준으로 합집합 , 교집합에 push
     if (firstPairsame.length > secondPairSame.length) {
       union.push(...firstPairsame);
       intersection.push(...secondPairSame);
@@ -66,7 +72,7 @@ const solution = (str1, str2) => {
       union.push(...firstPairsame);
       intersection.push(...firstPairsame);
     }
-    i -= 1;
+    i -= 1; // 위의 설명과 동일
   }
 
   // let set = new Set([...firstPair, ...secondPair]);
