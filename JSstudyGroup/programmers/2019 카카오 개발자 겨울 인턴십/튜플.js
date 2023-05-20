@@ -8,15 +8,24 @@ const solution = (s) => {
     return a.length - b.length;
   });
 
-  let result = [];
+  // let result = [];
+  // for (let i of arr) {
+  //   for (let j of i) {
+  //     if (result.includes(j)) continue;
+  //     result.push(j);
+  //   }
+  // }
+  // return result;
+
+  let result = new Set();
+
   for (let i of arr) {
     for (let j of i) {
-      if (result.includes(j)) continue;
-      result.push(j);
+      result.add(j);
     }
   }
 
-  return result;
+  return Array.from(result);
 };
 
 solution('{{2},{2,1},{2,1,3},{2,1,3,4}}');
