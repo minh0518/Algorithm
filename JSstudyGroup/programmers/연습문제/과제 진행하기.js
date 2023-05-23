@@ -23,6 +23,9 @@ const solution = (plans) => {
 
     // 다음 과제까지의 남은 시간
     let timeGap = startTime - currentTime;
+
+    // 현재 queue에서 빼온 target의 시작시간을 현재 시간으로 바꿔놓음으로써
+    // 다음번에 currentTime으로 사용
     currentTime = startTime;
 
     // 스택이 비거나 , timeGap이 0이 될 때까지
