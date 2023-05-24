@@ -1,69 +1,73 @@
-const solution = (plans) => {
-  const queue = plans
-    .map((plan) => {
-      const [name, time, spend] = plan;
-      const [hour, minute] = time.split(':');
-      const convertedTime = Number(hour) * 60 + Number(minute);
+function solution(plans) {
+  let answer = [];
 
-      return [name, convertedTime, Number(spend)];
-    })
-    .sort((a, b) => a[1] - b[1]);
+  plans = plans.map(([name, start, playtime]) => {
+    const [hh, mm] = start.split(':').map(Number);
 
-  let result = [];
-  let first = queue.shift();
+    return { name, start: hh * 60 + mm, playtime: Number(playtime) };
+  });
 
-  // 첫번째 과제
-  let stack = [first];
-  // 현재 시각
-  let currentTime = first[1];
+  console.log(plans);
+  // [
+  //   { name: 'science', start: 760, playtime: 50 },
+  //   { name: 'music', start: 740, playtime: 40 },
+  //   { name: 'history', start: 840, playtime: 30 },
+  //   { name: 'computer', start: 750, playtime: 100 },
+  // ];
 
-  while (queue.length) {
-    const target = queue.shift();
-    const startTime = target[1];
+  // 24시간을 분 단위의 배열로 표현
+  // 크기가 1440인 배열
+  const timeLine = Array(24 * 60).fill(null);
 
-    // 다음 과제까지의 남은 시간
-    let timeGap = startTime - currentTime;
+  // 각 과제의 시작 지점을 체크
+  plans.forEach((v) => {
+    timeLine[v.start] = v;
+  });
 
-    // 현재 queue에서 빼온 target의 시작시간을 현재 시간으로 바꿔놓음으로써
-    // 다음번에 currentTime으로 사용
-    currentTime = startTime;
+  // 과제들이 담기는 곳 (현재 진행 , 남은 과제 모두 포함)
+  const stack = [];
 
-    // 스택이 비거나 , timeGap이 0이 될 때까지
-    // 즉, timeGap이 남고 stack에 쌓인 과제들이 있다면 계속 반복하는 것이다
-    while (stack.length && timeGap > 0) {
-      const latest = stack.pop();
+  //00:00~23:59를 이중 for문으로 반복
+  for (let h = 0; h < 24; h++) {
+    for (let m = 0; m < 60; m++) {
+      // 이 로직에서 사용되고 있는 분 단위로 환산
+      const time = h * 60 + m;
 
-      const [latestName, latestStartTime, latestPlayTime] = latest;
-
-      // 과제를 끝낼 수 있다면
-      if (latestPlayTime <= timeGap) {
-        result.push(latestName);
-        timeGap -= latestPlayTime;
-        continue;
+      const plan = timeLine[time];
+      // 현재 시간에 진행해야 하는 과제가 있다면 스택에 push
+      // 즉 새로운 과제가 진행되는 것이다
+      if (plan) {
+        stack.push(plan);
       }
 
-      // 다 끝낼 수 없다면
-      if (latestPlayTime > timeGap) {
-        // 최대한 진행한 만큼 빼줌
-        latest[2] = latestPlayTime - timeGap; // 최대한 진행한 만큼 playTime에서 빼줌
-        timeGap = 0;
-        stack.push(latest); // 다 해결한게 아니므로 다시 push
+      // 스택에 무언가라도 들어있다면(=현재 시간에 진행 해야 할 과제 or 이전에 남은 과제가 있다면)
+      if (stack.length) {
+        //가장 위에 있는 과제
+        const top = stack[stack.length - 1];
+
+        // 1분씩 줄여나가는데 1분 줄이면 과제가 끝난다면
+        if (!(top.playtime - 1)) {
+          answer.push(top.name); // 정답에 추가
+          stack.pop(); // 제거
+        } else {
+          top.playtime--; // for문은 1분씩 진행되므로 1분씩 차감
+        }
       }
     }
-
-    stack.push(target);
   }
 
-  // queue가 빈 것은 마지막 시간까지 과제를 다 진행한 것이므로
-  // stack의 뒤에서부터 push하면 된다
+  // 23:59 넘어서 끝나는 과제들이 있을 수 있으므로
+  // 이건 늦게 시작한 순서대로 정답배열에 추가
+  // 23:59 부터는 더이상 추가로 진행해야 할 과제가 없는 것이므로
+  // 최근에 시작한 것부터 끝내게 되는 것이다
   while (stack.length) {
-    result.push(stack.pop()[0]);
+    const top = stack.pop();
+
+    answer.push(top.name);
   }
 
-  console.log(result);
-  return result;
-};
-
+  return answer;
+}
 // solution([
 //   ['korean', '11:40', '30'],
 //   ['english', '12:10', '20'],
