@@ -11,14 +11,15 @@ function solution(user_id, banned_id) {
 
       let index = 0;
       while (index !== target.length) {
+        // 문자열이 *도 아니고 서로 같지도 않는 것이라면 (|| 이므로 둘 다 false여야 false) break
+        // 다만 문자열이 *라면 3두번째 조건은 진행하지도 않고 바로 true 넘어감
         if (!(currentCompareId[index] === '*' || target[index] === currentCompareId[index])) break;
         index += 1;
       }
 
-      // while문을 다 돌았다면 그건 일치한다는 것을 의미
+      // while문을 다 돌았다면 그건 위의 while문에서 break 되지 않아서
+      // banned_id에 일치한다는 것
       if (index === target.length) {
-        for (let k of info) {
-        }
         info[info.length - 1].push(user_id[j]);
       }
     }
@@ -28,11 +29,10 @@ function solution(user_id, banned_id) {
 
   let result = new Set();
 
-  // 백트래킹
   const dfs = (index, currnet) => {
     if (currnet.length === info.length) {
-      let sortedCurrent = [...currnet].sort();
-      result.add(sortedCurrent.join('')); // 중복 제거를 위해 join한 값을 넘겨줌
+      let sortedCurrent = [...currnet].sort(); // set에 넣어서 중복 제거하기 위해 sort()
+      result.add(sortedCurrent.join('')); // set에서 중복 값이 문자열로 비교돼야 하므로 join
       return;
     }
 
@@ -46,7 +46,7 @@ function solution(user_id, banned_id) {
     }
   };
 
-  dfs(0, []);
+  dfs(0, []); // 시작 행 , 누적 값을 담는 배열
   console.log(result.size);
   return result.size;
 }
