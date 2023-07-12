@@ -27,21 +27,21 @@ function solution(board, skill) {
   // 위에서 아래로 누적합
   // prefixSumBoard는 기존 행,열에서 각각 +1을 한 것이므로 <가 아닌 <=로 해야 함
   for (let i = 0; i <= cols; i++) {
-    for (let j = 1; j <= rols; j++) {
+    for (let j = 1; j <= rows; j++) {
       prefixSumBoard[j][i] = prefixSumBoard[j - 1][i] + prefixSumBoard[j][i];
     }
   }
   console.log(prefixSumBoard);
 
   //왼쪽에서 오른쪽으로 누적합
-  for (let i = 0; i <= rols; i++) {
+  for (let i = 0; i <= rows; i++) {
     for (let j = 1; j <= cols; j++) {
       prefixSumBoard[i][j] = prefixSumBoard[i][j - 1] + prefixSumBoard[i][j];
     }
   }
 
   // 최종적으로 board와 합침
-  for (let i = 0; i < rols; i++) {
+  for (let i = 0; i < rows; i++) {
     for (let j = 0; j < cols; j++) {
       board[i][j] += prefixSumBoard[i][j];
     }
@@ -51,7 +51,7 @@ function solution(board, skill) {
 
   // 최종 갯수 카운트
   let result = 0;
-  for (let i = 0; i < rols; i++) {
+  for (let i = 0; i < rows; i++) {
     for (let j = 0; j < cols; j++) {
       if (board[i][j] > 0) result += 1;
     }
