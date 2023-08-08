@@ -1,23 +1,24 @@
 function solution(n, t, m, p) {
   let result = [];
 
+  let str = '';
+
   let number = 0;
 
-  let order = 1;
-  while (result.length < t) {
-    let current = String(number.toString(n)).split('');
-
-    for (let i = 0; i < current.length; i++) {
-      let str = current[i];
-
-      if (m === p && order % m === 0) result.push(str);
-      if (order % m === p) result.push(str);
-
-      order += 1;
-    }
-
+  // t개까지 구할 수 있는 범위까지의 문자열을 구함
+  while (str.length < m * t) {
+    str += number.toString(n).toUpperCase();
     number += 1;
   }
 
-  return result.slice(0, t).join('').toUpperCase();
+  // 정답 추가
+  let index = 0;
+  while (result.length !== t) {
+    let slicedStr = str.slice(index, index + m);
+
+    result.push(slicedStr[p - 1]);
+    index += m;
+  }
+
+  return result.join('');
 }
