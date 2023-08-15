@@ -1,4 +1,5 @@
 function solution(k, dungeons) {
+  // 순열
   const permutation = [];
   const dfs = (current) => {
     if (current.length === dungeons.length) {
@@ -16,6 +17,7 @@ function solution(k, dungeons) {
 
   dfs([]);
 
+  // 순열을 기반으로 한 경우의 수들에 대해 연산을 진행
   const result = [];
   for (let i of permutation) {
     const order = i.split('').map(Number);
@@ -30,5 +32,6 @@ function solution(k, dungeons) {
     result.push(count);
   }
 
+  // 최댓값 반환
   return Math.max(...result);
 }
