@@ -45,6 +45,8 @@ rl.on('line', (input) => {
         if (nextValue === 0) {
           queue.push([nx, ny]);
         }
+        // 치즈를 만나면 0으로만 바꿔주고 방문은 하지 못하게
+        // queue에 push하지 않고 방문 처리만 해준다
         if (nextValue === 1) {
           board[nx][ny] = 0;
         }
