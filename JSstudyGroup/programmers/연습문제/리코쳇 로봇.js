@@ -14,9 +14,10 @@ function solution(board) {
     const queue = [[x, y]];
     board[x][y] = 'X';
 
-    // 2) q의 길이 만큼 반복
+    // 2) queue의 길이 만큼 반복
     while (queue.length) {
-      // 3) 횟수(answer)를 제대로 카운트하기 위해 현재 q의 길이를 고정시킨다.
+      // 3) 횟수(answer)를 제대로 카운트하기 위해 현재 queue의 길이를 고정시킨다.
+      //    (각 턴마다 이동할 수 있는 갯수들)
       const size = queue.length;
 
       // 4) 고정시킨 길이만큼 반복한다.
@@ -29,7 +30,8 @@ function solution(board) {
           let nx = x + dx[j];
           let ny = y + dy[j];
 
-          // 7) 게임판 범위와 벽(D)를 만나지 않을 경우만 미끄러진다.
+          // 7) 게임판 범위 밖으로 나가거나 D를 만나면 while문 탈출
+          // (=직전의 값이 이동가능한 좌표가 됨)
           while (nx >= 0 && nx < rows && ny >= 0 && ny < cols && board[nx][ny] !== 'D') {
             nx += dx[j];
             ny += dy[j];
