@@ -8,6 +8,7 @@ function solution(users, emoticons) {
 
   // 각 할인율 경우에 따른 계산
   const calcResult = (discountArr) => {
+    // 할인율이 적용된 이모티콘 가격들
     const discountedPriceArr = [...emoticons].map((i, index) => {
       const currentDiscount = discountArr[index];
       return i - i * (currentDiscount / 100);
@@ -15,6 +16,9 @@ function solution(users, emoticons) {
 
     let totalPrice = 0;
     let totalEnroll = 0;
+
+    // 각 유저 배열을 순회하며 discountedPriceArr 에 대한
+    // 결과 도출
     for (let i = 0; i < users.length; i++) {
       const [percent, price] = users[i];
 
