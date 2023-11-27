@@ -1,29 +1,22 @@
 function solution(n, k) {
-    
-
-    function checkPrime(num){ 
-      if(!num || num===1) {
-        return false
-      }
-      for(let i = 2 ; i <= Math.sqrt(num) ; i++){ 
-        if(num % i == 0) {
-          return false
-        }
-      } 
-      return true
+  function checkPrime(num) {
+    if (!num || num === 1) {
+      return false;
     }
-
-    
-    let num = n.toString(k) //k진수로 변환
-    //211020101011
-
-    let primes=num.split('0')
-    let isPrimes = primes.filter(e => checkPrime(Number(e)));
-    // console.log(primes)
-    // console.log(isPrimes)
-
-    return isPrimes.length
-
+    for (let i = 2; i <= Math.sqrt(num); i++) {
+      if (num % i == 0) {
+        return false;
+      }
+    }
+    return true;
   }
 
-  console.log(solution(437674, 3))
+  let convertedN = n.toString(k);
+
+  convertedN = convertedN
+    .split('0')
+    .filter((i) => i) // '10001'.split('0') >> [ '1', '', '', '1' ]
+    .map(Number);
+
+  return convertedN.filter((i) => checkPrime(i)).length;
+}
