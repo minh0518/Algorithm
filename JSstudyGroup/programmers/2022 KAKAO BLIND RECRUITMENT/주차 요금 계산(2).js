@@ -1,69 +1,57 @@
+/*
+ * @url https://school.programmers.co.kr/learn/courses/30/lessons/92341
+ * @date 23-11-27
+ */
+
 function solution(fees, records) {
-  records = records.map((i) => {
-    let [time, carNum, inOut] = i.split(' ');
-    let [hour, min] = time.split(':').map(Number);
-    return [hour * 60 + min, carNum, inOut];
+  const LAST_TIME = 23 * 60 + 59;
+  const convertTime = (timeString) => {
+    const [h, m] = timeString.split(':').map(Number);
+    return h * 60 + m;
+  };
+
+  const info = new Map();
+  records.forEach((record, index) => {
+    const [time, carNum, inOut] = record.split(' ');
+    const convertedTime = convertTime(time);
+
+    // 차번호:[시간1,시간2,...]
+    // IN,OUT 여부와 관계 없이 시간들을 추가
+    info.set(carNum, info.has(carNum) ? [...info.get(carNum), convertedTime] : [convertedTime]);
   });
-  const lastTime = 23 * 60 + 59;
 
-  const info = {};
+  for (let [carNum, value] of info) {
+    const calcTimeArr = [];
 
-  //             in   out  in  out
-  // { '5961': [ 334, 479, 1379, 1380 ] , ... }
-  for (let record of records) {
-    // 처음들어오면 in이고 두번째 들어오면 out 되므로
-    let [time, carNum, inOut] = record;
-    info[carNum] ? info[carNum].push(time) : (info[carNum] = [time]);
-  }
-  console.log(info);
-
-  for (let i in info) {
-    // 마지막 출차 시간이 없다면 마지막 시간 push
-    info[i].length % 2 !== 0 && info[i].push(lastTime);
-
-    // 짝수개씩 합산
-    let parkingTimes = [];
-    for (let j = 0; j < info[i].length; j++) {
-      let sub = info[i][j + 1] - info[i][j];
-      parkingTimes.push(sub);
-      j++;
+    // 시간은 항상 입,출 방식이므로 2자리씩 끊어가며 계산
+    let index = 0;
+    while (index < value.length - 1) {
+      const [inTime, ouTime] = value.slice(index, index + 2);
+      calcTimeArr.push(ouTime - inTime);
+      index += 2;
     }
 
-    // 총 주차 시간
-    let totalParkingTime = parkingTimes.reduce((a, b) => a + b);
+    // 마지막 출차시간이 없으면 23:59 기준으로 계산
+    if (value.length % 2 === 1) calcTimeArr.push(LAST_TIME - value.pop());
+
+    // 전체 이용시간 합산
+    const totalUseTime = calcTimeArr.reduce((a, b) => a + b);
+
+    // 최소 기본요금
+    const totalBasicPrice = fees[1];
 
     // 최종 계산
-    if (totalParkingTime <= fees[0]) info[i] = fees[1];
-    if (totalParkingTime > fees[0]) {
-      let totalFee = fees[1] + Math.ceil((totalParkingTime - fees[0]) / fees[2]) * fees[3];
-      info[i] = totalFee;
-    }
-  }
+    const totalExtraPrice = totalUseTime > fees[0] ? Math.ceil((totalUseTime - fees[0]) / fees[2]) * fees[3] : 0;
 
-  let result = [];
-
-  // 키를 바탕으로 오름차순 정렬
-  let infoArr = Object.entries(info);
-  infoArr.sort((a, b) => Number(a[0]) - Number(b[0]));
-  for (let i of infoArr) {
-    result.push(i[1]);
+    info.set(carNum, totalBasicPrice + totalExtraPrice);
   }
+  const result = [];
+
+  [...info]
+    .sort((a, b) => Number(a[0]) - Number(b[0]))
+    .forEach((i) => {
+      result.push(i[1]);
+    });
+
   return result;
 }
-
-solution(
-  [180, 5000, 10, 600],
-  [
-    '05:34 5961 IN',
-    '06:00 0000 IN',
-    '06:34 0000 OUT',
-    '07:59 5961 OUT',
-    '07:59 0148 IN',
-    '18:59 0000 IN',
-    '19:09 0148 OUT',
-    '22:59 5961 IN',
-    '23:00 5961 OUT',
-  ],
-);
-solution([120, 0, 60, 591], ['16:00 3961 IN', '16:00 0202 IN', '18:00 3961 OUT', '18:00 0202 OUT', '23:58 3961 IN']);
-solution([1, 461, 1, 10], ['00:00 1234 IN']);
