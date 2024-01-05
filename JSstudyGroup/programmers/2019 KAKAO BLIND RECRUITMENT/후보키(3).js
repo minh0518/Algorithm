@@ -39,23 +39,19 @@ function solution(relation) {
 
   console.log(uniquenessIndexs);
 
-  // 최소성 확인
+  // 최소성 확인 함수
   const checkMinimal = (current, next) => {
     // [ 0, 3 ] [ 0, 1, 3 ]>> >> true
     // [ 0, 1]  [ 1, 2, 3 ] >> false
     return current.every((i) => next.includes(i));
   };
 
-  for (let i = 0; i < uniquenessIndexs.length; i++) {
-    const current = uniquenessIndexs[i];
-
-    for (let j = i + 1; j < uniquenessIndexs.length; j++) {
-      if (checkMinimal(current, uniquenessIndexs[j])) {
-        uniquenessIndexs.splice(j, 1);
-        j -= 1;
-      }
-    }
+  // 최소성에 따른 정답 출력
+  const answer = [];
+  while (uniquenessIndexs.length) {
+    const target = uniquenessIndexs.shift();
+    answer.push(target);
+    uniquenessIndexs = uniquenessIndexs.filter((i) => !checkMinimal(target, i));
   }
-
-  return uniquenessIndexs.length;
+  return answer.length;
 }
