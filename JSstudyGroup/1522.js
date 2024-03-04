@@ -10,18 +10,19 @@ const data = [];
 rl.on('line', (input) => {
   data.push(input);
 }).on('close', () => {
-  let str = data.shift().split('');
+  const str = data.shift().split('');
   const aCount = str.filter((i) => i === 'a').length;
-  str = [...str, ...str.slice(0, aCount - 1)];
 
+  str.push(...str.slice(0, aCount));
+  let index = 0;
   let minValue = Infinity;
-  for (let i = 0; i <= str.length - aCount; i++) {
-    const target = str.slice(i, i + aCount);
-    const bCount = target.filter((i) => i === 'b').length;
+  while (index <= str.length - aCount) {
+    const target = str.slice(index, index + aCount);
+    const currentBCount = target.filter((i) => i === 'b').length;
+    if (minValue > currentBCount) minValue = currentBCount;
 
-    if (minValue > bCount) minValue = bCount;
+    index += 1;
   }
-
   console.log(minValue);
 
   process.exit();
