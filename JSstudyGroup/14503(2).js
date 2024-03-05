@@ -1,4 +1,4 @@
-// 24.3.5
+// 24.3.6
 const readline = require('readline');
 
 const rl = readline.createInterface({
@@ -17,78 +17,52 @@ rl.on('line', (input) => {
     return i.split(' ').map(Number);
   });
 
-  // 상 좌 하 우
+  // 상 우 하 좌
   const [dx, dy] = [
     [-1, 0, 1, 0],
-    [0, -1, 0, 1],
+    [0, 1, 0, -1],
   ];
 
-  // 북 동 남 서
-  // 0  1  2  3
-  const goBackward = (currentDir) => {
+  const getBackwardDir = (currentDir) => {
     if (currentDir >= 2) return currentDir - 2;
     if (currentDir < 2) return currentDir + 2;
   };
-
-  const checkAround = (r, c, currentDir) => {
-    // dxdy계산을 위해 방향 인덱스를 dxdy기준으로 변경
-    if (currentDir === 1) currentDir = 3;
-    else if (currentDir === 3) currentDir = 1;
-
-    // 현재 방향 말고, 반시계 방향 90도부터 돌아가며 탐색
-    for (let i = currentDir + 1; i < currentDir + 5; i++) {
-      let dirIndex = i % 4;
-      const nx = r + dx[dirIndex];
-      const ny = c + dy[dirIndex];
-      if (board[nx][ny] === 0) {
-        return [nx, ny, dirIndex];
-      }
-    }
-    return false;
-  };
+  const queue = [];
+  queue.push([r, c, dir]);
 
   let count = 0;
+  while (queue.length) {
+    const [currentR, currentC, currentDir] = queue.shift();
 
-  while (1) {
-    if (board[r][c] === 0) {
+    if (board[currentR][currentC] === 0) {
+      board[currentR][currentC] = 'x';
       count += 1;
-      board[r][c] = 'x';
     }
+    let currentDirCopy = currentDir;
 
-    // 주변 청소 가능한 곳이 있다면 다음좌표,(dxdy기준)방향인덱스 반환
-    const isAround = checkAround(r, c, dir);
-
-    if (!isAround) {
-      // isAround가 false면 기존 방향dir을 기준으로 반대방향 계산
-      let nextDir = goBackward(dir);
-
-      // nextDir을 dxdy기준으로 변경 후 좌표 이동
-      if (nextDir === 1) nextDir = 3;
-      else if (nextDir === 3) nextDir = 1;
-
-      // 좌표만 변경하고 현재 dir은 유지
-      const nx = r + dx[nextDir];
-      const ny = c + dy[nextDir];
-
+    let moveFlag = false;
+    // dx,dy 인덱스를 거꾸로 탐색
+    for (let i = 0; i < 4; i++) {
+      currentDirCopy -= 1; // 90도 먼저 회전
+      if (currentDirCopy < 0) currentDirCopy = 3;
+      const currentDirIndex = currentDirCopy;
+      const nx = currentR + dx[currentDirIndex];
+      const ny = currentC + dy[currentDirIndex];
+      if (board[nx][ny] === 0) {
+        moveFlag = true;
+        queue.push([nx, ny, currentDirIndex]);
+        break;
+      }
+    }
+    if (!moveFlag) {
+      // 뒤로 이동
+      const backwardDir = getBackwardDir(currentDir);
+      const nx = currentR + dx[backwardDir];
+      const ny = currentC + dy[backwardDir];
       if (board[nx][ny] === 1) break;
-
-      r = nx;
-      c = ny;
-
-      continue;
-    }
-    if (isAround) {
-      // isAround의 반환값은 dxdy기준이므로
-      let [nextR, nextC, nextDir] = isAround;
-
-      // 다시 변환
-      if (nextDir === 1) nextDir = 3;
-      else if (nextDir === 3) nextDir = 1;
-
-      [r, c, dir] = [nextR, nextC, nextDir];
+      queue.push([nx, ny, currentDir]);
     }
   }
-
   console.log(count);
 
   process.exit();
