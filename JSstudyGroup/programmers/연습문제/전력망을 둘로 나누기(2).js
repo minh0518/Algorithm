@@ -1,55 +1,43 @@
 function solution(n, wires) {
-  const tree = new Array(n + 1).fill().map(() => []);
-  for (let i of wires) {
-    let [from, to] = i;
-    tree[from].push(to);
-    tree[to].push(from);
-  }
+  if (n === 2) return 0;
 
-  const dfs = (index, visited, target) => {
-    visited[index] = true;
-    let count = 1;
+  const check = (cutIndex) => {
+    const tree = new Array(n + 1).fill().map(() => []);
 
-    const adjNodes = tree[index];
-    for (let i of adjNodes) {
-      if (i === target || visited[i]) continue;
-      count += dfs(i, visited, target);
+    for (let i = 0; i < wires.length; i++) {
+      if (i === cutIndex) continue;
+      const [from, to] = wires[i];
+      tree[from].push(to);
+      tree[to].push(from);
     }
 
-    return count;
+    const visited = new Array(n + 1).fill(false);
+
+    const dfs = (nodeIndex) => {
+      visited[nodeIndex] = true;
+
+      let count = 1;
+      const nextNode = tree[nodeIndex];
+      for (let i of nextNode) {
+        if (visited[i]) continue;
+        count += dfs(i);
+      }
+      return count;
+    };
+
+    const result = [];
+    for (let i = 1; i < n; i++) {
+      if (visited[i]) continue;
+      result.push(dfs(i));
+    }
+
+    if (result.length === 1) return result[0];
+    return Math.abs(result[1] - result[0]);
   };
 
-  let result = [];
-  for (let i of wires) {
-    let [from, to] = i;
-    let first = dfs(from, new Array(n + 1).fill(false), to);
-    let second = dfs(to, new Array(n + 1).fill(false), from);
-    result.push(Math.abs(first - second));
+  const result = [];
+  for (let cutIndex = 0; cutIndex < wires.length; cutIndex++) {
+    result.push(check(cutIndex));
   }
-
   return Math.min(...result);
 }
-
-solution(9, [
-  [1, 3],
-  [2, 3],
-  [3, 4],
-  [4, 5],
-  [4, 6],
-  [4, 7],
-  [7, 8],
-  [7, 9],
-]);
-solution(4, [
-  [1, 2],
-  [2, 3],
-  [3, 4],
-]);
-solution(7, [
-  [1, 2],
-  [2, 7],
-  [3, 7],
-  [3, 4],
-  [4, 5],
-  [6, 7],
-]);
