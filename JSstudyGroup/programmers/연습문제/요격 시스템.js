@@ -1,5 +1,4 @@
-const solution = (targets) => {
-  // 요격 가능한 구간이 끝나는 시점을 기준으로 오름차순으로 정렬
+function solution(targets) {
   targets.sort((a, b) => {
     if (a[1] === b[1]) {
       return a[0] - b[0];
@@ -7,27 +6,30 @@ const solution = (targets) => {
     return a[1] - b[1];
   });
 
-  let result = 0;
-  let end = targets[0][1];
-  result += 1;
+  let count = 0;
+  for (let i = 0; i < targets.length; i++) {
+    const [currentFrom, currentTo] = targets[i];
+    count += 1;
 
-  for (let i = 1; i < targets.length; i++) {
-    if (targets[i][0] >= end) {
-      // 현재 요격 가능한 구간보다 오른쪽에 있기 때문에 새로운 요격 시스템 추가
-      end = targets[i][1];
-      result += 1;
+    for (let j = i + 1; j < targets.length; j++) {
+      const [from, to] = targets[j];
+
+      // 다음 i는 마지막으로 끊긴 j부터 시작
+      i = j - 1;
+      if (from < currentTo) {
+        if (j === targets.length - 1) {
+          // 예외적으로, 마지막 요소까지 요격기 가능하다면
+          // 그땐 바로 i의 for문까지 끝내야함. 안 그러면 i문에서 한번 더 돌게 된다
+          i = j;
+          break;
+        }
+        continue;
+      }
+
+      // from >= currentTo 일 경우
+      break;
     }
   }
 
-  return result;
-};
-
-solution([
-  [4, 5],
-  [4, 8],
-  [10, 14],
-  [11, 13],
-  [5, 12],
-  [3, 7],
-  [1, 4],
-]);
+  return count;
+}
