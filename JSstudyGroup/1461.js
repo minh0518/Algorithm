@@ -10,66 +10,44 @@ const data = [];
 rl.on('line', (input) => {
   data.push(input);
 }).on('close', () => {
-  let [N, M] = data.shift().split(' ').map(Number);
-  //한번에 M개
+  const [N, M] = data.shift().split(' ').map(Number);
+  const arr = data.shift().split(' ').map(Number);
 
-  let books = data.shift().split(' ').map(Number);
+  const minus = []; // 기존에 음수 방향 거리를 담는 배열
+  const plus = []; // 기존에 양수 방향 거리를 담는 배열
+  for (let i of arr) {
+    if (i > 0) plus.push(i);
+    if (i < 0) minus.push(-i); // 음수는 양수로 변환해서 추가
+  }
+  // 내림차순
+  minus.sort((a, b) => b - a);
+  plus.sort((a, b) => b - a);
 
-  let left = [];
-  let right = [];
-  for (let i of books) {
-    if (i < 0) left.push(-i);
-    if (i > 0) right.push(i);
+  const maxValue = Math.max(minus.length ? minus[0] : 0, plus.length ? plus[0] : 0);
+
+  let result = 0;
+
+  let minusIndex = 0;
+  while (minusIndex < minus.length) {
+    // M만큼 잘라서 거리에 반영
+    const slicedArr = minus.slice(minusIndex, minusIndex + M > minus.length ? minus.length : minusIndex + M);
+
+    result += slicedArr[0] * 2;
+    minusIndex += M;
   }
 
-	// 최댓값 찾음
-  let max = Math.max(...left, ...right);
+  let plusIndex = 0;
+  while (plusIndex < plus.length) {
+    // M만큼 잘라서 거리에 반영
+    const slicedArr = plus.slice(plusIndex, plusIndex + M > plus.length ? plus.length : plusIndex + M);
 
-  // 내림차순 정렬 ([0]이 가장 큰 값)
-  left = left.sort((a, b) => b - a);
-  right = right.sort((a, b) => b - a);
-
-  let result = [];
-
-	// 가장 큰 값이면 한번만 더해주는 것고
-	// 그게 아니라면 *2해서 더해준다
-	// 그리고 매번 M만큼 잘라주는데 어차피 
-	// 배열의 길이가 splice의 M보다 작아도 알아서 남은만큼 잘라준다
-  while (left.length) {
-    let firstValue = left[0];
-    if (firstValue === max) {
-      result.push(firstValue);
-    } else {
-      result.push(firstValue * 2);
-    }
-    left.splice(0, M);
+    result += slicedArr[0] * 2;
+    plusIndex += M;
   }
 
-  while (right.length) {
-    let firstValue = right[0];
-    if (firstValue === max) {
-      result.push(firstValue);
-    } else {
-      result.push(firstValue * 2);
-    }
-    right.splice(0, M);
-  }
+  // 마지막에 가장 멀리 있는 책은 왕복이 아닌 편도로 종료하므로 *1이 돼야 한다
+  result -= maxValue;
+  console.log(result);
 
-  console.log(result.reduce((a,b)=>a+b,0))
   process.exit();
 });
-
-// -39, -37, -29, -28, -6,   0   2,  11
-//28 28
-//37 37
-//39
-
-//6 6
-//29 29
-//39
-
-//(가장 절댓값이 큰 것을 마지막 경로로)
-// 2  11  15
-// 2 2
-// 15 15
-//(가장 마지막에 있는 값은 가는 길에 같이 가지고 가야 효율적)
