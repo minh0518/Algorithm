@@ -1,4 +1,3 @@
-// 24.1.18
 const readline = require('readline');
 
 const rl = readline.createInterface({
