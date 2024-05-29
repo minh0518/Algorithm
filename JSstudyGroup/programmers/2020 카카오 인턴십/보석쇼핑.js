@@ -1,44 +1,29 @@
 function solution(gems) {
-  let sectionSize = new Set(gems).size;
+  const info = new Map();
+  const setSize = new Set(gems).size;
 
-  let result = [];
+  // 최소 구간 길이
+  let minLength = Infinity;
 
-  if (sectionSize > 1) {
-    let tmpMap = new Map();
+  let result;
+  for (let i = 0; i < gems.length; i++) {
+    const gem = gems[i];
+    if (info.has(gem, i)) info.delete(gem);
+    info.set(gem, i);
 
-    for (let i = 0; i < gems.length; i++) {
-      // 기존에 존재하는게 있다면 제거 후 , 새로 추가
-      // 그냥 set만 하면 인덱스만 갱신이 되겠지만
-      // 직접 제거를 하고 새로 추가함으로써 순서까지 갱신이 되는 것이다
-      tmpMap.delete(gems[i]);
-      tmpMap.set(gems[i], i);
+    // info의 길이가 보석의 종류와 같아질 때
+    if (setSize === info.size) {
+      // sort할 필요 없이 info의 맨 앞,맨 뒤 인덱스가 시작과 끝이 됨
+      const [from, to] = [info.entries().next().value[1] + 1, i + 1];
+      const sectionLength = to - from;
 
-      if (tmpMap.size === sectionSize) {
-        // Map(4) { 'RUBY' => 2, 'DIA' => 4, 'EMERALD' => 5, 'SAPPHIRE' => 6 }
-        // 처음 RUBY의 인덱스인 2와 , 현재 for문의 i(=SAPPHIRE의 인덱스)
-        result.push([tmpMap.entries().next().value[1] + 1, i + 1]);
+      // 최소구간일 경우 push
+      if (minLength > sectionLength) {
+        minLength = sectionLength;
+        result = [from, to];
       }
     }
-
-    result.sort((a, b) => {
-      // 구간의 길이가 같다면 빨리 시작하는 것을 기준으로
-      if (a[1] - a[0] === b[1] - b[0]) {
-        return a[0] - b[0];
-      }
-      if (a[1] - a[0] !== b[1] - b[0]) {
-        return a[1] - a[0] - (b[1] - b[0]);
-      }
-    });
-
-    return result[0];
   }
-  if (sectionSize === 1) {
-    return [1, 1];
-  }
+  // 가장 마지막값이 최소구간
+  return result;
 }
-
-solution(['DIA', 'RUBY', 'RUBY', 'DIA', 'DIA', 'EMERALD', 'SAPPHIRE', 'DIA']);
-solution(['AA', 'AB', 'AC', 'AA', 'AC']);
-solution(['XYZ', 'XYZ', 'XYZ']);
-solution(['ZZZ', 'YYY', 'NNNN', 'YYY', 'BBB']);
-solution(['a', 'b', 'b', 'b', 'c', 'd', 'd', 'd', 'd', 'd', 'd', 'd', 'b', 'c', 'a']);
