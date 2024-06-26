@@ -11,17 +11,15 @@ rl.on('line', (input) => {
   data.push(input);
 }).on('close', () => {
   const N = +data.shift();
-  const info = data.map(Number).sort((a, b) => a - b);
+  const arr = data.map(Number).sort((a, b) => a - b);
 
-  // A + B + C = X
-
-  const search = (target) => {
+  const search = (AXB, target) => {
     let left = 0;
-    let right = sumArr.length - 1;
+    let right = AXB.length - 1;
 
     while (left <= right) {
       const mid = Math.floor((left + right) / 2);
-      const midValue = sumArr[mid];
+      const midValue = AXB[mid];
 
       if (midValue > target) {
         right = mid - 1;
@@ -36,41 +34,29 @@ rl.on('line', (input) => {
     return false;
   };
 
-  const result = [];
-  const dfs = (current, index) => {
-    if (current.length === 2) {
-      // 두번째 값이 X가 되고(더 크니까)
-      // 이들의 차이값(X-C)를 sumArr(A+B의 경우의 수)에서 찾음
-      const C = current[0];
-      const X = current[1];
+  // A + B + C = D
 
-      const exist = search(X - C);
-      if (exist) result.push(X);
+  const AXB = [];
 
-      return;
-    }
-
-    for (let i = index; i < info.length; i++) {
-      current.push(info[i]);
-      // X와C는 같을 필요가 없으므로 중복이 없는 조합으로 진행
-      dfs(current, i + 1);
-      current.pop();
-    }
-  };
-
-  // A + B 의 모든 경우의 수
-  const sumArr = [];
+  // 중복 포함이므로 둘 다 0부터 시작
   for (let i = 0; i < N; i++) {
-    // 중복이 허용되므로 j=i부터 시작
-    for (let j = i; j < N; j++) {
-      sumArr.push(info[i] + info[j]);
+    for (let j = 0; j < N; j++) {
+      AXB.push(arr[i] + arr[j]);
     }
   }
-  sumArr.sort((a, b) => a - b);
+  AXB.sort((a, b) => a - b);
 
-  // C, X 의 조합을 구한 뒤 이분탐색 진행
-  dfs([], 0);
+  const result = [];
 
+  // C,D를 구한 뒤, D-C의 값을 AXB에서 이분탐색 진행
+  for (let i = 0; i < N; i++) {
+    for (let j = i + 1; j < N; j++) {
+      // A+B+C=D 에서, D는 C보다 클 수밖에 없으므로 i+1부터
+      const C = arr[i];
+      const D = arr[j]; // 더 큰 값이 D
+      if (search(AXB, D - C)) result.push(D);
+    }
+  }
   console.log(Math.max(...result));
 
   process.exit();
