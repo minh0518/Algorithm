@@ -11,36 +11,37 @@ rl.on('line', (input) => {
   data.push(input);
 }).on('close', () => {
   const N = +data.shift();
-  const balls = data.shift().split('');
+  const info = data.shift().split('');
 
-  let redBalls = 0;
-  let blueBalls = 0;
-  balls.forEach((ball) => {
-    if (ball === 'R') redBalls += 1;
-    if (ball === 'B') blueBalls += 1;
-  });
+  const RED_COUNTS = info.filter((i) => i === 'R').length;
+  const BLUE_COUNTS = N - RED_COUNTS;
 
-  let minValue = Math.min(redBalls, blueBalls);
+  if (RED_COUNTS === 0 || BLUE_COUNTS === 0) {
+    console.log(0);
+  } else {
+    const moveRed = () => {
+      // 앞으로 옮길 경우
+      const firstBlueIndex = info.indexOf('B');
+      let redCountFromStart = info.slice(firstBlueIndex).filter((i) => i === 'R').length;
 
-  const startBall = balls[0];
-  let countFromStart = 1;
-  for (let i = 1; i < balls.length; i++) {
-    if (startBall !== balls[i]) break;
-    countFromStart += 1;
+      // 뒤로 옮길 경우
+      const lastBlueIndex = info.lastIndexOf('B');
+      let redCountFromEnd = info.slice(0, lastBlueIndex).filter((i) => i === 'R').length;
+
+      return Math.min(redCountFromStart, redCountFromEnd);
+    };
+
+    const moveBlue = () => {
+      const firstRedIndex = info.indexOf('R');
+      let blueCountFromStart = info.slice(firstRedIndex).filter((i) => i === 'B').length;
+
+      const lastRedIndex = info.lastIndexOf('R');
+      let blueCountFromEnd = info.slice(0, lastRedIndex).filter((i) => i === 'B').length;
+
+      return Math.min(blueCountFromStart, blueCountFromEnd);
+    };
+
+    console.log(Math.min(moveRed(), moveBlue()));
   }
-  const moveBallCountToStart = startBall === 'R' ? redBalls - countFromStart : blueBalls - countFromStart;
-  if (minValue > moveBallCountToStart) minValue = moveBallCountToStart;
-
-  const endBall = balls[balls.length - 1];
-  let countFromEnd = 1;
-  for (let i = balls.length - 2; i >= 0; i--) {
-    if (endBall !== balls[i]) break;
-    countFromEnd += 1;
-  }
-  const moveBallCountToEnd = endBall === 'R' ? redBalls - countFromEnd : blueBalls - countFromEnd;
-  if (minValue > moveBallCountToEnd) minValue = moveBallCountToEnd;
-
-  console.log(minValue);
-
   process.exit();
 });
