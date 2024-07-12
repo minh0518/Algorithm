@@ -1,23 +1,17 @@
 function solution(k, tangerine) {
-  let info = {};
+  const info = new Map();
   for (let i of tangerine) {
-    info[i] ? (info[i] += 1) : (info[i] = 1);
+    info.set(i, info.has(i) ? info.get(i) + 1 : 1);
+  }
+  const sortedInfo = [...info].sort((a, b) => b[1] - a[1]);
+
+  let result = 0;
+  let current = 0;
+  for (let [kind, count] of sortedInfo) {
+    result += 1;
+    current += count;
+    if (current >= k) break;
   }
 
-  let arr = Object.entries(info);
-
-  arr.sort((a, b) => {
-    return b[1] - a[1];
-  });
-
-  let sum = 0;
-  let count = 0;
-  for (let i of arr) {
-    let [size, value] = i;
-    sum += value;
-    count += 1;
-    if (sum >= k) break;
-  }
-
-  return count;
+  return result;
 }
