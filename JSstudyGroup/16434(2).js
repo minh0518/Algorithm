@@ -10,57 +10,37 @@ const data = [];
 rl.on('line', (input) => {
   data.push(input);
 }).on('close', () => {
-  let [N, humanA] = data.shift().split(' ').map(Number);
-  N = BigInt(N);
-  humanA = BigInt(humanA);
-  const room = data.map((i) =>
-    i
-      .split(' ')
-      .map(Number)
-      .map((i) => BigInt(i)),
-  );
+  let [N, ATT] = data
+    .shift()
+    .split(' ')
+    .map((i) => BigInt(i));
+  const info = data.map((row) => row.split(' ').map((i) => BigInt(i)));
 
-  // 최대 maxHp
-  let maxHp = BigInt(0);
-  // 현재 HP
-  let hp = BigInt(0);
+  let [currentHp, maxHp] = [0n, 0n];
 
-  for (const [roomNumber, a, h] of room) {
-    if (roomNumber === BigInt(1)) {
-      let countToKill;
+  for (const [roomType, a, h] of info) {
+    // 몬스터
+    if (roomType === 1n) {
+      // const hitCountToKill = Math.ceil(h / ATT);
+      const hitCountToKill = (h - 1n) / ATT + 1n;
+      const myDamage = (hitCountToKill - 1n) * a; // 내가 받는 데미지
 
-      if (h < humanA) {
-        countToKill = BigInt(1);
-      }
-      // 0이하가 되기 위한 횟수(countToKill) 계산
-      if (h >= humanA && h % humanA === BigInt(0)) {
-        countToKill = BigInt(h / humanA);
-      }
-      if (h >= humanA && h % humanA !== BigInt(0)) {
-        // countToKill = Math.floor(h / humanA) + 1;
-        countToKill = BigInt(h / humanA) + BigInt(1);
-      }
+      currentHp -= myDamage;
 
-      const damage = (countToKill - BigInt(1)) * a;
-
-      // hp가 음수값이라면 그 음수값 만큼 maxHp를 증가
-      if (hp < damage) {
-        maxHp += damage - hp;
-        hp = BigInt(0);
-      }
-      if (hp >= damage) {
-        hp -= damage;
+      if (currentHp < 0) {
+        maxHp += currentHp < 0 ? -currentHp : currentHp;
+        currentHp = 0n;
       }
     }
-    if (roomNumber === BigInt(2)) {
-      humanA += a;
-      hp += h;
-      if (hp > maxHp) hp = maxHp;
+    // 포션
+    if (roomType === 2n) {
+      ATT += a;
+      currentHp += h;
+      if (currentHp > maxHp) currentHp = maxHp;
     }
   }
 
-  // 1을 더하는건, 최소 1은 커야 몬스터한테 죽지 않기 때문이다
-  console.log(String(maxHp + BigInt(1)));
+  console.log(String(maxHp + 1n));
 
   process.exit();
 });
