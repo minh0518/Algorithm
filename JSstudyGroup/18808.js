@@ -11,83 +11,96 @@ rl.on('line', (input) => {
   data.push(input);
 }).on('close', () => {
   let [N, M, K] = data.shift().split(' ').map(Number);
-  const board = new Array(N).fill(undefined).map(() => new Array(M).fill(0));
 
-  const findPossibleLocation = (R, C, sticker) => {
-    const stickerFlat = sticker.flat();
-    for (let i = 0; i <= N - R; i++) {
-      for (let j = 0; j <= M - C; j++) {
-        const currentArea = board
-          .slice(i, i + R)
-          .map((row) => row.slice(j, j + C))
-          .flat();
+  const rotate = (arr, degree) => {
+    if (degree === 0) return arr;
+    const ROW = arr.length;
+    const COL = arr[0].length;
 
-        if (currentArea.every((value, index) => value === 0 || (value === 1 && stickerFlat[index] === 0))) {
-          for (let row = i; row < i + R; row++) {
-            for (let col = j; col < j + C; col++) {
-              if (board[row][col] === 0) board[row][col] = sticker[row - i][col - j];
-            }
+    let newArr;
+    if (degree === 1 || degree === 3) newArr = new Array(COL).fill(undefined).map(() => new Array(ROW).fill(0));
+    if (degree === 2) newArr = new Array(ROW).fill(undefined).map(() => new Array(COL).fill(0));
+
+    for (let i = 0; i < ROW; i++) {
+      for (let j = 0; j < COL; j++) {
+        let nx, ny;
+
+        // 90도
+        if (degree === 1) {
+          nx = j;
+          ny = ROW - 1 - i;
+        }
+
+        // 180도
+        if (degree === 2) {
+          nx = ROW - 1 - i;
+          ny = COL - 1 - j;
+        }
+
+        // 270도
+        if (degree === 3) {
+          nx = COL - 1 - j;
+          ny = i;
+        }
+
+        newArr[nx][ny] = arr[i][j];
+      }
+    }
+
+    return newArr;
+  };
+
+  const checkPossible = (board, x, y, target, targetRow, targetCol) => {
+    const endRow = x + targetRow;
+    const endCol = y + targetCol;
+
+    if (endRow < 0 || endRow > N || endCol < 0 || endCol > M) return false;
+    for (let i = x; i < endRow; i++) {
+      for (let j = y; j < endCol; j++) {
+        if (board[i][j] === 1 && target[i - x][j - y] === 1) return false;
+      }
+    }
+    return true;
+  };
+
+  const paint = (board, x, y, target, targetRow, targetCol) => {
+    const endRow = x + targetRow;
+    const endCol = y + targetCol;
+
+    for (let i = x; i < endRow; i++) {
+      for (let j = y; j < endCol; j++) {
+        if (target[i - x][j - y] === 1) board[i][j] = 1;
+      }
+    }
+  };
+
+  const main = (board, info, N, M) => {
+    for (let dir = 0; dir < 4; dir++) {
+      const currentRotate = rotate(info, dir);
+
+      for (let i = 0; i < N; i++) {
+        for (let j = 0; j < M; j++) {
+          const isPossible = checkPossible(board, i, j, currentRotate, currentRotate.length, currentRotate[0].length);
+
+          if (isPossible) {
+            paint(board, i, j, currentRotate, currentRotate.length, currentRotate[0].length);
+            return;
           }
-          return true;
         }
       }
-    }
-    return false;
-  };
-
-  const rotate = (R, C, sticker, index) => {
-    // 0: 90, 1:180, 2:270
-
-    if (index === 0) {
-      const rotate90 = new Array(C).fill(undefined).map(() => new Array(R).fill(0));
-      for (let i = 0; i < R; i++) {
-        for (let j = 0; j < C; j++) {
-          rotate90[j][R - 1 - i] = sticker[i][j];
-        }
-      }
-      return rotate90;
-    }
-    if (index === 1) {
-      const rotate180 = new Array(R).fill(undefined).map(() => new Array(C).fill(0));
-      for (let i = 0; i < R; i++) {
-        for (let j = 0; j < C; j++) {
-          rotate180[R - 1 - i][C - 1 - j] = sticker[i][j];
-        }
-      }
-      return rotate180;
-    }
-    if (index === 2) {
-      const rotate270 = new Array(C).fill(undefined).map(() => new Array(R).fill(0));
-      for (let i = 0; i < R; i++) {
-        for (let j = 0; j < C; j++) {
-          rotate270[C - 1 - j][i] = sticker[i][j];
-        }
-      }
-      return rotate270;
     }
   };
 
+  const board = new Array(N).fill(undefined).map(() => new Array(M).fill(0));
   let index = 0;
   while (K--) {
     const [R, C] = data[index].split(' ').map(Number);
-    const sticker = data.slice(index + 1, index + 1 + R).map((i) => i.split(' ').map(Number));
+    const info = data.slice(index + 1, index + 1 + R).map((row) => row.split(' ').map(Number));
 
-    const isAttach = findPossibleLocation(R, C, sticker);
-
-    if (!isAttach) {
-      for (let i = 0; i < 3; i++) {
-        const rotatedSticker = rotate(R, C, sticker, i);
-
-        const isAttach = findPossibleLocation(rotatedSticker.length, rotatedSticker[0].length, rotatedSticker);
-        if (isAttach) {
-          break;
-        }
-      }
-    }
-
+    main(board, info, N, M);
     index += R + 1;
   }
-  console.log(board.map((row) => row.filter((col) => col === 1).length).reduce((a, b) => a + b));
+  console.log(board.map((row) => row.filter((i) => i === 1).length).reduce((a, b) => a + b));
 
   process.exit();
 });
