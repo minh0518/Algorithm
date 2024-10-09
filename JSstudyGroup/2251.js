@@ -10,92 +10,50 @@ const data = [];
 rl.on('line', (input) => {
   data.push(input);
 }).on('close', () => {
-  let [a, b, c] = data.shift().split(' ').map(Number);
+  const info = data.shift().split(' ').map(Number);
+  const [A, B, C] = info;
 
-  let visited = new Array(a + 1).fill().map(() => new Array(b + 1).fill().map(() => new Array(c + 1).fill(false)));
-  //8을 넣으면 [7]까지니까 [8]까지 표현하기 위해 +1
+  const dir = [
+    [0, 1],
+    [0, 2],
+    [1, 0],
+    [1, 2],
+    [2, 0],
+    [2, 1],
+  ];
 
-  let answer = [];
+  const result = new Set();
 
-  const bfs = () => {
-    let queue = [];
-    queue.push([0, 0, c]);
-
-
-
-    while (queue.length) {
-      let [statusA,statusB,statusC]=queue.shift()
-
-      if(visited[statusA][statusB][statusC]) continue
-      visited[statusA][statusB][statusC]=true
-
-      if(statusA===0){
-        answer.push(statusC)
-      }
-
-      //a to b
-      if(statusA+statusB>a){//a와b합이 a보다 크면 a에 다 넣고 나머지 b
-        queue.push([a,(statusA+statusB)-a,statusC])
-      }
-      else{ //a보다 합이 작으면 a에 다 몰아넣기
-        queue.push([statusA+statusB,0,statusC])
-      }
-
-      //b to a
-      if(statusA+statusB>b){
-        queue.push([(statusA+statusB)-b,b,statusC])
-      }
-      else{
-        queue.push([0,statusA+statusB,statusC])
-      }
-
-      //b to c
-      if(statusB+statusC>c){ //c보다 크면 c에 넣고 나머지 b
-        queue.push([statusA,(statusB+statusC)-c,c])
-      }
-      else{
-        queue.push([statusA,0,statusB+statusC])
-      }
-
-      //c to b
-      if(statusB+statusC>b){
-        queue.push([statusA,b,(statusB+statusC)-b])
-      }
-      else{
-        queue.push([statusA,statusB+statusC,0])
-      }
-
-      //a to c
-      if(statusA+statusC>c){ //c보다크면 c에 넣고 나머지 a
-        queue.push([(statusA+statusC)-c,statusB,c])
-      }
-      else{
-        queue.push([0,statusB,(statusA+statusC)])
-      }
-
-      //c to a
-      if(statusA+statusC>a){
-        queue.push([a,statusB,(statusA+statusC)-a])
-      }
-      else{
-        queue.push([(statusA+statusC),statusB,0])
-      }
-
-
+  const dfs = (status, visited) => {
+    if (status[0] === 0) {
+      result.add(status[2]);
     }
-    
+
+    for (let i = 0; i < dir.length; i++) {
+      const [from, to] = dir[i];
+      if (status[from] === 0) continue;
+
+      const newStatus = [...status];
+
+      // 옮기려는 물통의 양, 담으려는 물통의 현재 가용량 중 최솟값
+      const gap = Math.min(newStatus[from], info[to] - newStatus[to]);
+      newStatus[from] -= gap;
+      newStatus[to] += gap;
+
+      // 이미 존재하는 물통의 상태라면 패스
+      if (visited[newStatus[0]][newStatus[1]]) continue;
+
+      visited[newStatus[0]][newStatus[1]] = true;
+      dfs(newStatus, visited);
+    }
   };
 
-  bfs();
+  dfs(
+    [0, 0, C],
+    new Array(201).fill(undefined).map(() => new Array(201).fill(false)),
+  );
 
-  console.log(answer.sort((a,b)=>a-b).join(' '))
+  console.log([...result].sort((a, b) => a - b).join(' '));
 
   process.exit();
 });
-
-//ab
-//ac
-//ba
-//bc
-//ca
-//cb
