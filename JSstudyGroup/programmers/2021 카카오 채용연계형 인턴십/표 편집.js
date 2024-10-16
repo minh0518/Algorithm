@@ -1,97 +1,74 @@
 function solution(n, k, cmd) {
-    const Node = function (index, prev) {
+  class Node {
+    constructor(index) {
       this.index = index;
-      this.prev = prev;
+      this.prev = null;
       this.next = null;
-    };
-  
-    let prevNode = new Node(0);
-    let select; //¼±ÅÃµÈ ³ëµå
-  
-    // ¸µÅ©µå¸®½ºÆ® »ı¼º
-    for (let i = 1; i < n; i++) {
-      const cntNode = new Node(i, prevNode);
-      prevNode.next = cntNode;
-      prevNode = cntNode;
-
-      if (i === k) {
-        select = cntNode;
-      }
     }
-  
-    let trashBin = [];
-  
-    const moveSelectedNode = (count, direction) => {
-      for (let i = 0; i < count; i++) {
-        if (!select[direction]) {
-          break;
-        }//prev ³ª nextÀÇ °ªÀÌ Á¸ÀçÇÏÁö ¾ÊÀ¸¸é ¾Æ¹«°Íµµ ¾È ÇÔ
-
-        select = select[direction];
-
-      }
-    };
-  
-    const deleteNode = () => {
-      const prev = select.prev;
-      const next = select.next;
-  
-      trashBin.push(select);
-  
-      //ÇöÀç ¼±ÅÃµÈ ³ëµå º¯°æ
-      select = next ? next : prev;
-      //ÇöÀç ³ëµå¿¡ next°¡ ÀÖÀ¸¸é ´ÙÀ½ ³ëµå°¡ ÀÖ´Â °ÍÀÌ´Ï±î ´ÙÀ½ ³ëµå¸¦ ¼±ÅÃ
-      //¾ø´Ù¸é ´ÙÀ½ ³ëµå°¡ ¾ø´Â °ÍÀÌ´Ï±î ÀÌÀü ³ëµå¸¦ ¼±ÅÃ
-  
-      //»èÁ¦ÇÑ ³ëµå¸¦ ±âÁØÀ¸·Î ¾ÕµÚ ¿¬°áÇØÁÖ±â
-      if (prev) { 
-        prev.next = next; 
-      }
-      if (next) {
-        next.prev = prev;
-      }
-
-    };
-  
-    const recoverNode = () => {
-      const targetNode = trashBin.pop();
-  
-      const prev = targetNode.prev;
-      const next = targetNode.next;
-  
-
-      //²¨³»¿Í¼­ ¿¬°á
-      if (prev) {
-        prev.next = targetNode;
-      }
-      if (next) {
-        next.prev = targetNode;
-      }
-    };
-  
-    cmd.forEach((c) => {
-      switch (c[0]) {
-        case "U":
-          moveSelectedNode(c.split(" ")[1], "prev");
-          break;
-        case "D":
-          moveSelectedNode(c.split(" ")[1], "next");
-          break;
-        case "C":
-          deleteNode();
-          break;
-        case "Z":
-          recoverNode();
-          break;
-      }
-    });
-  
-    let result = Array(n).fill("O");
-    trashBin.forEach((node) => {
-      result[node.index] = "X";
-    });
-    return result.join("");
   }
 
-  console.log(solution(8,2,["D 2","C","U 3","C","D 4","C","U 2","Z","Z"]))
-  console.log(solution(8,2,["D 2","C","U 3","C","D 4","C","U 2","Z","Z","U 1","C"]))
+  // ìµœì´ˆ ë…¸ë“œ ìƒì„±
+  let prevNode = new Node(0);
+
+  // í˜„ì¬ ì„ íƒëœ ë…¸ë“œ
+  let current;
+
+  // 1ë²ˆ ë…¸ë“œë¶€í„° ìƒì„± ë° ì–‘ë°©í–¥ ì—°ê²° ì§„í–‰
+  for (let i = 1; i < n; i++) {
+    const newNode = new Node(i);
+
+    newNode.prev = prevNode;
+    prevNode.next = newNode;
+    prevNode = newNode;
+
+    if (i === k) current = newNode;
+  }
+
+  const removed = [];
+
+  const moveCurrent = (dir, count) => {
+    let index = 0;
+    while (index++ < count) {
+      if (dir === 'D' && current.next) current = current.next;
+      if (dir === 'U' && current.prev) current = current.prev;
+    }
+  };
+
+  const deleteNode = () => {
+    const prev = current.prev;
+    const next = current.next;
+
+    removed.push(current);
+    if (next) current = next;
+    else current = prev;
+
+    if (prev) prev.next = next;
+    if (next) next.prev = prev;
+  };
+
+  const rollBack = () => {
+    const target = removed.pop();
+    const prev = target.prev;
+    const next = target.next;
+
+    if (prev) prev.next = target;
+    if (next) next.prev = target;
+  };
+
+  for (let singleCmd of cmd) {
+    const [command, degree] = singleCmd.split(' ');
+
+    if (command === 'U' || command === 'D') moveCurrent(command, degree);
+
+    if (command === 'C') deleteNode();
+
+    if (command === 'Z') rollBack();
+  }
+
+  const result = new Array(n).fill('O');
+  for (const removedNode of removed) {
+    result[removedNode.index] = 'X';
+  }
+
+  return result.join('');
+}
