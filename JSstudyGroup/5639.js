@@ -10,59 +10,62 @@ const data = [];
 rl.on('line', (input) => {
   data.push(input);
 }).on('close', () => {
-  const originTree = {};
+  const info = data.map(Number);
+  const root = info[0];
 
-  // 좌 우 자식 노드가 들어가야 하므로 0 , 0으로 초기화
-  for (let i of data) {
-    originTree[i] = [0, 0];
+  const tree = new Map();
+  for (const node of info) {
+    tree.set(node, new Array(2).fill(null));
   }
 
-  let root = Number(data[0]);
-  let parent = root;
-
-  const makeOriginTree = (node) => {
+  const dfs = (parent, node) => {
+    // 왼쪽 서브 트리
     if (parent > node) {
-      if (originTree[parent][0] === 0) {
-        originTree[parent][0] = node;
-        return
-      } else {
-        parent = originTree[parent][0];
-        makeOriginTree(node);
-        return
+      const parentNode = tree.get(parent);
+      const left = parentNode[0];
+
+      // 왼쪽 노드가 비었다면 해당 노드로 지정
+      if (left === null) {
+        parentNode[0] = node; // call by reference
+      }
+      // 재귀탐색
+      if (left !== null) {
+        dfs(left, node);
       }
     }
 
-    // 24 28
+    // 오른쪽 서브 트리
     if (parent < node) {
-      if (originTree[parent][1] === 0) {
-        originTree[parent][1] = node;
-        return
-      } else {
-        parent = originTree[parent][1];
-        makeOriginTree(node);
-        return
+      const parentNode = tree.get(parent);
+      const right = parentNode[1];
+
+      // 오른쪽 노드가 비었다면 해당 노드로 지정
+      if (right === null) {
+        parentNode[1] = node; // call by reference
+      }
+      // 재귀탐색
+      if (right !== null) {
+        dfs(right, node);
       }
     }
   };
 
-  for (let i = 1; i < data.length; i++) {
-    makeOriginTree(Number(data[i]));
-    parent = root; // 필수
+  // 트리 생성
+  for (let i = 1; i < info.length; i++) {
+    dfs(root, info[i]);
   }
 
-  let reulst = [];
-  const postOrder = (node) => {
-    if (originTree[node][0]) {
-      postOrder(originTree[node][0]);
-    }
-    if (originTree[node][1]) {
-      postOrder(originTree[node][1]);
-    }
-
-    reulst.push(node);
+  // 후위 순회
+  const current = [];
+  const postOrder = (node, current) => {
+    const [left, right] = tree.get(node);
+    if (left) postOrder(left, current);
+    if (right) postOrder(right, current);
+    current.push(node);
   };
-  postOrder(root);
-  console.log(reulst.join('\n'));
+
+  postOrder(info[0], current);
+  console.log(current.join('\n'));
 
   process.exit();
 });
