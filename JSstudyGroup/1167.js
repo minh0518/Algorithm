@@ -10,61 +10,48 @@ const data = [];
 rl.on('line', (input) => {
   data.push(input);
 }).on('close', () => {
-  let N = +data.shift();
+  const V = +data.shift();
 
-  let info = data.map((i) =>i.split(' ').map(Number).filter((num) => num !== -1));
+  const tree = new Array(V + 1).fill(undefined).map(() => []);
 
-  let graph = new Array(N + 1).fill().map(() => []);
-
-  for (let i of info) {
-    let [from, ...rest] = i;
-    for (let j = 0; j < rest.length; j += 2) {
-      let [to, weight] = [rest[j], rest[j + 1]];
-
-      graph[from].push({ to, weight });
-      graph[to].push({ to: from, weight });
+  data.forEach((row) => {
+    const [from, ...rest] = row.split(' ').map(Number).slice(0, -1);
+    for (let i = 0; i < rest.length; i += 2) {
+      const [to, value] = [rest[i], rest[i + 1]];
+      tree[from].push({ to, value });
     }
-  }
+  });
 
-  // console.log(graph);
-
-  const dfs = (index, weight, visited, arrForFarNode) => {
-    visited[index] = true;
-
-    // 인접한 노드 중에서 방문하지 않은 노드를 리턴
-    let adjNode = graph[index].filter((i) => !visited[i.to]);
-
-    // 현재 index가 단말 노드라면
-    if (!adjNode.length) {
-      arrForFarNode.push({ node: index, weight });
+  const dfs = (node, visited, currentValue, candidates) => {
+    const nextNodes = tree[node].filter((i) => !visited[i.to]);
+    if (!nextNodes.length) {
+      candidates.push([node, currentValue]);
       return;
     }
-    for (let i = 0; i < adjNode.length; i++) {
-      let nextNode = adjNode[i].to; // 다음 노드번호
-      let nextWeight = weight + adjNode[i].weight; // 다음 노드번호까지의 가중치 누적
-      if (!visited[nextNode]) {
-        dfs(nextNode, nextWeight, visited, arrForFarNode);
-      }
+
+    for (const { to, value } of nextNodes) {
+      visited[to] = true;
+      dfs(to, visited, currentValue + value, candidates);
+      visited[to] = false;
     }
   };
 
-  let arrForFarNode = [];
-  dfs(1, 0, new Array(N + 1).fill(false), arrForFarNode);
+  // 임의의 노드에서 가장 먼 노드 판별
+  const firstVisited = new Array(V + 1).fill(false);
+  firstVisited[1] = true;
+  const firstCandidates = [];
+  dfs(1, firstVisited, 0, firstCandidates);
+  firstCandidates.sort((a, b) => b[1] - a[1]);
 
-  // 가장 가중치가 큰 노드를 찾기 위해 내림차순 sort
-  arrForFarNode.sort((a, b) => {
-    return b.weight - a.weight
-  });
+  // 구해진 노드에서 가장 먼 노드 판별
+  const secondVisited = new Array(V + 1).fill(false);
+  secondVisited[firstCandidates[0][0]] = true;
+  const secondCandidates = [];
+  dfs(firstCandidates[0][0], secondVisited, 0, secondCandidates);
+  secondCandidates.sort((a, b) => b[1] - a[1]);
 
-  let farNode = arrForFarNode[0].node;
-
-  let final = [];
-  dfs(farNode, 0, new Array(N + 1).fill(false), final);
-  console.log(
-    final.sort((a, b) => {
-      return b.weight - a.weight;
-    })[0].weight,
-  );
+  // 거리 출력
+  console.log(secondCandidates.sort((a, b) => b[1] - a[1])[0][1]);
 
   process.exit();
 });
